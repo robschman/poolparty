@@ -120,6 +120,14 @@ button.leise{background:transparent; color:var(--schrift-2); border:1.5px solid 
 pre{background:var(--karte); border:1px solid var(--rand); border-radius:11px; padding:.9rem 1rem;
   overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:pre-wrap;
   color:var(--schrift); margin:0}
+.fest{background:var(--gruen-tuell); border:1px solid color-mix(in srgb,var(--gruen) 34%,transparent);
+  border-radius:12px; padding:.85rem 1rem; margin:0 0 .55rem; display:flex; gap:.8rem; align-items:flex-start}
+.fest .haken{flex:none; color:var(--gruen); font-weight:900; font-size:1rem; margin-top:.1rem}
+.fest b{display:block}
+.fest span.wie{color:var(--schrift-2); font-size:.92rem; display:block; margin-top:.1rem}
+.empfehlung{display:inline-block; font-size:.62rem; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; padding:.2rem .45rem; border-radius:5px; background:var(--gold);
+  color:var(--grund); margin-left:.4rem; vertical-align:.1em}
 footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.84rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -127,245 +135,198 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
 <body>
 
 <header><div class="bahn">
-  <p class="marke">Stand 18. August 2026 · noch nichts umgesetzt</p>
-  <h1>Änderungen &amp; Vorschläge</h1>
-  <p class="dach">Deine zehn Punkte mit Machbarkeits-Einschätzung — und Vorschläge
-     zum Ankreuzen. Umgesetzt wird alles erst, wenn du „jetzt Änderungen umsetzen“ sagst.</p>
+  <p class="marke">Stand 18. August 2026, abends · noch nichts umgesetzt</p>
+  <h1>Stand &amp; offene Fragen</h1>
+  <p class="dach">Oben steht, was beschlossen ist. Darunter zwei Fragen, die noch offen sind,
+     und die restlichen Stationsvorschläge. Umgesetzt wird alles erst, wenn du
+     „jetzt Änderungen umsetzen“ sagst.</p>
   <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
 </div></header>
-<section id="stand"><div class="bahn">
-  <p class="nummer">Teil 1</p>
-  <h2>Deine zehn Punkte — geht das?</h2>
-  <p>Kurze Antwort: <b>ja, alles.</b> Drei davon brauchen noch eine Entscheidung von dir.</p>
+<section id="fest"><div class="bahn">
+  <p class="nummer">Beschlossen</p>
+  <h2>Das steht fest</h2>
+  <p>Alles davon wird gebaut, sobald du „jetzt Änderungen umsetzen“ sagst.</p>
 
-  <div class="status"><span class="kennzeichen k-geht">geht sofort</span><span class="txt">
-    <b>Sicherheitsstufe Rot auf 120 Sekunden</b>
-    <span>Eine Zahl ändern. Der Gag wird dadurch sogar besser — zwei Minuten warten
-    ist deutlich unangenehmer als eine.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-geht">entschieden</span><span class="txt">
-    <b>VIPPARTY bleibt das Losungswort</b>
-    <span>Bleibt so. Die zwei P machen das Legen kniffliger.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-geht">geht sofort</span><span class="txt">
-    <b>Keine Grenze in den Regeln</b>
-    <span>Der Platzhalter fällt raus. Bleiben: 500 Meter, zusammenbleiben, anrufen.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-bau">neu zu bauen</span><span class="txt">
-    <b>Türsteher: zwei Wege, Teams starten gegengleich</b>
-    <span>Team Diamant geht zuerst in die eine Richtung, Team Platin in die andere,
-    dann tauschen sie. Die App zeigt jedem Team seine Reihenfolge. Damit können sie
-    nicht voneinander abschreiben — gute Idee, das baue ich gerne.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-bau">neu zu bauen</span><span class="txt">
-    <b>Video verfremden</b>
-    <span>Läuft künftig hinter einem Filter: leichte Unschärfe, harter Kontrast,
-    Grünstich und wandernde Störstreifen — wie eine abgefangene Überwachungsaufnahme.
-    Du musst dafür nichts können, das macht die App. Beim Drehen kannst du zusätzlich
-    tief sprechen und im Gegenlicht stehen, dann sieht man nur die Silhouette.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-frage">Entscheidung</span><span class="txt">
-    <b>Emoji-Duell: wie kommen die Emojis zum anderen Team?</b>
-    <span>Direkt in der App geht es nicht — sie läuft ohne Server, die Handys können
-    nicht miteinander reden. Drei Wege stehen unten zur Auswahl.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-frage">Entscheidung</span><span class="txt">
-    <b>Paparazzi: zwei Aufträge raus, zwei neue rein</b>
-    <span>„Fremde erwachsene Person“ und „Plattencover“ fliegen. Ersatz unten
-    zum Ankreuzen.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-bau">neu zu bauen</span><span class="txt">
-    <b>Buchstaben durcheinander + Wort am Handy legen</b>
-    <span>Genau wie du es beschreibst: antippen setzt auf Platz 1, 2, 3 …,
-    dann „Code prüfen“. Grün und fertig — oder rot, und die Buchstaben springen zurück.</span></span></div>
-
-  <div class="status"><span class="kennzeichen k-frage">Entscheidung</span><span class="txt">
-    <b>Mehr Stationen</b>
-    <span>Zehn Vorschläge unten. Kreuz an, was dir gefällt.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Sicherheitsstufe Rot: 120 Sekunden</b>
+    <span class="wie">Zwei Minuten warten ist deutlich unangenehmer als eine — der Gag wird besser.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>VIPPARTY bleibt das Losungswort</b></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Keine Grenze mehr in den Regeln</b></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Türsteher: zwei Wege, Teams starten gegengleich</b>
+    <span class="wie">Diamant zuerst in die eine Richtung, Platin in die andere, dann tauschen.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Video hinter dem Störbild-Filter</b>
+    <span class="wie">Unschärfe, harter Kontrast, Grünstich, wandernde Streifen. Du musst nichts können.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Buchstaben durcheinander, Wort am Handy legen</b>
+    <span class="wie">Antippen setzt auf Platz 1, 2, 3 … dann „Code prüfen“. Grün und fertig, oder rot und zurück.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Emoji-Duell: Treffpunkt</b>
+    <span class="wie">Die App schickt beide Teams an denselben Ort und gibt jedem ein fertiges Rätsel vor.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Foto-Aufträge: Perspektiven-Trick und „Das Gesicht, das keines ist“</b></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Neue Station: Die Spiegelschrift</b>
+    <span class="wie">Mit zwei verschiedenen Orten für Diamant und Platin, gegengleich wie beim Türsteher.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Neue Station: Der Taschenrechner-Trick</b>
+    <span class="wie">Mit deinem Zusatz: „Haltet das Handy nah ans Gesicht und schaut genau hin“ steht im Aufgabentext.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Neue Station: Der Anruf</b>
+    <span class="wie">Grundsätzlich ja — wer abhebt, ist noch offen. Gleich unten.</span></span></div>
+  <div class="fest"><span class="haken">✓</span><span><b>Die Jagd darf länger dauern</b>
+    <span class="wie">Wenn das Wetter am Freitag nicht mitspielt, trägt die Schnitzeljagd den Nachmittag.
+    Mit den drei neuen Stationen sind es rund <b>115 Minuten</b>.</span></span></div>
 </div></section>
 
-<section id="emoji"><div class="bahn">
-  <p class="nummer">Teil 2 · Entscheidung</p>
-  <h2>Das Emoji-Duell</h2>
-  <p>Such einen Weg aus:</p>
+<section id="anruf"><div class="bahn">
+  <p class="nummer">Frage 1</p>
+  <h2>Der Anruf — wer hebt ab?</h2>
+  <p>Du brauchst keinen Fremden dafür. Es gibt vier Wege, und zwei davon kommen
+  ganz ohne zweite Person aus.</p>
 
-  <label class="wahl" data-gruppe="emoji" data-wert="Treffpunkt (App gibt Rätsel vor)">
+  <label class="wahl" data-gruppe="anruf" data-wert="Robert hebt selbst ab, verstellte Stimme">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>A · Sie treffen sich — mein Vorschlag</b>
-      <span class="wie">Die App schickt beide Teams an denselben Ort und gibt jedem ein
-      <b>fertiges Emoji-Rätsel</b> vor, das das andere Team raten muss. Sie zeigen sich
-      die Emojis am Handy, raten, tauschen die Geheimwörter.</span>
-      <span class="marken"><span class="marke-k gut">kein WhatsApp nötig</span>
-      <span class="marke-k gut">funktioniert garantiert</span>
-      <span class="marke-k">sie begegnen sich einmal wirklich</span></span>
+      <b>A · Du hebst selbst ab<span class="empfehlung">mein Vorschlag</span></b>
+      <span class="wie">Du bist als Spielleiter ohnehin in der Nähe. Die App gibt „die geheime
+      Nummer des Concierge“ heraus — das ist deine. Du meldest dich tief und förmlich:
+      <em>„VIP-Club, Empfang. Kennwort?“</em> Nennen sie es, bekommen sie den Code.
+      Nennen sie es nicht, legst du auf.
+      <br><br>Dass sie irgendwann merken, dass es Papa ist, gehört zum Spaß dazu —
+      erfahrungsgemäß spielen Kinder in dem Alter genau deshalb erst recht mit.</span>
+      <span class="marken"><span class="marke-k gut">kostet nichts</span>
+      <span class="marke-k gut">geht sicher</span>
+      <span class="marke-k gut">keine zweite Person</span></span>
     </span></span></label>
 
-  <label class="wahl" data-gruppe="emoji" data-wert="WhatsApp, Emojis selbst ausdenken">
+  <label class="wahl" data-gruppe="anruf" data-wert="Altes Handy als Anrufbeantworter">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>B · Über WhatsApp, wie bisher gedacht</b>
-      <span class="wie">Jedes Team denkt sich selbst einen Film oder Song aus und schickt
-      dem anderen vier Emojis.</span>
-      <span class="marken"><span class="marke-k gut">kreativer</span>
-      <span class="marke-k acht">alle brauchen die Nummern voneinander</span></span>
+      <b>B · Ein altes Handy als Anrufbeantworter</b>
+      <span class="wie">Du sprichst auf die Mailbox eine Ansage mit dem Code. Dann schaltest
+      du das Handy <b>aus</b> — dadurch geht die Mailbox sofort ran, es klingelt nicht einmal.
+      Die Kinder rufen an und hören direkt die geheimnisvolle Stimme.
+      <br><br>Vorher einmal selbst anrufen und prüfen, ob die Mailbox wirklich sofort
+      abhebt — das hängt vom Mobilfunkanbieter ab.</span>
+      <span class="marken"><span class="marke-k gut">niemand muss aufpassen</span>
+      <span class="marke-k gut">klingt am geheimnisvollsten</span>
+      <span class="marke-k acht">vorher testen</span></span>
     </span></span></label>
 
-  <label class="wahl" data-gruppe="emoji" data-wert="Server, echtes Verschicken in der App">
+  <label class="wahl" data-gruppe="anruf" data-wert="Ein Erwachsener nimmt ab">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>C · Echt in der App verschicken</b>
-      <span class="wie">Dafür bräuchte die App einen Server, der die Nachrichten
-      weiterreicht.</span>
-      <span class="marken"><span class="marke-k acht">großer Aufwand</span>
-      <span class="marke-k acht">kann am Partytag ausfallen</span>
-      <span class="marke-k acht">würde ich nicht machen</span></span>
+      <b>C · Jemand anderer nimmt ab</b>
+      <span class="wie">Oma, ein Nachbar, Zoes Mama. Du schickst der Person vorher eine
+      Nachricht mit Kennwort und Code — mehr braucht es nicht.</span>
+      <span class="marken"><span class="marke-k gut">echte fremde Stimme</span>
+      <span class="marke-k acht">jemand muss zur Zeit erreichbar sein</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="anruf" data-wert="Kein echter Anruf, Tonaufnahme in der App">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>D · Gar kein echtes Telefon</b>
+      <span class="wie">Die App spielt eine Tonaufnahme ab, die klingt wie ein
+      Anrufbeantworter — mit Freizeichen und Rauschen davor. Du sprichst sie einmal auf,
+      fertig.</span>
+      <span class="marken"><span class="marke-k gut">narrensicher</span>
+      <span class="marke-k">weniger aufregend als ein echter Anruf</span></span>
     </span></span></label>
 </div></section>
 
-<section id="fotos"><div class="bahn">
-  <p class="nummer">Teil 3 · Auswahl</p>
-  <h2>Ersatz für die zwei Foto-Aufträge</h2>
-  <p>Zwei sind rausgeflogen. Kreuz zwei neue an — oder mehr, dann wird die Station länger.</p>
+<section id="sieger"><div class="bahn">
+  <p class="nummer">Frage 2</p>
+  <h2>Gewinnt ein Team — oder kommen alle rein?</h2>
+  <p>Gute Frage, und sie war bisher nicht festgelegt. So wie das Spiel jetzt gebaut ist,
+  sammelt jedes Team eigene Punkte und sieht am Ende seinen Stand — ein ausgerufener
+  Sieger kommt aber nirgends vor.</p>
 
-  <label class="wahl" data-gruppe="foto" data-wert="Riesiges halten (Perspektive)">
-    <span class="zeile"><span class="box">✓</span><span><b>Perspektiven-Trick</b>
-    <span class="wie">Ein Foto, auf dem einer von euch etwas Riesiges zu halten scheint —
-    ein Haus, einen Baum, die Sonne.</span></span></span></label>
+  <label class="wahl" data-gruppe="sieger" data-wert="C: alle rein, besseres Team bekommt Ehrung">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>C · Alle kommen rein, das bessere Team bekommt einen Vorteil<span class="empfehlung">mein Vorschlag</span></b>
+      <span class="wie">Der Türsteher lässt erst auf, wenn <b>beide</b> Teams das Losungswort
+      haben — sie müssen sich am Schluss also noch einmal treffen. Wer mehr Punkte hat,
+      wird zum <b>VIP des Tages</b> ausgerufen: darf zuerst rein, zuerst in den Pool,
+      bekommt ein Extra-Goodie.
+      <br><br>Warum ich das vorschlage: Bei fünf, sechs befreundeten Kindern, die danach
+      noch den ganzen Nachmittag miteinander verbringen, ist ein echtes Verliererteam
+      heikel. Den Ehrgeiz ganz rauszunehmen wäre aber auch schade — die Punkte sind ja
+      der Motor. So bekommst du beides.</span>
+      <span class="marken"><span class="marke-k gut">niemand verliert</span>
+      <span class="marke-k gut">Ehrgeiz bleibt</span>
+      <span class="marke-k gut">gemeinsamer Schluss</span></span>
+    </span></span></label>
 
-  <label class="wahl" data-gruppe="foto" data-wert="Unsichtbar (nur Schuhe schauen raus)">
-    <span class="zeile"><span class="box">✓</span><span><b>Der Unsichtbare</b>
-    <span class="wie">Ein Foto, auf dem einer von euch unsichtbar ist — man sieht nur
-    noch die Schuhe.</span></span></span></label>
+  <label class="wahl" data-gruppe="sieger" data-wert="A: alle gewinnen gemeinsam">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>A · Alle gewinnen gemeinsam</b>
+      <span class="wie">Kein Sieger, keine Wertung. Die Teams arbeiten auf dasselbe Ziel hin
+      und kommen zusammen in die VIP-Lounge. Punkte werden gar nicht mehr angezeigt.</span>
+      <span class="marken"><span class="marke-k gut">völlig konfliktfrei</span>
+      <span class="marke-k">nimmt Spannung raus</span></span>
+    </span></span></label>
 
-  <label class="wahl" data-gruppe="foto" data-wert="Spiegelbild-Selfie">
-    <span class="zeile"><span class="box">✓</span><span><b>Spiegelbild-Selfie</b>
-    <span class="wie">Ein Selfie in einer spiegelnden Fläche — Schaufenster, Autoscheibe,
-    Pfütze.</span></span></span></label>
-
-  <label class="wahl" data-gruppe="foto" data-wert="Gesicht, das keines ist">
-    <span class="zeile"><span class="box">✓</span><span><b>Das Gesicht, das keines ist</b>
-    <span class="wie">Etwas fotografieren, das aussieht wie ein Gesicht, aber keines ist —
-    eine Steckdose, ein Auto von vorn, zwei Fenster mit Tür.</span></span></span></label>
-
-  <label class="wahl" data-gruppe="foto" data-wert="Filmplakat">
-    <span class="zeile"><span class="box">✓</span><span><b>Euer Filmplakat</b>
-    <span class="wie">Ein Foto, das aussieht wie das Plakat zu einem Actionfilm —
-    mit euch in der Hauptrolle.</span></span></span></label>
-
-  <label class="wahl" data-gruppe="foto" data-wert="Genau drei Hände">
-    <span class="zeile"><span class="box">✓</span><span><b>Genau drei Hände</b>
-    <span class="wie">Ein Foto, auf dem exakt drei Hände zu sehen sind. Nicht zwei,
-    nicht vier.</span></span></span></label>
-
-  <label class="wahl" data-gruppe="foto" data-wert="Durch etwas hindurch fotografiert">
-    <span class="zeile"><span class="box">✓</span><span><b>Durchgeschaut</b>
-    <span class="wie">Ein Foto, das durch etwas hindurch aufgenommen ist — durch einen Zaun,
-    durch Blätter, durch eine Flasche.</span></span></span></label>
+  <label class="wahl" data-gruppe="sieger" data-wert="B: ein Team gewinnt, mit Preis">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>B · Ein Team gewinnt</b>
+      <span class="wie">Klassisch: mehr Punkte gewinnt, es gibt einen Preis fürs Siegerteam.
+      Das andere Team geht leer aus.</span>
+      <span class="marken"><span class="marke-k gut">klarer Wettkampf</span>
+      <span class="marke-k acht">kann Stimmung kippen</span></span>
+    </span></span></label>
 </div></section>
-<section id="stationen"><div class="bahn">
-  <p class="nummer">Teil 4 · Auswahl</p>
-  <h2>Zehn Vorschläge für neue Stationen</h2>
-  <p>Kreuz an, was dir gefällt. Unten rechnet dir die Seite aus, wie lange die
-  Schnitzeljagd damit ungefähr dauert.</p>
-
-  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Spiegelschrift (Selfie-Kamera)">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>1 · Die Spiegelschrift</b>
-      <span class="wie">Auf dem Bildschirm steht eine Nachricht — aber spiegelverkehrt und
-      unlesbar. Der Trick: Die <b>Selfie-Kamera spiegelt</b>. Wer das Handy eines anderen
-      Teammitglieds vor die eigene Frontkamera hält, kann die Schrift plötzlich lesen.
-      Wer es nicht kapiert, findet auch jedes Schaufenster oder jede Autoscheibe.</span>
-      <span class="marken"><span class="marke-k gut">genau dein Spiegel-Wunsch</span>
-      <span class="marke-k gut">keine Vorbereitung</span>
-      <span class="marke-k">8 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="7" data-wert="Taschenrechner-Trick (302 = ZOE)">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>2 · Der Taschenrechner-Trick</b>
-      <span class="wie">Eine Rechenaufgabe, die sie am Handy lösen müssen — zum Beispiel
-      <code>1000 − 698</code>. Das Ergebnis ist <b>302</b>. Und wer den Taschenrechner
-      auf den Kopf dreht, liest dort <b>ZOE</b>. Der Klassiker, den jede Generation neu
-      entdeckt.</span>
-      <span class="marken"><span class="marke-k gut">Handy wird gebraucht</span>
-      <span class="marke-k gut">keine Vorbereitung</span>
-      <span class="marke-k gut">passt zum Geburtstagskind</span>
-      <span class="marke-k">7 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Der Anruf (Komplize am Telefon)">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>3 · Der Anruf</b>
-      <span class="wie">Die App gibt eine Telefonnummer heraus — von jemandem, den du
-      vorher eingeweiht hast (Oma, Nachbar, Zoes Mama). Wer dort anruft und das
-      <b>Kennwort</b> nennt, bekommt den Code gesagt. Wer ohne Kennwort anruft, wird
-      abgewimmelt. Erfahrungsgemäß der Moment, über den danach am meisten geredet wird.</span>
-      <span class="marken"><span class="marke-k gut">sehr lustig</span>
-      <span class="marke-k acht">du brauchst einen Komplizen</span>
-      <span class="marke-k">8 Minuten</span></span>
-    </span></span></label>
+<section id="mehr"><div class="bahn">
+  <p class="nummer">Frage 3</p>
+  <h2>Noch mehr Stationen?</h2>
+  <p>Weil die Jagd länger dauern darf, sind die restlichen sieben Vorschläge weiter offen.
+  Kreuz an, was du zusätzlich willst.</p>
 
   <label class="wahl" data-gruppe="station" data-minuten="10" data-wert="Versteckte QR-Zettel">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>4 · Die versteckten QR-Zettel</b>
-      <span class="wie">Du versteckst vorher drei kleine laminierte QR-Codes in der
-      Umgebung — hinter einem Schild, unter einer Bank, an einem Zaun. Jeder Code zeigt
-      einen Buchstaben. Die App sagt nur ungefähr, wo gesucht werden soll.</span>
+      <b>Die versteckten QR-Zettel</b>
+      <span class="wie">Du versteckst vorher drei kleine laminierte QR-Codes in der Umgebung.
+      Jeder zeigt einen Buchstaben. Die App sagt nur ungefähr, wo gesucht wird.</span>
       <span class="marken"><span class="marke-k gut">echtes Suchen</span>
-      <span class="marke-k acht">du musst vorher verstecken</span>
-      <span class="marke-k acht">Regen wäre schlecht</span>
+      <span class="marke-k acht">vorher verstecken</span>
+      <span class="marke-k acht">bei Regen schlecht</span>
       <span class="marke-k">10 Minuten</span></span>
     </span></span></label>
 
   <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Schritte abmessen">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>5 · Das Schrittmaß</b>
-      <span class="wie">„Wie viele Schritte sind es vom Hydranten bis zur Laterne?“ —
-      sie müssen die Strecke wirklich abgehen und zählen. Eine Abweichung von zwei, drei
-      Schritten wird akzeptiert, damit auch kürzere Beine gewinnen können.</span>
+      <b>Das Schrittmaß</b>
+      <span class="wie">„Wie viele Schritte vom Hydranten bis zur Laterne?“ Sie müssen die
+      Strecke abgehen. Zwei, drei Schritte Abweichung werden akzeptiert.</span>
       <span class="marken"><span class="marke-k gut">Bewegung</span>
-      <span class="marke-k">du musst es einmal selbst abgehen</span>
+      <span class="marke-k">einmal selbst abgehen</span>
       <span class="marke-k">8 Minuten</span></span>
     </span></span></label>
 
-  <label class="wahl" data-gruppe="station" data-minuten="5" data-wert="Stoppuhr-Probe (30 Sekunden blind)">
+  <label class="wahl" data-gruppe="station" data-minuten="5" data-wert="Stoppuhr-Probe">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>6 · Die Stoppuhr-Probe</b>
-      <span class="wie">„Startet die Stoppuhr am Handy und stoppt nach genau 30 Sekunden —
-      ohne hinzuschauen.“ Je näher dran, desto mehr Punkte. Eine kurze Station zum
-      Durchschnaufen zwischen zwei Wegen.</span>
-      <span class="marken"><span class="marke-k gut">Handy wird gebraucht</span>
+      <b>Die Stoppuhr-Probe</b>
+      <span class="wie">„Stoppt genau 30 Sekunden — ohne hinzuschauen.“ Je näher dran,
+      desto mehr Punkte. Kurze Station zum Durchschnaufen.</span>
+      <span class="marken"><span class="marke-k gut">geht auch im Regen</span>
       <span class="marke-k gut">keine Vorbereitung</span>
       <span class="marke-k">5 Minuten</span></span>
     </span></span></label>
 
   <label class="wahl" data-gruppe="station" data-minuten="9" data-wert="Zeitreise-Foto nachstellen">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>7 · Das Zeitreise-Foto</b>
-      <span class="wie">Du fotografierst vorher eine Stelle aus einem ungewöhnlichen
-      Winkel — von unten, ganz nah, schräg. Die Kinder müssen die Stelle finden und das
-      Foto <b>exakt nachstellen</b>, mit sich selbst darauf. Verwandt mit dem Suchbild,
-      aber sie müssen nicht nur finden, sondern nachbauen.</span>
-      <span class="marken"><span class="marke-k gut">macht schöne Erinnerungsfotos</span>
+      <b>Das Zeitreise-Foto</b>
+      <span class="wie">Du fotografierst vorher eine Stelle aus ungewöhnlichem Winkel.
+      Die Kinder müssen sie finden und das Foto exakt nachstellen, mit sich darauf.</span>
+      <span class="marken"><span class="marke-k gut">schöne Erinnerungsfotos</span>
       <span class="marke-k">ein Foto vorbereiten</span>
       <span class="marke-k">9 Minuten</span></span>
     </span></span></label>
 
   <label class="wahl" data-gruppe="station" data-minuten="9" data-wert="Geheimschrift entschlüsseln">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>8 · Die Geheimschrift</b>
-      <span class="wie">Eine Zahlenreihe wie <code>22-9-16</code>, dazu die Regel
-      A=1, B=2, C=3 … Sie müssen entschlüsseln. Die App zeigt die Tabelle erst, wenn sie
-      einen Tipp holen — sonst müssen sie selbst draufkommen.</span>
-      <span class="marken"><span class="marke-k gut">reines Kopfrätsel</span>
+      <b>Die Geheimschrift</b>
+      <span class="wie">Eine Zahlenreihe wie <code>22-9-16</code>, dazu die Regel A=1, B=2, C=3.
+      Die Tabelle gibt es erst mit dem Tipp — sonst müssen sie selbst draufkommen.</span>
+      <span class="marken"><span class="marke-k gut">geht auch im Regen</span>
       <span class="marke-k gut">keine Vorbereitung</span>
       <span class="marke-k">9 Minuten</span></span>
     </span></span></label>
 
   <label class="wahl" data-gruppe="station" data-minuten="6" data-wert="Sprint gegen die Uhr">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>9 · Der Sprint</b>
-      <span class="wie">Ein Countdown von drei Minuten läuft los. In der Zeit müssen sie
-      an einem bestimmten Punkt sein und dort ein Foto machen. Schaffen sie es,
-      gibt es Bonuspunkte — schaffen sie es nicht, geht es trotzdem weiter.</span>
+      <b>Der Sprint</b>
+      <span class="wie">Drei Minuten Countdown. In der Zeit an einem Punkt sein und ein Foto
+      machen. Geschafft gibt Bonuspunkte, nicht geschafft geht trotzdem weiter.</span>
       <span class="marken"><span class="marke-k gut">Tempo</span>
       <span class="marke-k acht">nur wo es sicher ist</span>
       <span class="marke-k">6 Minuten</span></span>
@@ -373,63 +334,80 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
 
   <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Buchstabenjagd auf Schildern">
     <span class="zeile"><span class="box">✓</span><span>
-      <b>10 · Die Buchstabenjagd</b>
-      <span class="wie">„Fotografiert die Buchstaben V, I und P — jeden einzeln, gefunden
-      auf einem Schild, einem Nummernschild oder einer Hausmauer.“ Sie laufen automatisch
-      durch die halbe Umgebung.</span>
+      <b>Die Buchstabenjagd</b>
+      <span class="wie">„Fotografiert die Buchstaben V, I und P — jeden einzeln, gefunden auf
+      einem Schild, Nummernschild oder einer Hausmauer.“</span>
       <span class="marken"><span class="marke-k gut">viel Bewegung</span>
       <span class="marke-k gut">keine Vorbereitung</span>
       <span class="marke-k">8 Minuten</span></span>
     </span></span></label>
 
-  <div class="zaehler" id="zaehler">Noch nichts angekreuzt — die Jagd dauert derzeit rund <b>90 Minuten</b>.</div>
+  <div class="zaehler" id="zaehler">Mit den drei beschlossenen neuen Stationen dauert die Jagd rund <b>115 Minuten</b>.</div>
+</div></section>
 
-  <div class="kasten achtung" style="margin-top:1rem">
-    <p class="kastentitel">Denk an die Zeit</p>
-    <p>Acht Stationen sind rund 90 Minuten. Ab etwa <b>zwei Stunden</b> werden 12-Jährige
-    unruhig — vor allem, wenn der Pool schon wartet. Wenn du mehr als zwei neue Stationen
-    willst, nehmen wir dafür lieber eine bestehende raus. Mein Vorschlag wäre dann,
-    den VIP-Test (das Quiz) zu kürzen: Der ist am wenigsten mit der Umgebung verbunden.</p>
+<section id="wetter"><div class="bahn">
+  <p class="nummer">Vorschlag von mir</p>
+  <h2>Was, wenn es regnet?</h2>
+  <p>Du sagst, das Wetter ist unsicher. Das betrifft nicht nur den Pool — bei
+  Dauerregen macht auch eine Schnitzeljagd durch Ternitz keinen Spaß.</p>
+
+  <label class="wahl" data-gruppe="wetter" data-wert="Schlechtwetter-Schalter einbauen">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>Schlechtwetter-Schalter einbauen</b>
+      <span class="wie">Ein Wort in der Einstellungsdatei umstellen, und die Jagd läuft nur
+      noch über die Stationen, die drinnen oder unter einem Vordach funktionieren:
+      Quiz, Taschenrechner, Spiegelschrift, Geheimschrift, Emoji-Duell, Handy-aus,
+      Wort legen. Dauert dann rund 50 Minuten.
+      <br><br>Umlegen dauert zehn Sekunden — du kannst das Freitagfrüh entscheiden.</span>
+      <span class="marken"><span class="marke-k gut">Entscheidung erst am Partytag</span>
+      <span class="marke-k">kleiner Zusatzaufwand für mich</span></span>
+    </span></span></label>
+
+  <div class="kasten">
+    <p class="kastentitel">Geht auch ohne</p>
+    <p>Über den Spielleitermodus (Krone 3× antippen, Code <code>9999</code>) kannst du
+    am Partytag jede Station einzeln überspringen. Der Schalter ist nur bequemer,
+    weil du dann nicht bei jedem Team einzeln herumtippen musst.</p>
   </div>
 </div></section>
 
 <section id="notizen"><div class="bahn">
-  <p class="nummer">Teil 5</p>
+  <p class="nummer">Zum Schluss</p>
   <h2>Deine Anmerkungen</h2>
-  <label class="notiz"><span>Eigene Ideen für Stationen</span>
+  <label class="notiz"><span>Eigene Ideen</span>
     <textarea data-notiz="EIGENE IDEEN" placeholder="Was dir sonst noch einfällt …"></textarea></label>
-  <label class="notiz"><span>Sonstiges — was noch geändert werden soll</span>
+  <label class="notiz"><span>Sonstiges</span>
     <textarea data-notiz="SONSTIGES" placeholder="…"></textarea></label>
   <div id="ausgabe"><pre id="text"></pre></div>
 </div></section>
 
 <div class="aktion"><div class="bahn">
   <button id="kopieren">Auswahl kopieren</button>
-  <button class="leise" id="leeren">Alles zurücksetzen</button>
+  <button class="leise" id="leeren">Zurücksetzen</button>
 </div></div>
 
-<footer><div class="bahn">VIP-Schnitzeljagd · nichts davon ist umgesetzt, bis du es sagst</div></footer>
+<footer><div class="bahn">VIP-Schnitzeljagd · umgesetzt wird erst auf dein Wort</div></footer>
 
 <script>
 (function(){
-  var SCHLUESSEL = "vip_vorschlaege_v1";
+  var SCHLUESSEL = "vip_stand_v2";
+  var BASIS = 115;   // 90 + Spiegelschrift + Taschenrechner + Anruf
   var kannSpeichern = (function(){ try{ localStorage.setItem("t","1"); localStorage.removeItem("t"); return true; }catch(e){ return false; } })();
   var stand = {};
   if(kannSpeichern){ try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL)||"{}"); }catch(e){} }
 
+  var EINFACH = { anruf:1, sieger:1 };   // Gruppen, in denen nur eine Wahl gilt
   var wahlen = [].slice.call(document.querySelectorAll(".wahl"));
   wahlen.forEach(function(w, i){
     w.dataset.nr = i;
     if(stand["w"+i]) w.classList.add("an");
     w.addEventListener("click", function(ev){
       ev.preventDefault();
-      if(w.dataset.gruppe === "emoji"){
-        wahlen.filter(function(x){ return x.dataset.gruppe==="emoji"; })
+      if(EINFACH[w.dataset.gruppe]){
+        wahlen.filter(function(x){ return x.dataset.gruppe===w.dataset.gruppe; })
               .forEach(function(x){ x.classList.remove("an"); stand["w"+x.dataset.nr]=false; });
         w.classList.add("an");
-      } else {
-        w.classList.toggle("an");
-      }
+      } else { w.classList.toggle("an"); }
       stand["w"+i] = w.classList.contains("an");
       sichern(); rechnen();
     });
@@ -446,33 +424,35 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
     var zusatz = 0, anzahl = 0;
     wahlen.forEach(function(w){
       if(w.dataset.gruppe==="station" && w.classList.contains("an")){
-        zusatz += parseInt(w.dataset.minuten,10) || 0; anzahl++;
+        zusatz += parseInt(w.dataset.minuten,10)||0; anzahl++;
       }
     });
-    var k = document.getElementById("zaehler");
-    if(!anzahl){ k.innerHTML = "Noch nichts angekreuzt — die Jagd dauert derzeit rund <b>90 Minuten</b>."; return; }
-    var gesamt = 90 + zusatz;
-    var warnung = gesamt > 120 ? " — das ist für 12-Jährige zu lang, da sollte etwas raus"
-                : gesamt > 105 ? " — das ist die obere Grenze" : " — passt gut";
-    k.innerHTML = anzahl + (anzahl===1?" neue Station":" neue Stationen") + " · zusammen rund <b>"
-                + gesamt + " Minuten</b>" + warnung;
+    var k = document.getElementById("zaehler"), g = BASIS + zusatz;
+    var satz = anzahl ? (anzahl + (anzahl===1?" weitere Station":" weitere Stationen") + " dazu · zusammen rund <b>"+g+" Minuten</b>")
+                      : ("Mit den drei beschlossenen neuen Stationen dauert die Jagd rund <b>"+BASIS+" Minuten</b>.");
+    var hinweis = g > 165 ? " — das ist auch für einen Regentag viel"
+                : g > 135 ? " — gut für einen Nachmittag ohne Pool"
+                : "";
+    k.innerHTML = satz + hinweis;
   }
   rechnen();
 
   document.getElementById("kopieren").onclick = function(){
-    var k = this, z = ["AUSWAHL — VIP-Schnitzeljagd", ""];
-    var e = wahlen.filter(function(w){ return w.dataset.gruppe==="emoji" && w.classList.contains("an"); });
-    z.push("EMOJI-DUELL: " + (e.length ? e[0].dataset.wert : "(noch nicht entschieden)"));
-    var fo = wahlen.filter(function(w){ return w.dataset.gruppe==="foto" && w.classList.contains("an"); });
-    z.push("", "FOTO-AUFTRÄGE NEU (" + fo.length + "):");
-    if(fo.length) fo.forEach(function(w){ z.push("  + " + w.dataset.wert); });
-    else z.push("  (noch nichts ausgewählt)");
+    var k = this, z = ["STAND & ENTSCHEIDUNGEN — VIP-Schnitzeljagd", ""];
+    function einzel(gruppe, titel){
+      var t = wahlen.filter(function(w){ return w.dataset.gruppe===gruppe && w.classList.contains("an"); });
+      z.push(titel + ": " + (t.length ? t[0].dataset.wert : "(noch offen)"));
+    }
+    einzel("anruf",  "DER ANRUF");
+    einzel("sieger", "WER GEWINNT");
+    var we = wahlen.filter(function(w){ return w.dataset.gruppe==="wetter" && w.classList.contains("an"); });
+    z.push("SCHLECHTWETTER-SCHALTER: " + (we.length ? "ja, bitte einbauen" : "nein / noch offen"));
     var st = wahlen.filter(function(w){ return w.dataset.gruppe==="station" && w.classList.contains("an"); });
     var min = 0; st.forEach(function(w){ min += parseInt(w.dataset.minuten,10)||0; });
-    z.push("", "NEUE STATIONEN (" + st.length + ", rund " + min + " Minuten mehr):");
+    z.push("", "ZUSÄTZLICHE STATIONEN (" + st.length + "):");
     if(st.length) st.forEach(function(w){ z.push("  + " + w.dataset.wert); });
-    else z.push("  (noch nichts ausgewählt)");
-    z.push("", "GESAMTDAUER DANN: rund " + (90+min) + " Minuten");
+    else z.push("  (keine weiteren)");
+    z.push("", "GESAMTDAUER DANN: rund " + (BASIS+min) + " Minuten");
     felder.forEach(function(f){ if(f.value.trim()) z.push("", f.dataset.notiz + ": " + f.value.trim()); });
     var t = z.join("\n");
     document.getElementById("text").textContent = t;
@@ -488,7 +468,6 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
     else { ersatz(); }
     document.getElementById("ausgabe").scrollIntoView({behavior:"smooth", block:"nearest"});
   };
-
   document.getElementById("leeren").onclick = function(){
     if(!confirm("Alle Häkchen und Notizen löschen?")) return;
     wahlen.forEach(function(w){ w.classList.remove("an"); });
