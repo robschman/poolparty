@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Poolparty auf robschman.at</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-satt:#b8912f; --gold-tuell:#f3e9cd;
+  --rot:#a4402c; --rot-tuell:#f8e6e0; --gruen:#34694b; --gruen-tuell:#e2f0e6;
+  --code-grund:#1e1b15; --code-text:#f0e6cf; --breite:min(100% - 2.2rem, 42rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --code-grund:#080705; --code-text:#ecdfc2;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --code-grund:#080705; --code-text:#ecdfc2;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.62;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.bahn{width:var(--breite); margin-inline:auto}
+
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(2.2rem,7vw,3.4rem) 0 clamp(1.5rem,5vw,2.1rem)}
+.marke{font-size:.68rem; letter-spacing:.36em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .8rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(1.95rem,7.4vw,3rem); line-height:1.04; margin:0; text-wrap:balance}
+.dach{color:var(--schrift-2); margin:.85rem 0 0}
+
+section{padding:clamp(1.8rem,5.5vw,2.5rem) 0; border-bottom:1px solid var(--rand)}
+section:last-of-type{border-bottom:0}
+.kopf{display:flex; gap:.85rem; align-items:flex-start; margin:0 0 .3rem}
+.ziffer{flex:none; width:2rem; height:2rem; border-radius:50%; background:var(--gold);
+  color:var(--grund); display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.9rem; margin-top:.15rem}
+.ziffer.warn{background:var(--rot)}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:clamp(1.4rem,4.8vw,1.9rem); line-height:1.16; margin:0; text-wrap:balance}
+.dauer{font-size:.75rem; letter-spacing:.13em; text-transform:uppercase; color:var(--schrift-3);
+  font-weight:700; margin:.1rem 0 1rem 2.85rem}
+@media(max-width:30rem){ .dauer{margin-left:0} }
+h3{font-size:1rem; font-weight:700; margin:1.6rem 0 .5rem}
+p{margin:0 0 1rem} p:last-child{margin-bottom:0}
+ul,ol{padding-left:1.2rem; margin:0 0 1rem}
+li{margin-bottom:.5rem}
+li::marker{color:var(--gold); font-weight:600}
+code{font-family:"IBM Plex Mono",monospace; font-size:.87em; background:var(--gold-tuell);
+  color:var(--gold); padding:.1em .4em; border-radius:4px; word-break:break-word}
+strong{font-weight:700}
+
+.kasten{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1.05rem 1.2rem; margin:0 0 1rem}
+.kasten.wichtig{background:var(--gold-tuell); border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
+.kasten.achtung{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.kasten.gut{background:var(--gruen-tuell); border-color:color-mix(in srgb,var(--gruen) 36%,transparent)}
+.kastentitel{font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--gold); margin:0 0 .5rem}
+.kasten.achtung .kastentitel{color:var(--rot)}
+.kasten.gut .kastentitel{color:var(--gruen)}
+
+/* Eingabewerte-Tabelle */
+.werte{border:1px solid var(--rand); border-radius:12px; overflow:hidden; margin:0 0 1rem}
+.werte .zeile{display:flex; gap:0; border-bottom:1px solid var(--rand)}
+.werte .zeile:last-child{border-bottom:0}
+.werte .was{flex:0 0 42%; padding:.75rem .9rem; background:var(--grund-2);
+  font-size:.86rem; color:var(--schrift-2); font-weight:600}
+.werte .wert{flex:1; padding:.75rem .9rem; font-family:"IBM Plex Mono",monospace;
+  font-size:.88rem; font-weight:600; word-break:break-word}
+.werte .wert em{font-family:"Archivo",sans-serif; font-style:normal; font-weight:400;
+  color:var(--schrift-2); font-size:.82rem; display:block; margin-top:.2rem}
+
+.befehl{position:relative; margin:0 0 .7rem}
+pre{margin:0; background:var(--code-grund); color:var(--code-text); border-radius:10px;
+  padding:.85rem 3.2rem .85rem 1rem; overflow-x:auto;
+  font-family:"IBM Plex Mono",monospace; font-size:.82rem; line-height:1.6}
+.befehl button{position:absolute; top:.45rem; right:.45rem; border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.07); color:#e8dcc0; border-radius:6px; font-family:"Archivo",sans-serif;
+  font-size:.68rem; font-weight:600; padding:.28rem .55rem; cursor:pointer}
+.beschriftung{font-size:.88rem; color:var(--schrift-2); margin:0 0 .35rem}
+
+/* Fehlersuche */
+.fall{border-left:3px solid var(--rot); background:var(--karte); border-radius:0 11px 11px 0;
+  padding:.95rem 1.15rem; margin:0 0 .85rem}
+.fall b{display:block; margin-bottom:.3rem}
+.fall span{color:var(--schrift-2); font-size:.94rem}
+
+footer{padding:2rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.85rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+</head>
+<body>
+<header><div class="bahn">
+  <p class="marke">VIP-Schnitzeljagd · Wo die App hinkommt</p>
+  <h1>poolparty.robschman.at</h1>
+  <p class="dach">Zwei Wege dorthin. Einer kostet nichts und passt zu dem,
+     was du schon hast — der nehme ich.</p>
+</div></header>
+
+<div class="bahn">
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">✓</span><h2>Ja, und es ist die bessere Wahl</h2></div>
+  <p class="dauer">Kurz zur Einordnung</p>
+
+  <p>Deine Aufteilung ist richtig: <strong>Sport über schrittfuerschrittfit.at,
+  alles andere über robschman.at.</strong> Eine Kindergeburtstagsfeier hat auf der
+  Domain deiner Fitnessmarke ohnehin nichts verloren — schon gar nicht, weil dort
+  gewerbliche Inhalte stehen und hier etwas rein Privates dazukäme.</p>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Dazu muss ich mich korrigieren</p>
+    <p>Ich habe gesagt, die Subdomain bei schrittfuerschrittfit.at „kostet nichts extra“.
+    Das war zu schnell geschossen. In deinem eigenen Memo zu <em>robschman programming</em>
+    steht: Das <strong>SSL-Kontingent des IONOS-Pakets ist mit 3 von 3 aufgebraucht</strong> —
+    genau deshalb ist robschman.at im August auf GitHub Pages umgezogen, statt
+    3,36 € im Monat für ein viertes Zertifikat zu zahlen.</p>
+    <p>Ob eine <em>Subdomain</em> auf dem Webspace ein weiteres Zertifikat verbraucht oder
+    mit abgedeckt ist, weiß ich nicht sicher — das siehst du erst im Kundenbereich.
+    Der Weg unten umgeht die Frage komplett.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer warn">!</span><h2>Was du bei robschman.at nicht anfassen darfst</h2></div>
+  <p class="dauer">Bitte einmal lesen, bevor du im DNS klickst</p>
+
+  <p>Auf dieser Domain hängen zwei Dinge, die gerade laufen: deine Website
+  (auf GitHub Pages) und deine E-Mail (bei IONOS). Du legst gleich <strong>einen
+  neuen Eintrag dazu</strong> — du änderst keinen bestehenden.</p>
+
+  <div class="werte">
+    <div class="zeile"><div class="was">A-Eintrag &nbsp;@</div>
+      <div class="wert">185.199.108.153<em>zeigt auf GitHub Pages — deine Website. Nicht anfassen.</em></div></div>
+    <div class="zeile"><div class="was">CNAME &nbsp;www</div>
+      <div class="wert">robschman.github.io<em>gehört dazu. Nicht anfassen.</em></div></div>
+    <div class="zeile"><div class="was">MX, SPF, DKIM, DMARC</div>
+      <div class="wert">IONOS-Mail<em>info@robschman.at. Angerührt = keine Post mehr.</em></div></div>
+    <div class="zeile"><div class="was">AAAA (IPv6)</div>
+      <div class="wert">gibt es bewusst nicht<em>im August absichtlich gelöscht. Keine neuen anlegen.</em></div></div>
+  </div>
+
+  <p>Und wie immer: Alles, was <strong>„zurücksetzen“</strong> heißt, trifft mehrere
+  dieser Punkte auf einmal. Finger weg.</p>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">A</span><h2>Weg A — GitHub Pages</h2></div>
+  <p class="dauer">Mein Vorschlag · etwa 20 Minuten Arbeit, dann warten</p>
+
+  <p>Genau so, wie robschman.at selbst läuft. Das Zertifikat kommt gratis von GitHub
+  und erneuert sich allein — die SSL-Frage stellt sich gar nicht.</p>
+
+  <h3>1. Neues Repository anlegen</h3>
+  <ol>
+    <li>Auf <strong>github.com</strong> anmelden, oben rechts <strong>+</strong> →
+        <strong>New repository</strong></li>
+    <li>Name: <code>poolparty</code></li>
+    <li>Sichtbarkeit: <strong>Public</strong> — bei einem kostenlosen Konto
+        funktioniert GitHub Pages nur so (siehe Kasten unten)</li>
+    <li><strong>Create repository</strong></li>
+  </ol>
+
+  <h3>2. Die Dateien hochladen</h3>
+  <ol>
+    <li>Im neuen Repo auf <strong>Add file → Upload files</strong></li>
+    <li>Am Mac den Ordner <code>_ZUM-HOCHLADEN</code> öffnen, <strong>alles darin</strong>
+        markieren (⌘ A) und ins Browserfenster ziehen —
+        nicht den Ordner selbst, sondern seinen Inhalt</li>
+    <li>Unten <strong>Commit changes</strong></li>
+  </ol>
+  <p>Die Datei <code>.htaccess</code> brauchst du hier <strong>nicht</strong> — die versteht
+  nur ein Apache-Server. https macht GitHub von selbst. Die leere Datei
+  <code>.nojekyll</code> dagegen schon: Sie sorgt dafür, dass GitHub die Dateien
+  unverändert ausliefert. Falls sie beim Ziehen nicht mitkommt (versteckte Dateien sieht
+  der Finder erst mit <strong>⌘ + Shift + Punkt</strong>), kannst du sie auch im Browser
+  anlegen: <em>Add file → Create new file</em>, als Namen <code>.nojekyll</code>
+  eintragen, nichts hineinschreiben, speichern.</p>
+
+  <h3>3. Bei IONOS den DNS-Eintrag setzen</h3>
+  <ol>
+    <li><strong>ionos.at</strong> → <strong>Domains &amp; SSL</strong> →
+        <code>robschman.at</code> → <strong>DNS</strong></li>
+    <li><strong>Eintrag hinzufügen</strong> → Typ <strong>CNAME</strong></li>
+  </ol>
+  <div class="werte">
+    <div class="zeile"><div class="was">Typ</div><div class="wert">CNAME</div></div>
+    <div class="zeile"><div class="was">Hostname</div>
+      <div class="wert">poolparty<em>nur das Wort, ohne robschman.at dahinter</em></div></div>
+    <div class="zeile"><div class="was">Zeigt auf</div>
+      <div class="wert">robschman.github.io<em>ohne Repo-Namen, ohne https://</em></div></div>
+  </div>
+  <p>Speichern. Die bestehenden Einträge bleiben dabei unberührt.</p>
+
+  <h3>4. GitHub die Adresse mitteilen</h3>
+  <ol>
+    <li>Im Repo <code>poolparty</code> auf <strong>Settings</strong> →
+        links <strong>Pages</strong></li>
+    <li>Bei <em>Build and deployment</em>: Source <strong>Deploy from a branch</strong>,
+        Branch <strong>main</strong>, Ordner <strong>/ (root)</strong> → <strong>Save</strong></li>
+    <li>Bei <em>Custom domain</em> eintragen: <code>poolparty.robschman.at</code>
+        → <strong>Save</strong></li>
+  </ol>
+  <p>GitHub legt daraufhin selbst eine Datei namens <code>CNAME</code> im Repo an —
+  das gehört so, genau wie bei robschman.at.</p>
+
+  <h3>5. Auf den grünen Haken warten</h3>
+  <p>GitHub prüft jetzt, ob der DNS-Eintrag stimmt. Sobald ein <strong>grüner Haken</strong>
+  bei der Domain steht, erscheint darunter das Kästchen <strong>Enforce HTTPS</strong> —
+  das ankreuzen. Erst dann läuft die Seite verschlüsselt.</p>
+
+  <div class="kasten wichtig">
+    <p class="kastentitel">Das dauert</p>
+    <p>Meist eine halbe Stunde, laut GitHub kann es aber bis zu <strong>24 Stunden</strong>
+    dauern, bis „Enforce HTTPS“ auswählbar wird. Bis Freitag ist das kein Problem —
+    aber mach es <strong>heute</strong>, nicht am Donnerstag.</p>
+  </div>
+
+  <div class="kasten">
+    <p class="kastentitel">Zum „Public“-Repository</p>
+    <p>Der Programmcode wäre damit öffentlich lesbar — also auch die Lösungen.
+    Ehrlicherweise: <strong>Das sind sie ohnehin.</strong> Bei jeder Seite dieser Art
+    kann man im Browser den Quelltext anzeigen und die Antworten sehen — egal wo sie liegt.
+    Für 12-Jährige auf einer Geburtstagsfeier ist das kein realistisches Problem.</p>
+    <p>Wenn es dich stört, kann ich die Antworten verschlüsselt hinterlegen, sodass sie
+    auch im Quelltext nicht lesbar sind. Sag Bescheid, das ist eine halbe Stunde Arbeit.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">B</span><h2>Weg B — IONOS-Webspace</h2></div>
+  <p class="dauer">Falls du lieber alles an einem Ort hast</p>
+
+  <p>Geht auch: Die Subdomain wird dann wie bei <code>fussfessel-hilfe.at</code>
+  einem Ordner auf dem Webspace zugewiesen. Der Haken ist die SSL-Frage von oben.</p>
+
+  <ol>
+    <li><strong>ionos.at</strong> → <strong>Domains &amp; SSL</strong> →
+        <code>robschman.at</code></li>
+    <li>Im Subdomain-Bereich auf <strong>Subdomain erstellen</strong></li>
+    <li>Name <code>poolparty</code>, Verwendungsart <strong>Webspace</strong>,
+        Zielverzeichnis <code>/poolparty</code></li>
+    <li><strong>SSL prüfen</strong> — hier entscheidet sich alles. Steht kein Zertifikat
+        zur Verfügung, bietet IONOS eines gegen Aufpreis an. Dann lieber Weg A.</li>
+    <li>Dateien per FileZilla in <code>/poolparty</code> hochladen</li>
+    <li><strong>Erst wenn https nachweislich läuft:</strong>
+        <code>htaccess-hochladen-als-punkt-htaccess.txt</code> hochladen und auf dem Server
+        umbenennen in <code>.htaccess</code></li>
+  </ol>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Der wichtigste Unterschied zu Weg A</p>
+    <p>Hier zeigt die Hauptdomain <code>robschman.at</code> weiter auf GitHub, die
+    Subdomain aber auf IONOS. Das ist völlig in Ordnung — nur darfst du beim Anlegen
+    <strong>ausschließlich die Subdomain</strong> anrühren. Der A-Eintrag von <code>@</code>
+    bleibt auf 185.199.108.153.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">5</span><h2>Nachprüfen</h2></div>
+  <p class="dauer">2 Minuten</p>
+
+  <p>Am Handy aufrufen: <code>https://poolparty.robschman.at</code> —
+  der VIP-Startbildschirm muss kommen, und das Schloss in der Adresszeile darf
+  nicht durchgestrichen sein.</p>
+
+  <p class="beschriftung">Genauer im Terminal — zeigt, wohin die Adresse verweist:</p>
+  <div class="befehl"><pre>dig +short poolparty.robschman.at</pre><button>Kopieren</button></div>
+  <p class="beschriftung">Bei Weg A soll dort <code>robschman.github.io</code> und eine
+  185.199.*-Adresse auftauchen.</p>
+
+  <p class="beschriftung">Und was der Server antwortet:</p>
+  <div class="befehl"><pre>curl -I https://poolparty.robschman.at</pre><button>Kopieren</button></div>
+  <p class="beschriftung">Bei GitHub Pages steht in der Antwort <code>Server: GitHub.com</code>
+  und <code>HTTP/2 200</code>.</p>
+
+  <p class="beschriftung">Sicherheitshalber auch prüfen, dass deine Hauptseite noch steht:</p>
+  <div class="befehl"><pre>curl -I https://robschman.at</pre><button>Kopieren</button></div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">6</span><h2>Wenn etwas nicht klappt</h2></div>
+  <p class="dauer">Die vier üblichen Fälle</p>
+
+  <div class="fall"><b>GitHub zeigt kein grünes Häkchen, sondern eine Warnung zur Domain</b>
+    <span>Der DNS-Eintrag ist noch nicht durchgedrungen. Eine Stunde warten, dann in den
+    Pages-Einstellungen einmal <em>Save</em> bei der Custom domain drücken —
+    das stößt die Prüfung neu an.</span></div>
+
+  <div class="fall"><b>„Enforce HTTPS“ lässt sich nicht ankreuzen</b>
+    <span>Das Zertifikat wird noch ausgestellt. Kann laut GitHub bis zu 24 Stunden dauern.
+    Warten, nichts umstellen.</span></div>
+
+  <div class="fall"><b>Die Seite kommt, aber ohne Gestaltung — nur Text</b>
+    <span>Dann fehlt die Datei <code>.nojekyll</code> oder die Ordner <code>css</code>
+    und <code>js</code> sind beim Hochladen nicht mitgekommen. Im Repo nachsehen,
+    ob alle Ordner da sind.</span></div>
+
+  <div class="fall"><b>404 von GitHub</b>
+    <span>Meist ist <code>index.html</code> nicht im Hauptverzeichnis des Repos gelandet,
+    sondern in einem Unterordner. Im Repo muss <code>index.html</code> ganz oben liegen,
+    direkt neben <code>css</code> und <code>js</code>.</span></div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">7</span><h2>Nach der Party</h2></div>
+  <p class="dauer">Irgendwann im September</p>
+  <p>Bei Weg A: Repository auf GitHub löschen und bei IONOS den CNAME-Eintrag
+  <code>poolparty</code> entfernen. Bei Weg B: Ordner <code>/poolparty</code> per
+  FileZilla löschen und die Subdomain entfernen.</p>
+  <p>Es eilt aber nicht — die Seite ist auf <code>noindex</code> gestellt und taucht
+  in keiner Suche auf. Das Projekt am Mac bleibt sowieso erhalten, fürs nächste Jahr.</p>
+
+  <div class="kasten gut">
+    <p class="kastentitel">Wenn Schritt 5 durchgeht</p>
+    <p>…ist der technische Teil erledigt. Dann fehlen nur noch deine drei Orte
+    aus der Erkundungsrunde und das Video.</p>
+  </div>
+</section>
+
+</div>
+
+<footer><div class="bahn">VIP-Schnitzeljagd · Party am Freitag, 28. August 2026</div></footer>
+
+<script>
+document.querySelectorAll('.befehl button').forEach(function(k){
+  k.addEventListener('click', function(){
+    var text = k.previousElementSibling.textContent;
+    var fertig = function(){ k.textContent='Kopiert'; setTimeout(function(){ k.textContent='Kopieren'; },1600); };
+    function ersatz(){
+      var f=document.createElement('textarea'); f.value=text;
+      f.style.position='fixed'; f.style.opacity='0'; document.body.appendChild(f);
+      f.select(); try{ document.execCommand('copy'); fertig(); }catch(e){ k.textContent='⌘C'; }
+      document.body.removeChild(f);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(fertig, ersatz);
+    } else { ersatz(); }
+  });
+});
+</script>
+</body>
+</html>

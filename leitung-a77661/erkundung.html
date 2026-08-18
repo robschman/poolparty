@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Erkundungsrunde Ternitz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-satt:#b8912f; --gold-tuell:#f3e9cd;
+  --rot:#a4402c; --rot-tuell:#f8e6e0; --gruen:#34694b; --gruen-tuell:#e2f0e6;
+  --feld:#ffffff; --breite:min(100% - 2.2rem, 42rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --feld:#0c0a07;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --feld:#0c0a07;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.6;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.bahn{width:var(--breite); margin-inline:auto}
+
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(2.2rem,7vw,3.4rem) 0 clamp(1.6rem,5vw,2.2rem)}
+.marke{font-size:.68rem; letter-spacing:.36em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .8rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7.6vw,3.1rem); line-height:1.02; margin:0; text-wrap:balance}
+.dach{color:var(--schrift-2); margin:.85rem 0 0; font-size:1rem}
+
+.hilfe{background:var(--gold-tuell); border:1px solid color-mix(in srgb,var(--gold) 38%,transparent);
+  border-radius:12px; padding:1rem 1.15rem; margin:1.6rem 0 0}
+.hilfe p{margin:0 0 .6rem} .hilfe p:last-child{margin:0}
+.hilfe b{color:var(--gold)}
+
+.schritt{background:var(--karte); border:1px solid var(--rand); border-radius:14px;
+  padding:1.3rem 1.35rem; margin:1.5rem 0}
+.kopf{display:flex; gap:.85rem; align-items:baseline; margin:0 0 .35rem}
+.ziffer{flex:none; width:1.9rem; height:1.9rem; border-radius:50%; background:var(--gold);
+  color:var(--grund); display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.88rem; align-self:flex-start}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:clamp(1.3rem,4.4vw,1.6rem); line-height:1.2; margin:0; text-wrap:balance}
+.wofuer{font-size:.78rem; letter-spacing:.13em; text-transform:uppercase; color:var(--schrift-3);
+  font-weight:700; margin:.15rem 0 .9rem 2.75rem}
+.schritt > p, .schritt > ul{margin-left:2.75rem}
+@media(max-width:30rem){ .wofuer, .schritt > p, .schritt > ul{margin-left:0} }
+.schritt p{margin:0 0 .85rem}
+.schritt ul{padding-left:1.15rem; margin:0 0 .95rem}
+.schritt li{margin-bottom:.4rem}
+.schritt li::marker{color:var(--gold)}
+
+label{display:block; font-size:.76rem; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:700; color:var(--gold); margin:0 0 .35rem}
+input[type=text], textarea{
+  width:100%; padding:.8rem .9rem; border-radius:10px; border:1.5px solid var(--rand);
+  background:var(--feld); color:var(--schrift); font-family:inherit; font-size:1rem;
+  -webkit-appearance:none; margin:0 0 .95rem}
+input[type=text]:focus, textarea:focus{outline:none; border-color:var(--gold);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 22%,transparent)}
+textarea{min-height:4.6rem; resize:vertical; line-height:1.5}
+.paar{display:flex; gap:.8rem}
+.paar > div{flex:1}
+.summe{background:var(--gruen-tuell); border:1px solid color-mix(in srgb,var(--gruen) 36%,transparent);
+  border-radius:10px; padding:.75rem .95rem; margin:0 0 .95rem; font-weight:600; color:var(--gruen)}
+.summe span{font-family:"IBM Plex Mono",monospace; font-size:1.25rem; font-weight:600}
+
+.warnung{background:var(--rot-tuell); border:1px solid color-mix(in srgb,var(--rot) 38%,transparent);
+  border-radius:10px; padding:.8rem 1rem; font-size:.92rem; margin:0 0 .95rem}
+.warnung b{color:var(--rot)}
+
+.aktion{position:sticky; bottom:0; background:color-mix(in srgb,var(--grund) 94%,transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-top:1px solid var(--rand); padding:.85rem 0 calc(.85rem + env(safe-area-inset-bottom)); margin-top:2rem}
+.aktion .bahn{display:flex; gap:.6rem}
+button{flex:1; padding:.95rem 1rem; border:0; border-radius:11px; cursor:pointer;
+  font-family:inherit; font-size:.95rem; font-weight:700; letter-spacing:.02em;
+  background:var(--gold); color:var(--grund)}
+button.leise{background:transparent; color:var(--schrift-2); border:1.5px solid var(--rand)}
+button:active{transform:scale(.985)}
+
+#ergebnis{display:none; margin:1.4rem 0 0}
+#ergebnis.da{display:block}
+pre{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1rem 1.1rem; overflow-x:auto; font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem; line-height:1.7; white-space:pre-wrap; margin:0 0 .8rem; color:var(--schrift)}
+footer{padding:2rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.85rem}
+
+@media print{
+  body{background:#fff; color:#000; font-size:12pt}
+  .aktion, .hilfe{display:none}
+  .schritt{break-inside:avoid; border:1px solid #999}
+  input[type=text], textarea{border:1px solid #999; background:#fff; min-height:2.2rem}
+  @page{size:A4; margin:14mm}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+</head>
+<body>
+<header><div class="bahn">
+  <p class="marke">VIP-Schnitzeljagd · Vorbereitung</p>
+  <h1>Die Erkundungsrunde</h1>
+  <p class="dach">Einmal 20 Minuten durch die Grabengasse und drumherum —
+     danach ist die Schnitzeljagd fertig.</p>
+</div></header>
+
+<div class="bahn">
+  <div class="warnung" id="kein-speicher" style="display:none; margin:1.6rem 0 0">
+    <b>Achtung:</b> Dieser Browser darf hier nichts speichern. Deine Eingaben bleiben
+    stehen, solange die Seite offen ist — mach sie unterwegs also nicht zu, und tippe
+    lieber zwischendurch einmal auf „Alles kopieren“.
+  </div>
+
+  <div class="hilfe">
+    <p><b>So funktioniert das Blatt:</b> Nimm dein iPhone mit und geh die Runde.
+    Bei jedem der vier Punkte suchst du etwas und tippst es hier ein.
+    Was du eingibst, bleibt gespeichert — auch wenn du die Seite zumachst.</p>
+    <p>Am Ende unten auf <b>Alles kopieren</b> tippen und mir den Text schicken.
+    Dann trage ich es in die App ein.</p>
+  </div>
+
+  <!-- ---------------------------------------------------------------- -->
+  <div class="schritt">
+    <div class="kopf"><span class="ziffer">1</span><h2>Zwei Hausnummern</h2></div>
+    <p class="wofuer">Für Station „Der Türsteher“</p>
+    <p>Such dir <strong>zwei Häuser</strong> mit gut sichtbaren Hausnummern, die auf dem
+    Weg liegen. Die Kinder müssen beide finden und die Nummern zusammenzählen.</p>
+    <ul>
+      <li>Von der Straße aus lesbar — niemand soll auf ein Grundstück gehen müssen</li>
+      <li>Nicht von einer Hecke verdeckt (auch nicht abends)</li>
+      <li>Am besten zwei verschiedene Straßen, dann wird die Runde größer</li>
+    </ul>
+    <div class="paar">
+      <div><label for="h1o">Haus A — wo?</label><input type="text" id="h1o" placeholder="z. B. das gelbe Haus in der Grabengasse"></div>
+      <div><label for="h1n">Nummer</label><input type="text" id="h1n" inputmode="numeric" placeholder="13"></div>
+    </div>
+    <div class="paar">
+      <div><label for="h2o">Haus B — wo?</label><input type="text" id="h2o" placeholder="z. B. das Eckhaus mit dem roten Tor"></div>
+      <div><label for="h2n">Nummer</label><input type="text" id="h2n" inputmode="numeric" placeholder="29"></div>
+    </div>
+    <div class="summe" id="summe">Die Lösung ergibt sich, sobald beide Nummern dastehen.</div>
+    <label for="w1">Wie kommt man hin? (steht dann in der App)</label>
+    <textarea id="w1" placeholder="z. B. Geht die Grabengasse hinunter bis zur Kreuzung, dann rechts."></textarea>
+  </div>
+
+  <!-- ---------------------------------------------------------------- -->
+  <div class="schritt">
+    <div class="kopf"><span class="ziffer">2</span><h2>Ein Schild zum Fotografieren</h2></div>
+    <p class="wofuer">Für Station „Das Suchbild“</p>
+    <p>Such etwas, auf dem <strong>Text steht</strong> — und mach ein Foto von einem
+    <strong>kleinen Ausschnitt</strong> davon. Die Kinder bekommen nur diesen Ausschnitt
+    zu sehen und müssen die Stelle finden.</p>
+    <ul>
+      <li>Gut geeignet: Straßenschild, Hinweistafel, Gedenktafel, Firmenschild,
+          Beschriftung an einem Stromkasten, Schild am Spielplatz, Bushaltestelle</li>
+      <li><strong>Nicht</strong> geeignet: Plakate, Aufsteller, alles, was in zehn Tagen
+          weg sein kann</li>
+      <li>Foto so knapp, dass man die Umgebung nicht erkennt — sonst ist es zu leicht</li>
+    </ul>
+    <div class="warnung"><b>Wichtig:</b> Foto quer aufnehmen und danach am Mac auf etwa
+    1200 Pixel Breite verkleinern (Vorschau → Werkzeuge → Größenkorrektur).
+    Sonst dauert das Laden unterwegs zu lang.</div>
+    <label for="s2w">Was ist es und wo steht es?</label>
+    <input type="text" id="s2w" placeholder="z. B. Hinweistafel beim Spielplatz Nobelgasse">
+    <label for="s2a">Was steht drauf? (= die Lösung)</label>
+    <input type="text" id="s2a" placeholder="z. B. SPIELPLATZ ORDNUNG">
+    <label for="s2t">Ein Tipp, falls sie nicht draufkommen</label>
+    <input type="text" id="s2t" placeholder="z. B. Schaut nach oben, nicht nach unten.">
+  </div>
+
+  <!-- ---------------------------------------------------------------- -->
+  <div class="schritt">
+    <div class="kopf"><span class="ziffer">3</span><h2>Etwas zum Zählen</h2></div>
+    <p class="wofuer">Für Station „Die Zählaufgabe“</p>
+    <p>Such etwas, das man <strong>zählen kann</strong> — und zähl es selbst nach.
+    Diese Station ist die Ruhige: kein Rätsel, nur genaues Schauen.</p>
+    <ul>
+      <li>Stufen einer öffentlichen Treppe · Fenster an einer Hausfront ·
+          Latten in einem Zaunabschnitt · Poller · Bäume in einer Reihe ·
+          Mistkübel entlang eines Weges</li>
+      <li>Zwischen 8 und 40 ist ideal — darunter zu leicht, darüber verzählen sich alle</li>
+      <li>Zähl zweimal. Deine Zahl ist die einzige, die gilt.</li>
+    </ul>
+    <label for="s3w">Was soll gezählt werden und wo?</label>
+    <input type="text" id="s3w" placeholder="z. B. die Stufen der Treppe beim Bahnhofsaufgang">
+    <label for="s3n">Wie viele sind es?</label>
+    <input type="text" id="s3n" inputmode="numeric" placeholder="23">
+    <label for="w3">Wie kommt man hin?</label>
+    <textarea id="w3" placeholder="z. B. Vom Spielplatz nach links, dann die zweite Gasse."></textarea>
+  </div>
+
+  <!-- ---------------------------------------------------------------- -->
+  <div class="schritt">
+    <div class="kopf"><span class="ziffer">4</span><h2>Grenzen und Notfall</h2></div>
+    <p class="wofuer">Steht auf der Startseite der App</p>
+    <p>Damit klar ist, wie weit sie dürfen — und wen sie anrufen, wenn etwas ist.</p>
+    <label for="g1">Welche Straße ist die Grenze, die nicht überquert wird?</label>
+    <input type="text" id="g1" placeholder="z. B. Die Hauptstraße wird nicht überquert">
+    <label for="g2">Deine Handynummer für die Kinder</label>
+    <input type="text" id="g2" inputmode="tel" placeholder="z. B. 0650 …">
+    <label for="g3">Sonst noch etwas, das in den Regeln stehen soll?</label>
+    <textarea id="g3" placeholder="z. B. Um 17:30 seid ihr wieder da, egal wo ihr steht."></textarea>
+  </div>
+
+  <div id="ergebnis">
+    <h2 style="margin:0 0 .7rem">Das schickst du mir</h2>
+    <pre id="text"></pre>
+  </div>
+</div>
+
+<div class="aktion"><div class="bahn">
+  <button id="kopieren">Alles kopieren</button>
+  <button class="leise" id="drucken">Drucken</button>
+</div></div>
+
+<footer><div class="bahn">VIP-Schnitzeljagd · Party am Freitag, 28. August 2026</div></footer>
+
+<script>
+(function(){
+  var felder = ['h1o','h1n','h2o','h2n','w1','s2w','s2a','s2t','s3w','s3n','w3','g1','g2','g3'];
+  var SCHLUESSEL = 'vip_erkundung';
+
+  /* Kann dieser Browser hier überhaupt speichern? */
+  var kannSpeichern = (function(){
+    try{ localStorage.setItem('vip_test','1'); localStorage.removeItem('vip_test'); return true; }
+    catch(e){ return false; }
+  })();
+  if(!kannSpeichern) document.getElementById('kein-speicher').style.display = 'block';
+
+  function laden(){
+    if(!kannSpeichern) return;
+    try{
+      var d = JSON.parse(localStorage.getItem(SCHLUESSEL) || '{}');
+      felder.forEach(function(f){ if(d[f]) document.getElementById(f).value = d[f]; });
+    }catch(e){}
+  }
+  function sichern(){
+    if(kannSpeichern){
+      var d = {};
+      felder.forEach(function(f){ d[f] = document.getElementById(f).value; });
+      try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(d)); }catch(e){}
+    }
+    summeZeigen();
+  }
+  function summeZeigen(){
+    var a = parseInt(document.getElementById('h1n').value, 10);
+    var b = parseInt(document.getElementById('h2n').value, 10);
+    var k = document.getElementById('summe');
+    if(!isNaN(a) && !isNaN(b)){
+      k.innerHTML = 'Die Lösung für den Türsteher: ' + a + ' + ' + b +
+                    ' = <span>' + (a+b) + '</span>';
+    } else {
+      k.textContent = 'Die Lösung ergibt sich, sobald beide Nummern dastehen.';
+    }
+  }
+  function wert(f){ return document.getElementById(f).value.trim() || '(offen)'; }
+
+  function textBauen(){
+    var a = parseInt(document.getElementById('h1n').value,10),
+        b = parseInt(document.getElementById('h2n').value,10);
+    var summe = (!isNaN(a) && !isNaN(b)) ? (a+b) : '(offen)';
+    return [
+      'ERKUNDUNGSRUNDE — VIP-Schnitzeljagd',
+      '',
+      '1) DER TÜRSTEHER',
+      '   Haus A: ' + wert('h1o') + ' — Nummer ' + wert('h1n'),
+      '   Haus B: ' + wert('h2o') + ' — Nummer ' + wert('h2n'),
+      '   Lösung (Summe): ' + summe,
+      '   Weg: ' + wert('w1'),
+      '',
+      '2) DAS SUCHBILD',
+      '   Was/wo: ' + wert('s2w'),
+      '   Lösung: ' + wert('s2a'),
+      '   Tipp:   ' + wert('s2t'),
+      '',
+      '3) DIE ZÄHLAUFGABE',
+      '   Was/wo: ' + wert('s3w'),
+      '   Lösung: ' + wert('s3n'),
+      '   Weg:    ' + wert('w3'),
+      '',
+      '4) REGELN',
+      '   Grenze:      ' + wert('g1'),
+      '   Handynummer: ' + wert('g2'),
+      '   Zusätzlich:  ' + wert('g3')
+    ].join('\n');
+  }
+
+  felder.forEach(function(f){
+    document.getElementById(f).addEventListener('input', sichern);
+  });
+
+  document.getElementById('kopieren').addEventListener('click', function(){
+    var t = textBauen(), k = this;
+    document.getElementById('text').textContent = t;
+    document.getElementById('ergebnis').classList.add('da');
+    var fertig = function(){ k.textContent='Kopiert — jetzt einfügen und abschicken';
+      setTimeout(function(){ k.textContent='Alles kopieren'; }, 2600); };
+    var ersatz = function(){
+      var e=document.createElement('textarea'); e.value=t;
+      e.style.position='fixed'; e.style.opacity='0'; document.body.appendChild(e);
+      e.select(); e.setSelectionRange(0, t.length);
+      try{ document.execCommand('copy'); fertig(); }
+      catch(x){ k.textContent='Text unten markieren und kopieren'; }
+      document.body.removeChild(e);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(fertig, ersatz);
+    } else { ersatz(); }
+    document.getElementById('ergebnis').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  document.getElementById('drucken').addEventListener('click', function(){ window.print(); });
+
+  laden(); summeZeigen();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ablaufplan — VIP CLUB</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-satt:#b8912f; --gold-tuell:#f3e9cd;
+  --rot:#a4402c; --rot-tuell:#f8e6e0; --gruen:#34694b; --gruen-tuell:#e2f0e6;
+  --handy:#12100c; --handytext:#f2ede1; --feld:#ffffff;
+  --breite:min(100% - 2.2rem, 64rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --handy:#070604; --feld:#0c0a07;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --handy:#070604; --feld:#0c0a07;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:16.5px; line-height:1.6;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.bahn{width:var(--breite); margin-inline:auto}
+
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(2rem,6vw,3.2rem) 0 clamp(1.4rem,4vw,2rem)}
+.marke{font-size:.68rem; letter-spacing:.36em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .8rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,6.5vw,3.2rem); line-height:1.02; margin:0; text-wrap:balance}
+.dach{color:var(--schrift-2); margin:.8rem 0 0}
+.zahlen{display:flex; flex-wrap:wrap; gap:.5rem; margin:1.4rem 0 0}
+.zahl{background:var(--karte); border:1px solid var(--rand); border-radius:9px; padding:.5rem .85rem;
+  font-size:.85rem}
+.zahl b{color:var(--gold); font-family:"IBM Plex Mono",monospace}
+.zahl.warn{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.zahl.warn b{color:var(--rot)}
+
+section{padding:clamp(1.8rem,5vw,2.6rem) 0; border-bottom:1px solid var(--rand); scroll-margin-top:1rem}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:clamp(1.5rem,4.4vw,2.05rem); line-height:1.15; margin:0 0 .4rem; text-wrap:balance}
+.nummer{font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600;
+  letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin:0 0 .5rem}
+p{margin:0 0 1rem} p:last-child{margin-bottom:0}
+code{font-family:"IBM Plex Mono",monospace; font-size:.85em; background:var(--gold-tuell);
+  color:var(--gold); padding:.08em .38em; border-radius:4px; word-break:break-word}
+mark.offen{background:var(--rot-tuell); color:var(--rot); font-weight:700; padding:.05em .35em;
+  border-radius:4px; border:1px dashed color-mix(in srgb,var(--rot) 45%,transparent)}
+
+/* --- Roberts Liste --- */
+.aufgaben{list-style:none; margin:1rem 0 0; padding:0}
+.aufgaben li{display:flex; gap:.9rem; align-items:flex-start; background:var(--karte);
+  border:1px solid var(--rand); border-radius:12px; padding:.9rem 1.05rem; margin-bottom:.6rem;
+  cursor:pointer; transition:opacity .2s}
+.aufgaben li.erledigt{opacity:.48}
+.aufgaben li.erledigt .was b{text-decoration:line-through}
+.aufgaben .box{flex:none; width:1.5rem; height:1.5rem; border-radius:7px; border:2px solid var(--rand);
+  display:flex; align-items:center; justify-content:center; font-weight:900; color:transparent;
+  font-size:.9rem; margin-top:.1rem}
+.aufgaben li.erledigt .box{background:var(--gruen); border-color:var(--gruen); color:var(--grund)}
+.aufgaben .was b{display:block}
+.aufgaben .was span{color:var(--schrift-2); font-size:.9rem}
+
+/* --- Stationen --- */
+.station{background:var(--karte); border:1px solid var(--rand); border-radius:14px;
+  padding:1.1rem 1.2rem; margin:0 0 1rem}
+.station.unfertig{border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.stkopf{display:flex; gap:.9rem; align-items:center; margin:0 0 1rem; flex-wrap:wrap}
+.stzeit{font-family:"IBM Plex Mono",monospace; font-size:.9rem; font-weight:600; color:var(--gold);
+  background:var(--gold-tuell); padding:.3rem .6rem; border-radius:7px; font-variant-numeric:tabular-nums}
+.sttitel{flex:1; min-width:12rem}
+.sttitel h3{margin:0; font-size:1.15rem; font-family:"Bodoni Moda",Georgia,serif; font-weight:600}
+.stmeta{font-size:.78rem; color:var(--schrift-3); letter-spacing:.04em}
+.fertig,.fehlt{font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.25rem .6rem; border-radius:6px}
+.fertig{background:var(--gruen-tuell); color:var(--gruen)}
+.fehlt{background:var(--rot-tuell); color:var(--rot)}
+
+.spalten{display:grid; grid-template-columns:1fr 1fr; gap:1.1rem}
+@media(max-width:46rem){ .spalten{grid-template-columns:1fr} }
+.spaltentitel{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--schrift-3); margin:0 0 .5rem}
+
+/* Handy-Vorschau */
+.handy{background:var(--handy); border:1px solid var(--rand); border-radius:12px;
+  padding:.95rem 1rem; color:var(--handytext); font-size:.88rem; line-height:1.55}
+.handy .apptext{white-space:pre-line; margin:0 0 .7rem}
+.handy .apptext:last-child{margin-bottom:0}
+.handy .ortkasten{background:rgba(212,175,55,.1); border:1px solid rgba(212,175,55,.28);
+  border-radius:9px; padding:.55rem .7rem; margin:0 0 .7rem}
+.handy .ortkasten b{display:block; color:#dcb455; font-size:.76rem; letter-spacing:.1em; text-transform:uppercase}
+.handy .ortkasten span{font-size:.86rem}
+.handy .regelkasten{border:1px solid rgba(212,175,55,.28); border-radius:9px; padding:.6rem .75rem;
+  margin:.7rem 0 0; background:rgba(212,175,55,.06)}
+.handy .regelkasten b{display:block; color:#dcb455; font-size:.68rem; letter-spacing:.18em;
+  text-transform:uppercase; margin-bottom:.4rem}
+.handy ul,.handy ol{margin:0 0 .7rem; padding-left:1.1rem}
+.handy li{margin-bottom:.3rem}
+.handy li::marker{color:#dcb455}
+.handy .medium{font-size:.8rem; color:#a89e8a; margin:0 0 .55rem}
+.handy .medium code{background:rgba(212,175,55,.14); color:#dcb455}
+.handy .dünn{color:#a89e8a; font-size:.84rem}
+.handy mark.offen{background:rgba(232,138,118,.18); color:#ffb3a2; border-color:rgba(232,138,118,.5)}
+
+.tun{font-size:.94rem; margin:0 0 .8rem}
+.tipp{font-size:.86rem; color:var(--schrift-2); background:var(--gold-tuell); border-radius:9px;
+  padding:.55rem .7rem; margin:0 0 .8rem}
+.loesung{background:var(--gruen-tuell); border:1px solid color-mix(in srgb,var(--gruen) 34%,transparent);
+  border-radius:9px; padding:.6rem .75rem; font-size:.92rem; margin:0 0 .8rem}
+.loesung b{color:var(--gruen); display:block; font-size:.68rem; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:.2rem}
+.dünn{color:var(--schrift-3); font-size:.88em}
+
+.notiz span{display:block; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase;
+  font-weight:700; color:var(--gold); margin:0 0 .3rem}
+.notiz textarea{width:100%; min-height:3rem; padding:.55rem .7rem; border-radius:9px;
+  border:1.5px solid var(--rand); background:var(--feld); color:var(--schrift);
+  font-family:inherit; font-size:.9rem; resize:vertical}
+.notiz textarea:focus{outline:none; border-color:var(--gold)}
+
+.kasten{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1rem 1.15rem; margin:0 0 1rem}
+.kasten.wichtig{background:var(--gold-tuell); border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
+.kasten.achtung{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.kastentitel{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--gold); margin:0 0 .45rem}
+.kasten.achtung .kastentitel{color:var(--rot)}
+ul.punkte{padding-left:1.2rem; margin:0 0 1rem}
+ul.punkte li{margin-bottom:.4rem}
+ul.punkte li::marker{color:var(--gold)}
+
+.aktion{position:sticky; bottom:0; background:color-mix(in srgb,var(--grund) 94%,transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-top:1px solid var(--rand);
+  padding:.8rem 0 calc(.8rem + env(safe-area-inset-bottom)); margin-top:1.5rem; z-index:5}
+.aktion .bahn{display:flex; gap:.6rem}
+button{flex:1; padding:.9rem 1rem; border:0; border-radius:10px; cursor:pointer; font-family:inherit;
+  font-size:.94rem; font-weight:700; background:var(--gold); color:var(--grund)}
+button.leise{background:transparent; color:var(--schrift-2); border:1.5px solid var(--rand)}
+#ausgabe{display:none; margin:1.2rem 0 0}
+#ausgabe.da{display:block}
+pre{background:var(--karte); border:1px solid var(--rand); border-radius:11px; padding:.9rem 1rem;
+  overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:pre-wrap;
+  color:var(--schrift); margin:0}
+footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.84rem}
+@media print{ .aktion,.notiz{display:none} .station{break-inside:avoid} body{background:#fff} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header><div class="bahn">
+  <p class="marke">VIP CLUB · Zoes Poolparty</p>
+  <h1>Der ganze Ablauf</h1>
+  <p class="dach">Alles, was noch zu tun ist — und Station für Station, was die Kinder
+     sehen und tun müssen. Zum Durchspielen im Kopf.</p>
+  <div class="zahlen">
+    <span class="zahl">Party: <b>Freitag, 28. August 2026</b></span>
+    <span class="zahl">Teams: <b>2</b></span>
+    <span class="zahl">Stationen: <b>8</b></span>
+    <span class="zahl">Losungswort: <b>VIPPARTY</b></span>
+    <span class="zahl warn">Noch offen: <b>9</b></span>
+  </div>
+</div></header>
+
+<section id="todo"><div class="bahn">
+  <p class="nummer">Teil 1</p>
+  <h2>Was du noch machen musst</h2>
+  <p>Antippen zum Abhaken — bleibt gespeichert.</p>
+  <ul class="aufgaben" id="liste"></ul>
+</div></section>
+
+<section id="ablauf"><div class="bahn">
+  <p class="nummer">Teil 2</p>
+  <h2>Station für Station</h2>
+  <p>Links steht wörtlich, was am Handy erscheint. Rechts, was die Kinder tun müssen,
+  und die Lösung. <mark class="offen">Rot markiert</mark> ist alles, was noch fehlt.</p>
+  
+  <article class="station unfertig" id="st0">
+    <div class="stkopf">
+      <span class="stzeit">0:00</span>
+      <div class="sttitel">
+        <h3>Akkreditierung</h3>
+        <span class="stmeta">Start</span>
+      </div>
+      <span class="fehlt">unfertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Bei Zoe am Pool</b><span>Wenn das erledigt ist: auf LOS GEHT'S tippen.</span></div><p class="apptext">Willkommen im VIP CLUB.
+
+Ab jetzt seid ihr keine normalen Gäste mehr — ihr seid Anwärter. Wer in die Lounge will, muss sich den Zutritt verdienen.
+
+Acht Stationen liegen vor euch. Bei jeder bekommt ihr einen Buchstaben. Alle acht zusammen ergeben das Losungswort für den Türsteher.
+
+Eure erste Aufgabe:</p><ul class="apptext liste"><li>Stellt euch in eure beste VIP-Pose und macht ein Teamfoto</li><li>Einigt euch, wer das Handy trägt</li><li>Ruft euren Teamnamen so laut, dass man es bis zum Pool hört</li></ul><div class="regelkasten"><b>Die Regeln</b><ul><li>Bleibt im Umkreis von 500 Metern rund um die Grabengasse</li><li><mark class="offen">HIER GRENZE EINTRAGEN</mark> — z. B. „Die Hauptstraße wird nicht überquert“</li><li>Ihr bleibt immer als Team zusammen — niemand geht allein</li><li>Wenn etwas ist: sofort anrufen — die Nummer steht auf eurem Zettel</li></ul></div></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Teamfoto machen, Handyträger bestimmen, Teamnamen rufen — dann auf <b>LOS GEHT'S</b> tippen.</p>
+        
+        <div class="loesung"><b>Lösung</b> —</div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Akkreditierung" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station unfertig" id="st1">
+    <div class="stkopf">
+      <span class="stzeit">0:10</span>
+      <div class="sttitel">
+        <h3>Der Türsteher</h3>
+        <span class="stmeta">Station 1 von 8 · Buchstabe V</span>
+      </div>
+      <span class="fehlt">unfertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Grabengasse</b><span>HIER WEG BESCHREIBEN — z. B. „Geht die Grabengasse hinunter bis zur Kreuzung.“</span></div><p class="apptext">Der Türsteher lässt nur rein, wer den Zahlencode kennt. Und der steht an den Häusern.
+
+RECHNET ZUSAMMEN:
+die Hausnummer von HAUS A EINTRAGEN
++ die Hausnummer von HAUS B EINTRAGEN
+
+Wie lautet die Summe?</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Zum Ort gehen, die Antwort herausfinden und ins Feld tippen. Bei falscher Antwort gibt es Punktabzug, ein Tipp kostet 30 Punkte.</p>
+        <p class="tipp">💡 Tipp gegen 30 Punkte: <mark class="offen">HIER TIPP EINTRAGEN</mark> — z. B. „Eine der beiden ist zweistellig.“</p>
+        <div class="loesung"><b>Lösung</b> <mark class="offen">HIER SUMME EINTRAGEN</mark></div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Der Türsteher" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station unfertig" id="st2">
+    <div class="stkopf">
+      <span class="stzeit">0:20</span>
+      <div class="sttitel">
+        <h3>Die geheime Botschaft</h3>
+        <span class="stmeta">Station 2 von 8 · Buchstabe I</span>
+      </div>
+      <span class="fehlt">unfertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Unterwegs</b><span>Diese Station könnt ihr überall lösen.</span></div><p class="medium">🎬 Video: <code><mark class="offen">HIER VIDEO-LINK EINTRAGEN</mark></code></p><p class="apptext">Der VIP-Club hat eine Videobotschaft für euch hinterlassen. Schaut sie GENAU an — irgendwo darin fällt ein Codewort.
+
+Wie lautet es?</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Zum Ort gehen, die Antwort herausfinden und ins Feld tippen. Bei falscher Antwort gibt es Punktabzug, ein Tipp kostet 30 Punkte.</p>
+        <p class="tipp">💡 Tipp gegen 30 Punkte: Er sagt es nicht nur — er hält es auch schriftlich in die Kamera. Nochmal anschauen.</p>
+        <div class="loesung"><b>Lösung</b> GOLDFISCH <span class="dünn">(auch: GOLD FISCH)</span></div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Die geheime Botschaft" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station unfertig" id="st3">
+    <div class="stkopf">
+      <span class="stzeit">0:30</span>
+      <div class="sttitel">
+        <h3>Das Suchbild</h3>
+        <span class="stmeta">Station 3 von 8 · Buchstabe P</span>
+      </div>
+      <span class="fehlt">unfertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 In Gehweite</b><span>Sucht diesen Ort. Er ist keine fünf Minuten entfernt.</span></div><p class="medium">🖼️ Bild: <code>fotos/station3.jpg</code></p><p class="apptext">Auf dem Bild seht ihr nur einen Ausschnitt. Findet die Stelle in echt.
+
+Was steht dort drauf?</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Zum Ort gehen, die Antwort herausfinden und ins Feld tippen. Bei falscher Antwort gibt es Punktabzug, ein Tipp kostet 30 Punkte.</p>
+        <p class="tipp">💡 Tipp gegen 30 Punkte: <mark class="offen">HIER TIPP EINTRAGEN</mark> — z. B. „Schaut nach oben, nicht nach unten.“</p>
+        <div class="loesung"><b>Lösung</b> <mark class="offen">HIER ANTWORT EINTRAGEN</mark></div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Das Suchbild" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station" id="st4">
+    <div class="stkopf">
+      <span class="stzeit">0:40</span>
+      <div class="sttitel">
+        <h3>Sicherheitsstufe Rot</h3>
+        <span class="stmeta">Station 4 von 8 · Buchstabe P</span>
+      </div>
+      <span class="fertig">fertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Bleibt stehen</b></div><p class="apptext">ACHTUNG — SICHERHEITSWARNUNG DES VIP-SERVERS.
+
+Ein fremdes Gerät versucht, sich in eure VIP-Verbindung einzuklinken.
+
+SCHALTET SOFORT ALLE HANDYS KOMPLETT AUS.
+Nicht nur den Bildschirm — ganz aus.
+
+Wartet 60 Sekunden. Dann wieder einschalten und diese Seite neu öffnen.</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Der Bildschirm wird rot und verlangt, alle Handys komplett auszuschalten. <b>Egal was sie tun</b>, nach 60 Sekunden geht es weiter.</p>
+        
+        <div class="loesung"><b>Lösung</b> keine — läuft von selbst weiter</div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Sicherheitsstufe Rot" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station" id="st5">
+    <div class="stkopf">
+      <span class="stzeit">0:47</span>
+      <div class="sttitel">
+        <h3>Das Emoji-Duell</h3>
+        <span class="stmeta">Station 5 von 8 · Buchstabe A</span>
+      </div>
+      <span class="fertig">fertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Sucht ein anderes Team</b><span>Ohne ein anderes Team geht diese Station nicht. Findet es — oder ruft es an.</span></div><p class="apptext">Jetzt wird es persönlich.
+
+1. Denkt euch einen Song oder einen Film aus.
+2. Beschreibt ihn mit GENAU 4 Emojis und schickt sie einem anderen Team.
+3. Das andere Team rät. Danach ratet ihr, was sie euch geschickt haben.
+4. Wer richtig rät, bekommt vom anderen Team dessen GEHEIMWORT.
+
+Tragt das Geheimwort des anderen Teams unten ein.</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Ein anderes Team suchen, ihm 4 Emojis schicken, dessen Rätsel raten — und im Tausch das <b>Geheimwort des anderen Teams</b> bekommen und eintippen.</p>
+        <p class="tipp">💡 Tipp gegen 30 Punkte: Euer eigenes Geheimwort steht ganz unten auf dieser Seite — aber nur herausrücken, wenn die anderen wirklich richtig geraten haben.</p>
+        <div class="loesung"><b>Lösung</b> das Geheimwort des <b>anderen</b> Teams — KAVIAR oder LIMOUSINE <span class="dünn">(das eigene lehnt die App ab)</span></div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Das Emoji-Duell" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station" id="st6">
+    <div class="stkopf">
+      <span class="stzeit">0:57</span>
+      <div class="sttitel">
+        <h3>Der VIP-Test</h3>
+        <span class="stmeta">Station 6 von 8 · Buchstabe R</span>
+      </div>
+      <span class="fertig">fertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Unterwegs</b><span>Überall lösbar — am besten im Gehen.</span></div><p class="apptext">Fünf Fragen. Für jede richtige gibt es Punkte.</p><ol class="apptext liste"><li>Wie heißt der rote Teppich bei Filmpremieren auf Englisch?<br><span class="dünn">Golden Carpet · <b>Red Carpet ✓</b> · Star Walk</span></li><li>Was ist ein Backstage-Pass?<br><span class="dünn">Ein Ticket für die letzte Reihe · <b>Der Zugang hinter die Bühne ✓</b> · Ein Autogramm</span></li><li>In welcher Stadt findet die Oscar-Verleihung statt?<br><span class="dünn"><b>Los Angeles ✓</b> · New York · London</span></li><li>Wie nennt man Fotografen, die Stars überallhin verfolgen?<br><span class="dünn">Reporter · <b>Paparazzi ✓</b> · Influencer</span></li><li>Wofür steht VIP?<br><span class="dünn"><b>Very Important Person ✓</b> · Very Interesting Party · Victory In Progress</span></li></ol></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Fünf Fragen nacheinander antippen. Für jede richtige gibt es Punkte, falsch antworten kostet nichts außer Punkten.</p>
+        
+        <div class="loesung"><b>Lösung</b> Red Carpet · Der Zugang hinter die Bühne · Los Angeles · Paparazzi · Very Important Person</div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Der VIP-Test" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station unfertig" id="st7">
+    <div class="stkopf">
+      <span class="stzeit">1:05</span>
+      <div class="sttitel">
+        <h3>Die Zählaufgabe</h3>
+        <span class="stmeta">Station 7 von 8 · Buchstabe T</span>
+      </div>
+      <span class="fehlt">unfertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 <mark class="offen">HIER ORT EINTRAGEN</mark></b><span>HIER WEG BESCHREIBEN.</span></div><p class="apptext">Kein Rateglück, nur genaues Schauen.
+
+ZÄHLT: <mark class="offen">HIER EINTRAGEN</mark>, WAS GEZÄHLT WERDEN SOLL
+(zum Beispiel: die Stufen der Treppe, die Fenster an der Vorderseite, die Latten im Zaun)
+
+Wie viele sind es?</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Zum Ort gehen, die Antwort herausfinden und ins Feld tippen. Bei falscher Antwort gibt es Punktabzug, ein Tipp kostet 30 Punkte.</p>
+        <p class="tipp">💡 Tipp gegen 30 Punkte: Zählt zu zweit und vergleicht — einer verzählt sich immer.</p>
+        <div class="loesung"><b>Lösung</b> <mark class="offen">HIER ZAHL EINTRAGEN</mark></div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Die Zählaufgabe" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station" id="st8">
+    <div class="stkopf">
+      <span class="stzeit">1:13</span>
+      <div class="sttitel">
+        <h3>Die Paparazzi-Mission</h3>
+        <span class="stmeta">Station 8 von 8 · Buchstabe Y</span>
+      </div>
+      <span class="fertig">fertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Überall</b><span>Ihr habt zehn Minuten.</span></div><p class="apptext">Ihr seid jetzt die Fotografen. Mindestens VIER der sechs Aufträge müssen erledigt sein — wer alle sechs schafft, bekommt Bonuspunkte.
+
+Geschummelt wird nicht: Die Fotos werden am Pool angeschaut.</p><ul class="apptext liste"><li>Ein Foto, auf dem euer ganzes Team gleichzeitig in der Luft ist</li><li>Ein Foto mit einem Tier (Schnecke zählt auch)</li><li>Ein Foto, das aussieht wie ein Plattencover</li><li>Ein Foto mit einer fremden erwachsenen Person, die mitmacht</li><li>Ein Foto von etwas Goldenem</li><li>Ein 5-Sekunden-Video, in dem alle gleichzeitig dieselbe Pose machen</li></ul></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Die Foto-Aufträge erfüllen und in der App abhaken. Erst ab 4 erledigten Aufträgen geht der Weiter-Knopf auf.</p>
+        
+        <div class="loesung"><b>Lösung</b> mindestens 4 von 6 abhaken</div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Die Paparazzi-Mission" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+  <article class="station" id="st9">
+    <div class="stkopf">
+      <span class="stzeit">1:25</span>
+      <div class="sttitel">
+        <h3>Die VIP-Lounge</h3>
+        <span class="stmeta">Finale</span>
+      </div>
+      <span class="fertig">fertig</span>
+    </div>
+
+    <div class="spalten">
+      <div class="spalte">
+        <p class="spaltentitel">Das sehen die Kinder</p>
+        <div class="handy"><div class="ortkasten"><b>📍 Zurück zu Zoe</b><span>Lauft zurück. Ihr habt es geschafft.</span></div><p class="apptext">Alle acht Buchstaben sind eingesammelt. Zusammengesetzt ergeben sie euer Losungswort.</p></div>
+      </div>
+      <div class="spalte">
+        <p class="spaltentitel">Das müssen sie tun</p>
+        <p class="tun">Zurück zum Pool laufen und das Losungswort sagen.</p>
+        
+        <div class="loesung"><b>Lösung</b> —</div>
+        <label class="notiz">
+          <span>Änderungswunsch zu dieser Station</span>
+          <textarea data-notiz="Die VIP-Lounge" placeholder="z. B. zu schwer, anderer Ort, anderer Text …"></textarea>
+        </label>
+      </div>
+    </div>
+  </article>
+</div></section>
+
+<section id="partytag"><div class="bahn">
+  <p class="nummer">Teil 3</p>
+  <h2>Der Partytag</h2>
+
+  <div class="kasten wichtig">
+    <p class="kastentitel">Kurz vorher</p>
+    <ul class="punkte">
+      <li>QR-Plakate ausdrucken (drei Stück) — <b>deine Handynummer mit der Hand eintragen</b></li>
+      <li>Spielleiter-Zettel ausdrucken und einstecken. Nicht herzeigen.</li>
+      <li>Eine Powerbank pro Team bereitlegen</li>
+      <li>Die Wege selbst abgehen: Ist die Hausnummer noch dran, das Schild noch da?</li>
+      <li>Alle Handys einmal die Seite laden lassen, solange sie im WLAN sind</li>
+    </ul>
+  </div>
+
+  <div class="kasten">
+    <p class="kastentitel">So startest du</p>
+    <ul class="punkte">
+      <li>Teams einteilen: <b>Team Diamant</b> und <b>Team Platin</b> — ein Handy pro Team</li>
+      <li>QR-Code scannen lassen, Team antippen, los</li>
+      <li>Sag den Bereich laut an, bevor sie loslaufen</li>
+      <li>Du bleibst erreichbar und gehst am besten in der Nähe mit</li>
+    </ul>
+  </div>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Wenn etwas klemmt</p>
+    <ul class="punkte">
+      <li><b>Team steckt fest</b> → Krone oben links 3× antippen, Code <code>9999</code>,
+          „Diese Station überspringen"</li>
+      <li><b>Seite lädt nicht</b> → einmal neu laden, der Fortschritt ist gespeichert</li>
+      <li><b>Handy leer</b> → Powerbank, der Spielstand bleibt erhalten</li>
+    </ul>
+  </div>
+
+  <div class="kasten">
+    <p class="kastentitel">Am Ende</p>
+    <p>Beide Teams sagen das Losungswort <b>VIPPARTY</b>. Wer mehr Punkte hat, gewinnt —
+    die Zahl steht auf dem Schlussbildschirm. Danach: Pool.</p>
+  </div>
+</div></section>
+
+<section id="notizen"><div class="bahn">
+  <p class="nummer">Teil 4</p>
+  <h2>Deine Änderungswünsche</h2>
+  <p>Was dir beim Durchgehen aufgefallen ist. Unten auf „Notizen kopieren" tippen
+  und mir schicken — dann baue ich es ein.</p>
+  <label class="notiz"><span>Allgemein — was fehlt, was ist zu schwer, was soll anders sein?</span>
+    <textarea data-notiz="ALLGEMEIN" placeholder="…"></textarea></label>
+  <div id="ausgabe"><pre id="text"></pre></div>
+</div></section>
+
+<div class="aktion"><div class="bahn">
+  <button id="kopieren">Notizen kopieren</button>
+  <button class="leise" id="drucken">Drucken</button>
+</div></div>
+
+<footer><div class="bahn">Erzeugt aus stationen.js · VIP CLUB</div></footer>
+
+<script>
+(function(){
+  var AUFGABEN = [["Erkundungsrunde gehen","Zwei Hausnummern, ein Schild zum Fotografieren, etwas zum Zählen, dazu die Grenze. Blatt: Werkzeuge/Erkundungs-Blatt.html"],["Das Foto fürs Suchbild machen","Ausschnitt, quer, danach auf etwa 1200 Pixel verkleinern und nach fotos/ legen"],["Video drehen und einbauen","25 Sekunden, Codewort GOLDFISCH. Anleitung: Werkzeuge/Video-Anleitung.html"],["Die Orte in stationen.js eintragen","Oder mir die Antworten schicken, dann mache ich es"],["Enforce HTTPS ankreuzen","Sobald GitHub das Zertifikat ausgestellt hat"],["Den Schatz besorgen","Das Goodie für den Schluss"],["QR-Plakate ausdrucken","Drei Stück, Handynummer mit der Hand eintragen"],["Spielleiter-Zettel ausdrucken","Alle Lösungen auf einem Blatt"],["Einmal selbst durchspielen","Am eigenen Handy, von vorne bis hinten"]];
+  var SCHLUESSEL = "vip_ablauf_v1";
+  var kannSpeichern = (function(){ try{ localStorage.setItem("t","1"); localStorage.removeItem("t"); return true; }catch(e){ return false; } })();
+  var stand = {};
+  if(kannSpeichern){ try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL)||"{}"); }catch(e){} }
+
+  var liste = document.getElementById("liste");
+  AUFGABEN.forEach(function(a, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="box">✓</span><span class="was"><b>'+a[0]+'</b><span>'+a[1]+'</span></span>';
+    if(stand["a"+i]) li.className = "erledigt";
+    li.onclick = function(){
+      li.classList.toggle("erledigt");
+      stand["a"+i] = li.classList.contains("erledigt");
+      sichern();
+    };
+    liste.appendChild(li);
+  });
+
+  var felder = [].slice.call(document.querySelectorAll("textarea[data-notiz]"));
+  felder.forEach(function(f, i){
+    if(stand["n"+i]) f.value = stand["n"+i];
+    f.addEventListener("input", function(){ stand["n"+i] = f.value; sichern(); });
+  });
+  function sichern(){ if(kannSpeichern){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){} } }
+
+  document.getElementById("kopieren").onclick = function(){
+    var k = this;
+    var zeilen = ["ÄNDERUNGSWÜNSCHE — VIP-Schnitzeljagd", ""];
+    felder.forEach(function(f){
+      if(f.value.trim()) zeilen.push("• " + f.dataset.notiz + ": " + f.value.trim());
+    });
+    var offene = AUFGABEN.filter(function(a,i){ return !stand["a"+i]; });
+    if(offene.length){
+      zeilen.push("", "NOCH OFFEN:");
+      offene.forEach(function(a){ zeilen.push("  - " + a[0]); });
+    }
+    if(zeilen.length <= 2) zeilen.push("(keine Änderungswünsche eingetragen)");
+    var t = zeilen.join("\n");
+    document.getElementById("text").textContent = t;
+    document.getElementById("ausgabe").classList.add("da");
+    var fertig = function(){ k.textContent = "Kopiert — jetzt einfügen"; setTimeout(function(){ k.textContent="Notizen kopieren"; }, 2400); };
+    function ersatz(){
+      var e2 = document.createElement("textarea"); e2.value = t;
+      e2.style.position="fixed"; e2.style.opacity="0"; document.body.appendChild(e2);
+      e2.select(); try{ document.execCommand("copy"); fertig(); }catch(x){ k.textContent="Text unten markieren"; }
+      document.body.removeChild(e2);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(fertig, ersatz); }
+    else { ersatz(); }
+    document.getElementById("ausgabe").scrollIntoView({behavior:"smooth", block:"nearest"});
+  };
+  document.getElementById("drucken").onclick = function(){ window.print(); };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>VIP-Schnitzeljagd — Spielleiter-Zettel</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e8e6e1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+       color:#1a1a1a;font-size:14px;line-height:1.5}
+  .blatt{width:210mm;min-height:297mm;margin:20px auto;padding:16mm 15mm;background:#fff;
+         box-shadow:0 10px 40px rgba(0,0,0,.18)}
+  h1{font-family:Didot,Georgia,serif;font-size:30px;margin:0 0 2px}
+  .unterzeile{color:#8a8a8a;font-size:13px;margin:0 0 4px}
+  .warnung{background:#fff8e1;border:1px solid #e0c060;border-radius:8px;padding:10px 13px;
+           font-size:13px;margin:14px 0}
+  h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#8a7320;
+     border-bottom:2px solid #d4af37;padding-bottom:5px;margin:22px 0 10px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;background:#f4f2ec;padding:7px 8px;font-size:11px;letter-spacing:.09em;
+     text-transform:uppercase;color:#6a6a6a;border-bottom:1.5px solid #ddd}
+  td{padding:8px;border-bottom:1px solid #ececec;vertical-align:top}
+  td.nr{width:26px;color:#aaa;font-weight:700}
+  td.buchst{width:32px;text-align:center;font-family:Didot,Georgia,serif;font-size:20px;
+            font-weight:900;color:#8a7320}
+  .loesung{font-weight:800;background:#fffbe8;padding:2px 7px;border-radius:5px;
+           border:1px solid #ecdca0;display:inline-block}
+  .typ{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.07em}
+  .ort{color:#666;font-size:12px}
+  .wort{font-family:Didot,Georgia,serif;font-size:40px;font-weight:900;letter-spacing:.16em;
+        text-align:center;padding:12px;background:#faf8f0;border:2px solid #d4af37;border-radius:10px;margin:8px 0}
+  .kasten{border:1px solid #ddd;border-radius:8px;padding:12px 14px;margin:10px 0;background:#fafafa}
+  .zwei{display:flex;gap:14px;flex-wrap:wrap}
+  .zwei > div{flex:1;min-width:210px}
+  .notiz{border:1px dashed #bbb;border-radius:8px;height:26mm;margin-top:6px}
+  .knopfleiste{max-width:210mm;margin:16px auto -6px;padding:0 4px}
+  .knopfleiste button{padding:11px 20px;border:0;border-radius:9px;background:#1a1a1a;color:#fff;
+    font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  @media print{ body{background:#fff} .knopfleiste{display:none}
+    .blatt{margin:0;box-shadow:none;width:auto;padding:12mm}
+    @page{size:A4;margin:0} }
+</style>
+</head>
+<body>
+<div class="knopfleiste"><button onclick="window.print()">Drucken (⌘ P)</button></div>
+<div class="blatt" id="blatt">Lade …</div>
+
+<script src="../js/stationen.js"></script>
+<script>
+(function(){
+  var buchstabenStationen = STATIONEN.filter(function(s){ return s.buchstabe; });
+  var wort = buchstabenStationen.map(function(s){ return s.buchstabe; }).join('');
+  var stimmt = !SPIEL.loesungswortKontrolle || wort === SPIEL.loesungswortKontrolle;
+
+  function loesungVon(s){
+    if(s.typ==='code')     return '<span class="loesung">'+s.antwort+'</span>'
+                                + (s.antwortAuch? ' <span class="ort">auch: '+s.antwortAuch.join(', ')+'</span>':'');
+    if(s.typ==='duell')    return 'Geheimwort <b>eines anderen</b> Teams (siehe Liste unten)';
+    if(s.typ==='quiz')     return s.fragen.map(function(f,i){
+                                  return (i+1)+'. '+f.optionen[f.richtig]; }).join(' · ');
+    if(s.typ==='foto')     return 'mindestens '+(s.mindestens||s.auftraege.length)+' von '
+                                + s.auftraege.length+' abhaken';
+    if(s.typ==='handyaus') return '<b>Fake!</b> Läuft nach '+(s.sekunden||60)
+                                + ' Sekunden von selbst weiter — auch wenn niemand das Handy ausschaltet';
+    if(s.typ==='start')    return 'nur bestätigen';
+    return '—';
+  }
+
+  var zeilen = STATIONEN.map(function(s,i){
+    return '<tr>'
+      + '<td class="nr">'+i+'</td>'
+      + '<td class="buchst">'+(s.buchstabe||'')+'</td>'
+      + '<td><b>'+s.titel+'</b><br><span class="typ">'+s.typ+'</span>'
+      + (s.ort? '<br><span class="ort">📍 '+s.ort+'</span>':'') + '</td>'
+      + '<td>'+loesungVon(s) + (s.tipp? '<br><span class="ort">Tipp: '+s.tipp+'</span>':'') + '</td>'
+      + '</tr>';
+  }).join('');
+
+  var teams = SPIEL.teams.map(function(t){
+    return '<tr><td><b>'+t.name+'</b></td><td><span class="loesung">'+t.geheimwort+'</span></td></tr>';
+  }).join('');
+
+  document.getElementById('blatt').innerHTML =
+    '<h1>Spielleiter-Zettel</h1>'
+  + '<p class="unterzeile">'+SPIEL.titel+' · '+SPIEL.untertitel+' · '+SPIEL.datum+'</p>'
+  + '<div class="warnung"><b>Nicht herzeigen.</b> Auf diesem Blatt stehen alle Lösungen. '
+  + 'Notfall im Spiel: oben links die <b>Krone 3× antippen</b>, Code <b>'+SPIEL.leiterCode
+  + '</b> eingeben — dann kannst du eine Station überspringen.</div>'
+
+  + '<h2>Das Losungswort am Ende</h2>'
+  + '<div class="wort">'+wort+'</div>'
+  + (stimmt ? '' : '<div class="warnung"><b>Achtung:</b> In stationen.js steht als Kontrolle „'
+      + SPIEL.loesungswortKontrolle + '“, die Buchstaben ergeben aber „'+wort
+      + '“. Das ist kein Fehler im Spiel — die App nimmt immer die Buchstaben. Aber schau nach, ob das so gewollt ist.</div>')
+
+  + '<h2>Alle Stationen und Lösungen</h2>'
+  + '<table><tr><th></th><th>B.</th><th>Station</th><th>Lösung</th></tr>'+zeilen+'</table>'
+
+  + '<h2>Die Geheimwörter der Teams (fürs Emoji-Duell)</h2>'
+  + '<table><tr><th>Team</th><th>Geheimwort</th></tr>'+teams+'</table>'
+  + '<p class="ort">Jedes Team sieht nur sein eigenes Wort auf seinem Handy. '
+  + 'Beim Duell muss ein Team das Wort eines <b>anderen</b> Teams eintragen — das eigene wird nicht akzeptiert.</p>'
+
+  + '<h2>Punkte</h2>'
+  + '<div class="kasten">'+SPIEL.punkteProStation+' Punkte pro Station · '
+  + '−'+SPIEL.abzugTipp+' bei Tipp · −'+SPIEL.abzugFehler+' pro falscher Antwort · '
+  + 'nie weniger als '+Math.round(SPIEL.punkteProStation*0.2)+' · '
+  + 'alle Foto-Aufträge = +25 Bonus<br>'
+  + '<b>Höchstmöglich: '+(buchstabenStationen.length*SPIEL.punkteProStation+25)+' Punkte</b></div>'
+
+  + '<h2>Notizen am Partytag</h2>'
+  + '<div class="zwei">'
+  + SPIEL.teams.map(function(t){
+      return '<div><b>'+t.name+'</b><div class="notiz"></div></div>'; }).join('')
+  + '</div>';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Die Videobotschaft drehen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-satt:#b8912f; --gold-tuell:#f3e9cd;
+  --rot:#a4402c; --rot-tuell:#f8e6e0; --gruen:#34694b; --gruen-tuell:#e2f0e6;
+  --code-grund:#1e1b15; --code-text:#f0e6cf; --breite:min(100% - 2.2rem, 42rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --code-grund:#080705; --code-text:#ecdfc2;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --code-grund:#080705; --code-text:#ecdfc2;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.62;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.bahn{width:var(--breite); margin-inline:auto}
+
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(2.2rem,7vw,3.4rem) 0 clamp(1.5rem,5vw,2.1rem)}
+.marke{font-size:.68rem; letter-spacing:.36em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .8rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7.6vw,3.1rem); line-height:1.02; margin:0; text-wrap:balance}
+.dach{color:var(--schrift-2); margin:.85rem 0 0}
+
+section{padding:clamp(1.9rem,6vw,2.7rem) 0; border-bottom:1px solid var(--rand); scroll-margin-top:1rem}
+section:last-of-type{border-bottom:0}
+.kopf{display:flex; gap:.85rem; align-items:flex-start; margin:0 0 .3rem}
+.ziffer{flex:none; width:2rem; height:2rem; border-radius:50%; background:var(--gold);
+  color:var(--grund); display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.9rem; margin-top:.15rem}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:clamp(1.45rem,5vw,1.95rem); line-height:1.16; margin:0; text-wrap:balance}
+.dauer{font-size:.75rem; letter-spacing:.13em; text-transform:uppercase; color:var(--schrift-3);
+  font-weight:700; margin:.1rem 0 1rem 2.85rem}
+@media(max-width:30rem){ .dauer{margin-left:0} }
+h3{font-size:1rem; font-weight:700; margin:1.7rem 0 .5rem}
+p{margin:0 0 1rem} p:last-child{margin-bottom:0}
+ul,ol{padding-left:1.2rem; margin:0 0 1rem}
+li{margin-bottom:.45rem}
+li::marker{color:var(--gold); font-weight:600}
+a{color:var(--gold)}
+code{font-family:"IBM Plex Mono",monospace; font-size:.87em; background:var(--gold-tuell);
+  color:var(--gold); padding:.1em .4em; border-radius:4px; word-break:break-word}
+
+.kasten{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1.05rem 1.2rem; margin:0 0 1rem}
+.kasten.wichtig{background:var(--gold-tuell); border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
+.kasten.achtung{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.kasten.gut{background:var(--gruen-tuell); border-color:color-mix(in srgb,var(--gruen) 36%,transparent)}
+.kastentitel{font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--gold); margin:0 0 .5rem}
+.kasten.achtung .kastentitel{color:var(--rot)}
+.kasten.gut .kastentitel{color:var(--gruen)}
+
+/* Sprechtext */
+.sprech{border-left:3px solid var(--gold); background:var(--karte); border-radius:0 11px 11px 0;
+  padding:1rem 1.2rem; margin:0 0 .9rem}
+.sprech .zeit{font-family:"IBM Plex Mono",monospace; font-size:.75rem; font-weight:600;
+  color:var(--gold); letter-spacing:.08em; display:block; margin-bottom:.35rem}
+.sprech .satz{font-family:"Bodoni Moda",Georgia,serif; font-size:1.22rem; line-height:1.45;
+  font-style:italic}
+.sprech .regie{font-size:.88rem; color:var(--schrift-2); margin:.5rem 0 0}
+
+.wort{font-family:"Bodoni Moda",Georgia,serif; font-size:clamp(2rem,9vw,3rem); font-weight:900;
+  letter-spacing:.14em; text-align:center; padding:1rem; background:var(--karte);
+  border:2px solid var(--gold); border-radius:12px; margin:1rem 0; color:var(--gold)}
+
+.weg{border:1px solid var(--rand); border-radius:13px; overflow:hidden; margin:0 0 1.1rem}
+.weg > .titel{background:var(--grund-2); padding:.85rem 1.1rem; border-bottom:1px solid var(--rand)}
+.weg > .titel b{display:block; font-size:1.05rem}
+.weg > .titel span{font-size:.86rem; color:var(--schrift-2)}
+.weg > .inhalt{padding:1.1rem 1.2rem}
+.weg.empfohlen{border-color:color-mix(in srgb,var(--gruen) 45%,transparent)}
+.weg.empfohlen > .titel{background:var(--gruen-tuell)}
+.weg.empfohlen > .titel b{color:var(--gruen)}
+
+.befehl{position:relative; margin:0 0 .7rem}
+pre{margin:0; background:var(--code-grund); color:var(--code-text); border-radius:10px;
+  padding:.85rem 3.2rem .85rem 1rem; overflow-x:auto;
+  font-family:"IBM Plex Mono",monospace; font-size:.82rem; line-height:1.6}
+.befehl button{position:absolute; top:.45rem; right:.45rem; border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.07); color:#e8dcc0; border-radius:6px; font-family:"Archivo",sans-serif;
+  font-size:.68rem; font-weight:600; padding:.28rem .55rem; cursor:pointer}
+.beschriftung{font-size:.88rem; color:var(--schrift-2); margin:0 0 .35rem}
+
+footer{padding:2rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.85rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+</head>
+<body>
+<header><div class="bahn">
+  <p class="marke">VIP-Schnitzeljagd · Station 2</p>
+  <h1>Die Videobotschaft</h1>
+  <p class="dach">25 Sekunden, mit dem iPhone gedreht. Rechne mit einer halben Stunde,
+     inklusive Hochladen.</p>
+</div></header>
+
+<div class="bahn">
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">1</span><h2>Vorbereiten</h2></div>
+  <p class="dauer">5 Minuten</p>
+
+  <p>Du brauchst nur drei Dinge:</p>
+  <ul>
+    <li>Dein <strong>iPhone</strong></li>
+    <li>Ein <strong>Blatt Papier</strong> und einen dicken schwarzen Stift</li>
+    <li>Eine <strong>Sonnenbrille</strong> — nicht nötig, macht es aber deutlich besser</li>
+  </ul>
+
+  <p>Schreib das Codewort groß auf das Blatt. Es muss aus zwei Metern Entfernung
+  lesbar sein — also wirklich groß, quer über die ganze Seite.</p>
+
+  <div class="wort">GOLDFISCH</div>
+
+  <p>Du kannst auch ein anderes Wort nehmen. Nur eines beachten: Es muss zu tippen sein,
+  ohne dass man sich vertippt. Kurz, deutsch, keine Sonderzeichen.
+  Wenn du es änderst, sag mir Bescheid — dann trage ich es in die App ein.</p>
+
+  <div class="kasten wichtig">
+    <p class="kastentitel">Einmal in den Einstellungen nachschauen</p>
+    <p>Am iPhone unter <strong>Einstellungen → Kamera → Video aufnehmen</strong>
+    auf <strong>1080p HD, 30 fps</strong> stellen. In 4K wird die Datei riesig und
+    die Kinder warten unterwegs ewig, bis sie geladen ist.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">2</span><h2>Aufstellen</h2></div>
+  <p class="dauer">5 Minuten</p>
+
+  <ul>
+    <li><strong>Handy quer halten</strong> — nicht hochkant. In der App ist der Videoplayer
+        quer; ein hochkantes Video hätte links und rechts schwarze Balken.</li>
+    <li><strong>Abstützen</strong> statt in der Hand halten. Ein Bücherstapel auf dem Tisch
+        reicht. Das Handy soll ungefähr auf Augenhöhe stehen.</li>
+    <li><strong>Licht von vorne.</strong> Stell dich so, dass das Fenster <em>hinter dem
+        Handy</em> ist, also vor deinem Gesicht. Fenster im Rücken heißt: Du bist eine
+        schwarze Silhouette.</li>
+    <li><strong>Nah genug.</strong> Kopf und Oberkörper füllen das Bild. Nicht der ganze Raum.</li>
+    <li><strong>Ruhig muss es sein.</strong> Fernseher aus, Fenster zu. Draußen macht Wind
+        den Ton kaputt.</li>
+    <li>Hinter dir sollte nicht die Wäsche hängen — eine ruhige Wand genügt.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">3</span><h2>Das sagst du</h2></div>
+  <p class="dauer">Vier Blöcke, zusammen etwa 25 Sekunden</p>
+
+  <p>Lies es ein paarmal durch, bevor du aufnimmst. Auswendig muss es nicht sitzen —
+  aber schau in die Kamera, nicht auf den Zettel.</p>
+
+  <div class="sprech">
+    <span class="zeit">0 – 5 Sekunden</span>
+    <p class="satz">„Wenn du das hier siehst, gehörst du offiziell zum VIP-Club.“</p>
+    <p class="regie">Ernst bleiben. Nicht lachen. Genau das macht es lustig.</p>
+  </div>
+
+  <div class="sprech">
+    <span class="zeit">5 – 14 Sekunden</span>
+    <p class="satz">„Ich sag das nur einmal. Das Codewort für heute lautet:
+       <strong>Goldfisch</strong>.“</p>
+    <p class="regie">Beim Wort <strong>Goldfisch</strong> das Blatt hochhalten und ruhig
+    drei Sekunden stehen lassen — nicht wedeln. So kommen auch die Teams weiter,
+    bei denen es gerade zu laut ist.</p>
+  </div>
+
+  <div class="sprech">
+    <span class="zeit">14 – 20 Sekunden</span>
+    <p class="satz">„Nicht weitersagen. Vor allem nicht dem anderen Team.“</p>
+    <p class="regie">Blatt wieder runter, kurze Pause, dann weiter.</p>
+  </div>
+
+  <div class="sprech">
+    <span class="zeit">20 – 25 Sekunden</span>
+    <p class="satz">„Ihr habt neunzig Minuten. Die Uhr läuft ab jetzt.“</p>
+    <p class="regie">Kurz still stehen bleiben, dann erst die Aufnahme stoppen.</p>
+  </div>
+
+  <div class="kasten">
+    <p class="kastentitel">Zwei Tricks</p>
+    <p><strong>Vorne und hinten je zwei Sekunden still.</strong> Aufnahme starten,
+    zwei Sekunden nichts sagen, dann loslegen — und am Ende wieder zwei Sekunden warten,
+    bevor du stoppst. Sonst wirkt es abgehackt.</p>
+    <p><strong>Nimm es drei- bis viermal auf</strong> und behalte den besten Versuch.
+    Der zweite ist fast immer besser als der erste.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">4</span><h2>Ins Spiel bringen</h2></div>
+  <p class="dauer">10 Minuten · zwei Wege, such dir einen aus</p>
+
+  <div class="weg empfohlen">
+    <div class="titel">
+      <b>Weg A — Video auf deinen Server</b>
+      <span>Mein Vorschlag: kein YouTube nötig, keine Werbung, läuft direkt in der App</span>
+    </div>
+    <div class="inhalt">
+      <ol>
+        <li>Video per <strong>AirDrop</strong> aufs MacBook schicken</li>
+        <li>Die Datei umbenennen in <code>botschaft.mp4</code> — falls sie auf
+            <code>.mov</code> endet, lass die Endung so und nenn sie
+            <code>botschaft.mov</code></li>
+        <li>In den Ordner <code>_ZUM-HOCHLADEN/fotos</code> legen</li>
+        <li><strong>Vorher prüfen:</strong> Doppelklick auf die Datei bei gedrückter
+            Control-Taste → <em>Öffnen mit → Safari</em>. Spielt sie dort ab,
+            spielt sie auch in der App.</li>
+        <li>Größe anschauen (Rechtsklick → <em>Informationen</em>). Unter 30 MB ist gut.
+            Deutlich mehr → nimm Weg B.</li>
+        <li>In <code>stationen.js</code> bei Station 2 eintragen:</li>
+      </ol>
+      <div class="befehl"><pre>video: "fotos/botschaft.mp4",</pre><button>Kopieren</button></div>
+      <p class="beschriftung">Danach beim Hochladen den Ordner <code>fotos</code>
+      nicht vergessen.</p>
+    </div>
+  </div>
+
+  <div class="weg">
+    <div class="titel">
+      <b>Weg B — YouTube, nicht gelistet</b>
+      <span>Wenn die Datei zu groß ist oder du es lieber am Handy erledigst</span>
+    </div>
+    <div class="inhalt">
+      <ol>
+        <li>YouTube-App öffnen → unten auf <strong>+</strong> → <strong>Video hochladen</strong></li>
+        <li>Dein Video auswählen</li>
+        <li>Titel: irgendwas Unauffälliges, z. B. <em>„VIP“</em></li>
+        <li>Sichtbarkeit auf <strong>Nicht gelistet</strong> stellen — wichtig.
+            Dann findet es niemand über die Suche, aber jeder mit dem Link kann es sehen.</li>
+        <li>Bei der Frage <em>„Ist dieses Video für Kinder gemacht?“</em>:
+            <strong>Nein</strong> wählen. Es ist ein privates Video für eine Feier,
+            kein Kinderkanal — und alle Funktionen bleiben erhalten.</li>
+        <li>Nach dem Hochladen: Video öffnen → <strong>Teilen → Link kopieren</strong></li>
+        <li>Den Link in <code>stationen.js</code> eintragen:</li>
+      </ol>
+      <div class="befehl"><pre>video: "https://youtu.be/DEIN-LINK",</pre><button>Kopieren</button></div>
+    </div>
+  </div>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Wenn das Video nicht abspielt</p>
+    <p>Das liegt fast immer am Aufnahmeformat. Geh am iPhone auf
+    <strong>Einstellungen → Kamera → Formate</strong> und wähle
+    <strong>Maximal kompatibel</strong>. Dann nochmal aufnehmen — jetzt läuft es
+    in jedem Browser. (Die Einstellung darunter, <em>Hohe Effizienz</em>, spart Platz,
+    macht aber Dateien, die nicht überall abspielen.)</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <div class="kopf"><span class="ziffer">5</span><h2>Gegenprüfen</h2></div>
+  <p class="dauer">2 Minuten — bitte nicht überspringen</p>
+
+  <p>Ruf die App an deinem eigenen Handy auf und spiel dich bis Station 2 durch
+  (oder Krone antippen, Code <code>9999</code>, dann vorspringen).</p>
+
+  <ul>
+    <li>Läuft das Video?</li>
+    <li>Hört man das Codewort auch bei halber Lautstärke?</li>
+    <li>Ist das Blatt lesbar, wenn man das Handy in der Sonne hält?</li>
+    <li>Wird <em>Goldfisch</em> als Antwort angenommen? Groß- und Kleinschreibung ist egal,
+        <em>gold fisch</em> geht auch.</li>
+  </ul>
+
+  <div class="kasten gut">
+    <p class="kastentitel">Danach ist Station 2 fertig</p>
+    <p>Was dann noch fehlt, sind die drei Orte aus der Erkundungsrunde —
+    und die Party kann kommen.</p>
+  </div>
+</section>
+
+</div>
+
+<footer><div class="bahn">VIP-Schnitzeljagd · Party am Freitag, 28. August 2026</div></footer>
+
+<script>
+document.querySelectorAll('.befehl button').forEach(function(k){
+  k.addEventListener('click', function(){
+    var text = k.previousElementSibling.textContent;
+    var fertig = function(){ k.textContent='Kopiert'; setTimeout(function(){ k.textContent='Kopieren'; },1600); };
+    function ersatz(){
+      var f=document.createElement('textarea'); f.value=text;
+      f.style.position='fixed'; f.style.opacity='0'; document.body.appendChild(f);
+      f.select(); try{ document.execCommand('copy'); fertig(); }catch(e){ k.textContent='⌘C'; }
+      document.body.removeChild(f);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(fertig, ersatz);
+    } else { ersatz(); }
+  });
+});
+</script>
+</body>
+</html>

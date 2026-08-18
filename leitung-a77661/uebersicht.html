@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zoes VIP-Schnitzeljagd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* ---------- Farbwerte: Papier-Variante (hell) ------------------------- */
+:root{
+  --grund:      #f7f4ed;
+  --grund-2:    #efeade;
+  --karte:      #fffdf8;
+  --rand:       #ddd5c2;
+  --schrift:    #1f1c15;
+  --schrift-2:  #635c4c;
+  --schrift-3:  #8d8474;
+  --gold:       #93701a;
+  --gold-satt:  #b8912f;
+  --gold-tuell: #f3e9cd;
+  --rot:        #a4402c;
+  --rot-tuell:  #f8e6e0;
+  --gruen:      #34694b;
+  --gruen-tuell:#e2f0e6;
+  --code-grund: #1e1b15;
+  --code-text:  #f0e6cf;
+  --breite:     min(100% - 2.4rem, 44rem);
+}
+/* ---------- dieselben Rollen in dunkel -------------------------------- */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grund:      #100e0b;
+    --grund-2:    #16130f;
+    --karte:      #1a1712;
+    --rand:       #322c22;
+    --schrift:    #f2ede1;
+    --schrift-2:  #a89e8a;
+    --schrift-3:  #7d7462;
+    --gold:       #dcb455;
+    --gold-satt:  #f0d284;
+    --gold-tuell: #241d0f;
+    --rot:        #e88a76;
+    --rot-tuell:  #2a1510;
+    --gruen:      #7bc39a;
+    --gruen-tuell:#122019;
+    --code-grund: #080705;
+    --code-text:  #ecdfc2;
+  }
+}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-satt:#f0d284; --gold-tuell:#241d0f;
+  --rot:#e88a76; --rot-tuell:#2a1510; --gruen:#7bc39a; --gruen-tuell:#122019;
+  --code-grund:#080705; --code-text:#ecdfc2;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--grund); color:var(--schrift);
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.bahn{width:var(--breite); margin-inline:auto}
+
+/* ---------- Kopf ------------------------------------------------------ */
+header{
+  background:
+    radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%),
+    var(--grund-2);
+  border-bottom:1px solid var(--rand);
+  padding:clamp(2.6rem,9vw,4.6rem) 0 clamp(2rem,6vw,3rem);
+  text-align:center;
+}
+.marke{
+  font-size:.7rem; letter-spacing:.42em; text-transform:uppercase;
+  color:var(--gold); font-weight:700; margin:0 0 1rem;
+}
+h1{
+  font-family:"Bodoni Moda",Didot,Georgia,serif;
+  font-weight:900; font-size:clamp(2.25rem,9.2vw,4.6rem); line-height:.98;
+  margin:0; letter-spacing:-.01em; text-wrap:balance;
+}
+.dachzeile{
+  font-family:"Bodoni Moda",Didot,Georgia,serif; font-style:italic;
+  font-size:clamp(1.05rem,3.6vw,1.35rem); color:var(--schrift-2);
+  margin:.9rem 0 0; font-weight:400;
+}
+.stand{
+  display:inline-flex; align-items:center; gap:.5rem; margin-top:1.6rem;
+  background:var(--gruen-tuell); color:var(--gruen);
+  border:1px solid color-mix(in srgb, var(--gruen) 34%, transparent);
+  border-radius:100px; padding:.42rem 1rem; font-size:.83rem; font-weight:600;
+}
+.stand::before{content:""; width:.5rem; height:.5rem; border-radius:50%; background:var(--gruen)}
+
+/* ---------- Sprungleiste --------------------------------------------- */
+nav{
+  position:sticky; top:0; z-index:10; background:color-mix(in srgb, var(--grund) 92%, transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rand); overflow-x:auto; scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none}
+nav ul{display:flex; gap:.15rem; list-style:none; margin:0 auto; padding:.55rem 1.2rem;
+  width:max-content; min-width:100%; justify-content:center}
+nav a{
+  display:block; white-space:nowrap; text-decoration:none; color:var(--schrift-2);
+  font-size:.79rem; font-weight:600; padding:.42rem .72rem; border-radius:7px;
+  letter-spacing:.02em;
+}
+nav a:hover, nav a:focus-visible{background:var(--gold-tuell); color:var(--gold)}
+
+/* ---------- Abschnitte ------------------------------------------------ */
+section{padding:clamp(2.4rem,7vw,3.6rem) 0; border-bottom:1px solid var(--rand);
+  scroll-margin-top:3.6rem}
+section:last-of-type{border-bottom:0}
+.nummer{
+  font-family:"IBM Plex Mono",monospace; font-size:.74rem; font-weight:600;
+  letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin:0 0 .55rem;
+}
+h2{
+  font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:clamp(1.65rem,5.4vw,2.3rem); line-height:1.14; margin:0 0 1.1rem;
+  text-wrap:balance; letter-spacing:-.005em;
+}
+h3{font-size:1.02rem; font-weight:700; margin:2rem 0 .6rem; letter-spacing:.01em}
+h3:first-of-type{margin-top:1.2rem}
+p{margin:0 0 1.05rem}
+p:last-child{margin-bottom:0}
+strong{font-weight:700}
+a{color:var(--gold); text-decoration-thickness:1px; text-underline-offset:2px}
+
+ul.punkte, ol.punkte{margin:0 0 1.05rem; padding-left:1.25rem}
+ul.punkte li, ol.punkte li{margin-bottom:.5rem}
+ul.punkte li::marker{color:var(--gold)}
+ol.punkte li::marker{color:var(--gold); font-weight:700}
+
+/* ---------- Kästen ---------------------------------------------------- */
+.kasten{
+  background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1.15rem 1.3rem; margin:0 0 1.15rem;
+}
+.kasten p:last-child{margin-bottom:0}
+.kasten.wichtig{background:var(--gold-tuell); border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
+.kasten.achtung{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.kastentitel{
+  font-size:.72rem; letter-spacing:.17em; text-transform:uppercase; font-weight:700;
+  color:var(--gold); margin:0 0 .55rem;
+}
+.kasten.achtung .kastentitel{color:var(--rot)}
+
+/* ---------- Zeitleiste ------------------------------------------------ */
+.zeit{list-style:none; margin:1.3rem 0 0; padding:0; position:relative}
+.zeit::before{content:""; position:absolute; left:3.85rem; top:.7rem; bottom:.7rem;
+  width:1px; background:var(--rand)}
+.zeit li{display:flex; gap:1.1rem; padding:.5rem 0; position:relative}
+.zeit .uhr{
+  flex:none; width:3.1rem; text-align:right; font-family:"IBM Plex Mono",monospace;
+  font-size:.82rem; font-weight:600; color:var(--gold); padding-top:.14rem;
+  font-variant-numeric:tabular-nums;
+}
+.zeit .knoten{flex:none; width:1.5rem; display:flex; justify-content:center; padding-top:.5rem}
+.zeit .knoten i{width:.55rem; height:.55rem; border-radius:50%; background:var(--gold);
+  box-shadow:0 0 0 4px var(--grund); display:block}
+.zeit .was{flex:1}
+.zeit .was b{display:block; font-weight:700}
+.zeit .was span{color:var(--schrift-2); font-size:.92rem}
+
+/* ---------- Tabelle --------------------------------------------------- */
+.rollbar{overflow-x:auto; margin:0 0 1.15rem; border:1px solid var(--rand);
+  border-radius:12px; background:var(--karte)}
+table{border-collapse:collapse; width:100%; font-size:.9rem; min-width:34rem}
+th{
+  text-align:left; padding:.7rem .85rem; font-size:.68rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--schrift-3); font-weight:700;
+  border-bottom:1px solid var(--rand); background:var(--grund-2);
+}
+td{padding:.72rem .85rem; border-bottom:1px solid var(--rand); vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.b{font-family:"Bodoni Moda",Georgia,serif; font-size:1.15rem; font-weight:900;
+  color:var(--gold); text-align:center; width:2.4rem}
+.marker{
+  display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; padding:.14rem .48rem; border-radius:5px;
+  background:var(--gold-tuell); color:var(--gold); white-space:nowrap;
+}
+.marker.gag{background:var(--rot-tuell); color:var(--rot)}
+.marker.fertig{background:var(--gruen-tuell); color:var(--gruen)}
+
+/* ---------- Code ------------------------------------------------------ */
+.befehl{position:relative; margin:0 0 .7rem}
+pre{
+  margin:0; background:var(--code-grund); color:var(--code-text);
+  border-radius:10px; padding:.9rem 3.2rem .9rem 1rem; overflow-x:auto;
+  font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:.82rem; line-height:1.65;
+}
+.befehl button{
+  position:absolute; top:.5rem; right:.5rem; border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.07); color:#e8dcc0; border-radius:6px;
+  font-family:"Archivo",sans-serif; font-size:.68rem; font-weight:600; letter-spacing:.06em;
+  padding:.3rem .55rem; cursor:pointer;
+}
+.befehl button:hover{background:rgba(255,255,255,.15)}
+code{font-family:"IBM Plex Mono",monospace; font-size:.87em; background:var(--gold-tuell);
+  color:var(--gold); padding:.1em .38em; border-radius:4px}
+.beschriftung{font-size:.86rem; color:var(--schrift-2); margin:0 0 .4rem}
+
+/* ---------- Datei-Baum ------------------------------------------------ */
+.baum{
+  background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1.05rem 1.2rem; font-family:"IBM Plex Mono",monospace; font-size:.79rem;
+  line-height:1.95; overflow-x:auto; margin:0 0 1.15rem;
+}
+.baum b{color:var(--gold); font-weight:600}
+.baum em{color:var(--schrift-3); font-style:normal}
+
+/* ---------- Fragen ---------------------------------------------------- */
+.frage{
+  border-left:3px solid var(--gold); background:var(--karte);
+  border-radius:0 10px 10px 0; padding:.95rem 1.15rem; margin:0 0 .85rem;
+}
+.frage b{display:block; margin-bottom:.22rem}
+.frage span{color:var(--schrift-2); font-size:.92rem}
+
+/* ---------- Fuß ------------------------------------------------------- */
+footer{padding:2.4rem 0 3.4rem; text-align:center; color:var(--schrift-3); font-size:.85rem}
+
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="bahn">
+    <p class="marke">Very Important People</p>
+    <h1>Zoes VIP-Schnitzeljagd</h1>
+    <p class="dachzeile">Freitag, 28. August 2026 · zwei Teams · 8 Stationen ·
+       500 Meter rund um die Grabengasse</p>
+    <div class="stand">Fertig bis auf drei Orte und das Video</div>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#stand">Stand</a></li>
+    <li><a href="#todo">Was zu tun ist</a></li>
+    <li><a href="#ablauf">Ablauf</a></li>
+    <li><a href="#stationen">Stationen</a></li>
+    <li><a href="#server">Server</a></li>
+    <li><a href="#hochladen">Hochladen</a></li>
+    <li><a href="#anpassen">Anpassen</a></li>
+    <li><a href="#qr">QR-Code</a></li>
+    <li><a href="#video">Video</a></li>
+    <li><a href="#partytag">Partytag</a></li>
+  </ul>
+</nav>
+
+<!-- ================================================================== -->
+<section id="stand"><div class="bahn">
+  <p class="nummer">Was fertig ist</p>
+  <h2>Die App läuft — es fehlen nur noch deine Orte</h2>
+
+  <p>Die Schnitzeljagd ist eine <strong>Browser-App</strong>: Die Kids scannen einen QR-Code,
+  die Seite geht auf, sie wählen ihr Team — fertig. Nichts installieren, kein App-Store,
+  kein Konto. Läuft auf iPhone und Android gleich.</p>
+
+  <p>Ich habe sie im mobilen Browser komplett durchgespielt: Start, Teamwahl, alle
+  Stationsarten, falsche Antworten, Tipps, die Handy-aus-Aktion, das Finale mit Konfetti.
+  Keine Fehler.</p>
+
+  <h3>Was drin ist</h3>
+  <ul class="punkte">
+    <li><strong>8 Stationen</strong> plus Begrüßung und Finale — je nach Tempo 80 bis 95 Minuten</li>
+    <li><strong>Fünf Aufgabenarten</strong>: Antwort eintippen · Quiz zum Antippen · Foto-Aufträge
+        zum Abhaken · eine Aufgabe, die nur zusammen mit einem anderen Team geht · und der Gag</li>
+    <li><strong>Der Gag ist eingebaut</strong> — die Handy-abschalten-Aktion, siehe unten</li>
+    <li><strong>Punkte und Uhr</strong> laufen oben mit, Fortschritt wird gespeichert:
+        Handy aus, Akku leer, Seite geschlossen — es geht dort weiter, wo sie waren</li>
+    <li><strong>Buchstaben-Sammlung</strong>: Jede Station gibt einen Buchstaben,
+        alle acht ergeben das Losungswort für den Türsteher (aktuell <code>VIPPARTY</code>)</li>
+    <li><strong>Notfallknopf für dich</strong>: Krone oben links 3× antippen, Code <code>9999</code> —
+        damit kannst du eine Station überspringen, wenn ein Team feststeckt</li>
+    <li><strong>Schwarz-Gold</strong>, umschaltbar auf Schwarz-Silber mit einem Wort in einer Datei</li>
+  </ul>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Der Gag — Station 4</p>
+    <p>Mitten in der Jagd wird der Bildschirm rot: <em>„Sicherheitsstufe Rot. Ein fremdes Gerät
+    versucht, sich in eure VIP-Verbindung einzuklinken. Schaltet sofort alle Handys komplett aus.“</em>
+    Dazu ein Countdown von 60 Sekunden.</p>
+    <p>Schalten sie die Handys wirklich aus und öffnen die Seite danach wieder, steht dort:
+    <em>„Danke, dass ihr eure Handys neu gestartet habt. Die Verbindung ist wieder sicher.
+    Wir machen weiter.“</em> — und klein darunter: <em>„Unter uns: Es hätte auch ohne
+    funktioniert. Aber ihr wart wirklich überzeugend.“</em></p>
+    <p>Machen sie es <strong>nicht</strong>, läuft der Countdown ab und es geht genauso weiter.
+    Es kann also nichts schiefgehen — egal wie sie sich entscheiden.</p>
+  </div>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="todo"><div class="bahn">
+  <p class="nummer">Deine Liste</p>
+  <h2>Vier Dinge, dann ist alles fertig</h2>
+
+  <p>Die Party ist am <strong>Freitag, 28. August</strong> — also in zehn Tagen.
+  Der Reihe nach:</p>
+
+  <div class="frage"><b>1 · Die Erkundungsrunde gehen</b>
+    <span>Etwa 20 Minuten rund um die Grabengasse. Das Blatt dazu liegt in
+    <code>Werkzeuge/Erkundungs-Blatt.html</code> — du kannst es am Handy ausfüllen,
+    es speichert sich von selbst. Du suchst: zwei Hausnummern, ein Schild zum
+    Fotografieren, etwas zum Zählen. Am Ende auf „Alles kopieren“ tippen und mir
+    den Text schicken — dann trage ich alles ein.</span></div>
+
+  <div class="frage"><b>2 · Das Video drehen</b>
+    <span>25 Sekunden mit dem iPhone. Die vollständige Anleitung mit Drehbuch steht in
+    <code>Werkzeuge/Video-Anleitung.html</code> — inklusive der Frage, wohin damit.</span></div>
+
+  <div class="frage"><b>3 · poolparty.robschman.at einrichten</b>
+    <span>Über GitHub Pages, wie robschman.at selbst. Schritt für Schritt in
+    <code>Werkzeuge/Subdomain-Anleitung.html</code>. <strong>Am besten heute</strong> —
+    bis das Zertifikat steht, kann es laut GitHub bis zu 24 Stunden dauern.</span></div>
+
+  <div class="frage"><b>4 · Den Schatz überlegen</b>
+    <span>Sag mir, was es am Ende gibt — dann verspricht der Schlussbildschirm
+    etwas Konkretes statt nur „ihr habt gewonnen“.</span></div>
+
+  <div class="kasten">
+    <p class="kastentitel">Was ich schon eingestellt habe</p>
+    <p><strong>Zwei Teams</strong> (Team Diamant und Team Platin) — passt für fünf bis
+    sieben Kinder, also drei plus drei. Kommen doch mehr, sind in
+    <code>stationen.js</code> zwei weitere Teams vorbereitet: bei den zwei Zeilen die
+    Schrägstriche am Anfang wegnehmen, fertig.</p>
+    <p>Das <strong>Datum</strong> steht auf der Startseite. Die <strong>Regeln</strong>
+    (500 Meter, immer zusammenbleiben, deine Handynummer) erscheinen gleich zu Beginn
+    in einem eigenen Kasten — Grenze und Nummer trägst du mit dem Erkundungs-Blatt ein.</p>
+    <p><strong>Gold</strong> ist eingestellt. Silber ist ein Wortwechsel, sag einfach an.</p>
+  </div>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="ablauf"><div class="bahn">
+  <p class="nummer">Der Zeitplan</p>
+  <h2>90 Minuten, grob gerechnet</h2>
+  <p>Die Zeiten sind Richtwerte — niemand wird von der App gestoppt oder rausgeworfen.
+  Wenn ihr schneller seid, seid ihr eben früher im Pool.</p>
+
+  <ol class="zeit">
+    <li><span class="uhr">0:00</span><span class="knoten"><i></i></span><span class="was">
+      <b>QR-Code scannen, Teams einteilen</b>
+      <span>Am besten 3 bis 4 Kinder pro Team, ein Handy pro Team</span></span></li>
+    <li><span class="uhr">0:05</span><span class="knoten"><i></i></span><span class="was">
+      <b>Akkreditierung</b><span>Teamfoto, Teamruf — zum Aufwärmen</span></span></li>
+    <li><span class="uhr">0:10</span><span class="knoten"><i></i></span><span class="was">
+      <b>Der Türsteher</b><span>Hausnummern zusammenrechnen · Buchstabe V</span></span></li>
+    <li><span class="uhr">0:20</span><span class="knoten"><i></i></span><span class="was">
+      <b>Die geheime Botschaft</b><span>Dein Video anschauen, Codewort finden · Buchstabe I</span></span></li>
+    <li><span class="uhr">0:30</span><span class="knoten"><i></i></span><span class="was">
+      <b>Das Suchbild</b><span>Foto-Ausschnitt in echt wiederfinden · Buchstabe P</span></span></li>
+    <li><span class="uhr">0:40</span><span class="knoten"><i></i></span><span class="was">
+      <b>Sicherheitsstufe Rot</b><span>Die Handy-aus-Aktion · Buchstabe P</span></span></li>
+    <li><span class="uhr">0:47</span><span class="knoten"><i></i></span><span class="was">
+      <b>Das Emoji-Duell</b><span>Geht nur mit einem anderen Team · Buchstabe A</span></span></li>
+    <li><span class="uhr">0:57</span><span class="knoten"><i></i></span><span class="was">
+      <b>Der VIP-Test</b><span>Fünf Fragen, im Gehen lösbar · Buchstabe R</span></span></li>
+    <li><span class="uhr">1:05</span><span class="knoten"><i></i></span><span class="was">
+      <b>Die Zählaufgabe</b><span>Stufen, Fenster, Zaunlatten · Buchstabe T</span></span></li>
+    <li><span class="uhr">1:13</span><span class="knoten"><i></i></span><span class="was">
+      <b>Die Paparazzi-Mission</b><span>Sechs Foto-Aufträge, vier reichen · Buchstabe Y</span></span></li>
+    <li><span class="uhr">1:25</span><span class="knoten"><i></i></span><span class="was">
+      <b>Finale am Pool</b><span>Losungswort sagen, Konfetti, VIP-Ausweis</span></span></li>
+  </ol>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="stationen"><div class="bahn">
+  <p class="nummer">Die Stationen</p>
+  <h2>Was schon steht und was du noch eintragen musst</h2>
+  <p>Die Aufgabenarten und die ganze Technik sind fertig. Was fehlt, sind
+  <strong>deine Orte</strong> — die sammelst du mit dem Erkundungs-Blatt ein.</p>
+
+  <div class="rollbar"><table>
+    <tr><th>Nr</th><th>Station</th><th>Art</th><th>Status</th></tr>
+    <tr><td class="b">—</td><td><b>Akkreditierung</b><br>Teamfoto, Teamruf</td>
+        <td>Bestätigen</td><td><span class="marker fertig">fertig</span></td></tr>
+    <tr><td class="b">V</td><td><b>Der Türsteher</b><br>Hausnummern rechnen</td>
+        <td>Antwort eintippen</td><td><span class="marker">Erkundungsrunde</span></td></tr>
+    <tr><td class="b">I</td><td><b>Die geheime Botschaft</b><br>Codewort im Video</td>
+        <td>Video + Antwort</td><td><span class="marker">du drehst</span></td></tr>
+    <tr><td class="b">P</td><td><b>Das Suchbild</b><br>Ausschnitt wiederfinden</td>
+        <td>Foto + Antwort</td><td><span class="marker">Erkundungsrunde</span></td></tr>
+    <tr><td class="b">P</td><td><b>Sicherheitsstufe Rot</b><br>Handys ausschalten</td>
+        <td>Der Gag</td><td><span class="marker gag">fertig</span></td></tr>
+    <tr><td class="b">A</td><td><b>Das Emoji-Duell</b><br>4 Emojis raten</td>
+        <td>Team gegen Team</td><td><span class="marker fertig">fertig</span></td></tr>
+    <tr><td class="b">R</td><td><b>Der VIP-Test</b><br>5 Fragen</td>
+        <td>Quiz</td><td><span class="marker fertig">fertig</span></td></tr>
+    <tr><td class="b">T</td><td><b>Die Zählaufgabe</b><br>Stufen oder Fenster zählen</td>
+        <td>Antwort eintippen</td><td><span class="marker">Erkundungsrunde</span></td></tr>
+    <tr><td class="b">Y</td><td><b>Die Paparazzi-Mission</b><br>6 Foto-Aufträge</td>
+        <td>Abhaken</td><td><span class="marker fertig">fertig</span></td></tr>
+    <tr><td class="b">—</td><td><b>Die VIP-Lounge</b><br>Losungswort, Konfetti</td>
+        <td>Finale</td><td><span class="marker fertig">fertig</span></td></tr>
+  </table></div>
+
+  <div class="kasten">
+    <p class="kastentitel">Wie das Emoji-Duell funktioniert</p>
+    <p>Jedes Team sieht auf seinem Handy ein eigenes Geheimwort — <em>Kaviar</em>
+    beim einen Team, <em>Limousine</em> beim anderen. Bei dieser Station muss ein Team
+    das Geheimwort eines <strong>anderen</strong> Teams eintragen. Und das bekommt es nur,
+    wenn es dessen Emoji-Rätsel gelöst hat. Das eigene Wort erkennt die App und lehnt es ab —
+    schummeln geht also nicht.</p>
+  </div>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="server"><div class="bahn">
+  <p class="nummer">Wo die App hinkommt</p>
+  <h2>poolparty.robschman.at</h2>
+
+  <p>Deine Aufteilung ist richtig: <strong>Sport über schrittfuerschrittfit.at,
+  alles andere über robschman.at.</strong> Eine private Geburtstagsfeier gehört nicht
+  auf die Domain deiner Fitnessmarke.</p>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Korrektur zu dem, was ich vorher gesagt habe</p>
+    <p>Ich hatte behauptet, eine Subdomain bei schrittfuerschrittfit.at „kostet nichts
+    extra“. Laut deinem Memo zu <em>robschman programming</em> ist das
+    <strong>SSL-Kontingent des IONOS-Pakets mit 3 von 3 aufgebraucht</strong> — deshalb
+    ist robschman.at im August überhaupt erst auf GitHub Pages umgezogen. Der Weg unten
+    umgeht diese Frage.</p>
+  </div>
+
+  <h3>Mein Vorschlag: GitHub Pages</h3>
+  <p>Genau so, wie robschman.at selbst schon läuft. Zertifikat gratis von GitHub,
+  erneuert sich allein, kein SSL-Kontingent.</p>
+  <ol class="punkte">
+    <li>Neues öffentliches Repository <code>poolparty</code> auf github.com anlegen</li>
+    <li>Den <strong>Inhalt</strong> von <code>_ZUM-HOCHLADEN</code> hineinziehen</li>
+    <li>Bei IONOS im DNS von robschman.at einen <strong>CNAME</strong> anlegen:
+        <code>poolparty</code> → <code>robschman.github.io</code></li>
+    <li>Im Repo unter <em>Settings → Pages</em> die Custom domain
+        <code>poolparty.robschman.at</code> eintragen</li>
+    <li>Auf den grünen Haken warten, dann <strong>Enforce HTTPS</strong> ankreuzen</li>
+  </ol>
+
+  <div class="kasten wichtig">
+    <p class="kastentitel">Die ausführliche Fassung</p>
+    <p>Jeder Klick einzeln, dazu Weg B über den IONOS-Webspace, die vier DNS-Einträge
+    bei robschman.at, die du <strong>nicht</strong> anfassen darfst, Prüfbefehle fürs
+    Terminal und die Fehlersuche: <code>Werkzeuge/Subdomain-Anleitung.html</code></p>
+  </div>
+
+  <p><strong>Zwei Dinge zum Merken:</strong> Die <code>.htaccess</code> brauchst du bei
+  GitHub Pages nicht — die versteht nur ein Apache-Server, https macht GitHub selbst.
+  Die leere Datei <code>.nojekyll</code> dagegen muss mit, sonst liefert GitHub die
+  Seite nicht unverändert aus.</p>
+
+  <p>Es bleibt privat: kein Impressum, keine UID, keine GISA-Nummer — es ist eine
+  Geburtstagsfeier, kein Angebot. Die Seite ist auf <code>noindex</code> gestellt und
+  hat eine <code>robots.txt</code> dabei.</p>
+</div></section>
+
+
+
+<!-- ================================================================== -->
+<section id="hochladen"><div class="bahn">
+  <p class="nummer">Frage 2: Wie kommt es auf den Server</p>
+  <h2>Bei GitHub Pages: hineinziehen statt hochladen</h2>
+
+  <p>Wenn du den GitHub-Weg nimmst, brauchst du FileZilla gar nicht — du ziehst die
+  Dateien im Browser ins Repository. Die Anleitung dazu steht in
+  <code>Werkzeuge/Subdomain-Anleitung.html</code>. Der FileZilla-Weg unten gilt für
+  Weg B über den IONOS-Webspace.</p>
+
+  <p>Alles, was hochmuss, liegt im Ordner <code>_ZUM-HOCHLADEN</code> —
+  genau dasselbe Muster wie bei <em>Schritt für Schritt fit</em>.</p>
+
+  <div class="baum">
+<b>VIP-Schnitzeljagd/</b>
+├── <b>_ZUM-HOCHLADEN/</b>  <em>← dieser Inhalt kommt auf den Server</em>
+│   ├── index.html
+│   ├── css/vip.css
+│   ├── js/<b>stationen.js</b>  <em>← hier trägst du alles ein</em>
+│   ├── js/app.js
+│   ├── fonts/
+│   ├── fotos/  <em>← deine Bilder</em>
+│   ├── robots.txt
+│   ├── .nojekyll  <em>← leer, aber nötig für GitHub Pages</em>
+│   └── htaccess-hochladen-als-punkt-htaccess.txt  <em>nur für IONOS, nicht für GitHub</em>
+├── <b>Werkzeuge/</b>  <em>← bleibt am Mac, nicht hochladen</em>
+│   ├── <b>Erkundungs-Blatt.html</b>  <em>← damit gehst du die Runde</em>
+│   ├── <b>Video-Anleitung.html</b>   <em>← Drehbuch fürs Video</em>
+│   ├── <b>Subdomain-Anleitung.html</b> <em>← IONOS Schritt für Schritt</em>
+│   ├── QR-Plakat.html
+│   └── Spielleiter-Zettel.html
+├── Uebersicht.html  <em>← diese Seite</em>
+└── 00_Memo.md
+  </div>
+
+  <ol class="punkte">
+    <li>FileZilla öffnen, wie gewohnt auf den IONOS-Webspace verbinden</li>
+    <li>Rechts in den neuen Ordner <code>/poolparty</code> wechseln</li>
+    <li>Links den <strong>Inhalt</strong> von <code>_ZUM-HOCHLADEN</code> markieren —
+        nicht den Ordner selbst, sondern was drin ist — und rüberziehen</li>
+    <li>Auf dem Server <code>htaccess-hochladen-als-punkt-htaccess.txt</code>
+        umbenennen in <code>.htaccess</code> (mit Punkt vorne, ohne .txt)
+        <br><span style="color:var(--schrift-2);font-size:.92rem">Erst machen, wenn https steht — siehe oben.</span></li>
+    <li>Am Handy <code>https://poolparty.robschman.at</code> aufrufen</li>
+  </ol>
+
+  <p class="beschriftung">Vorher am Mac ausprobieren, ohne Server — Terminal öffnen:</p>
+  <div class="befehl"><pre>cd "/Users/robschmansimac/Claude Projekte/VIP-Schnitzeljagd/_ZUM-HOCHLADEN"</pre><button>Kopieren</button></div>
+  <p class="beschriftung">Kleinen Testserver starten:</p>
+  <div class="befehl"><pre>python3 -m http.server 8899</pre><button>Kopieren</button></div>
+  <p class="beschriftung">Dann im Browser <code>http://localhost:8899</code> aufrufen.
+  Mit <strong>Strg + C</strong> beendest du den Testserver wieder.</p>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="anpassen"><div class="bahn">
+  <p class="nummer">Frage 3: Wie änderst du Inhalte</p>
+  <h2>Eine einzige Datei: stationen.js</h2>
+
+  <p>Alles Inhaltliche steht in <code>_ZUM-HOCHLADEN/js/stationen.js</code>. Du öffnest sie
+  mit TextEdit oder BBEdit und änderst nur den Text zwischen den Anführungszeichen.
+  Programmieren musst du nichts.</p>
+
+  <p><strong>Vorher eine Sicherungskopie machen</strong> — dann kann nichts passieren:</p>
+  <div class="befehl"><pre>cd "/Users/robschmansimac/Claude Projekte/VIP-Schnitzeljagd/_ZUM-HOCHLADEN/js"</pre><button>Kopieren</button></div>
+  <div class="befehl"><pre>cp stationen.js stationen.js.backup</pre><button>Kopieren</button></div>
+
+  <h3>Die drei Regeln</h3>
+  <ol class="punkte">
+    <li>Text steht immer zwischen <code>"Anführungszeichen"</code></li>
+    <li>Am Zeilenende steht ein Komma</li>
+    <li>Klammern <code>{ }</code> und Anführungszeichen nicht löschen</li>
+  </ol>
+
+  <h3>Was du überall suchen musst</h3>
+  <p>Ich habe jede offene Stelle mit <code>HIER … EINTRAGEN</code> markiert. Wenn du das
+  Wort <strong>HIER</strong> in der Datei suchst, findest du alle. Es sind noch acht Stellen — alle davon füllt das Erkundungs-Blatt und das Video.
+  Das Datum und die Teams habe ich schon eingetragen.</p>
+
+  <h3>Fotos einbauen</h3>
+  <ol class="punkte">
+    <li>Foto am iPhone machen, per AirDrop auf den Mac</li>
+    <li>In den Ordner <code>_ZUM-HOCHLADEN/fotos</code> legen, kurzer Name ohne
+        Leerzeichen und Umlaute, z. B. <code>tuersteher.jpg</code></li>
+    <li>In <code>stationen.js</code> bei der Station eintragen:
+        <code>foto: "fotos/tuersteher.jpg",</code></li>
+  </ol>
+  <p>Vorher die Bilder verkleinern — am Mac in der Vorschau unter
+  <em>Werkzeuge → Größenkorrektur</em> auf etwa 1200 Pixel Breite. Sonst wartet jedes Kind
+  im Ortsnetz ewig, bis das Bild da ist.</p>
+
+  <h3>Silber statt Gold</h3>
+  <p>In <code>stationen.js</code> oben: <code>farbe: "gold"</code> → <code>farbe: "silber"</code>.
+  Mehr nicht, das ganze Design zieht mit.</p>
+
+  <div class="kasten wichtig">
+    <p class="kastentitel">Nach jeder Änderung wichtig</p>
+    <p>Ganz oben in <code>stationen.js</code> steht <code>version: "1"</code>.
+    Zähl die Zahl bei jeder Änderung um eins hoch. Sonst zeigen Handys, die schon einmal
+    da waren, noch die alte Fassung. Denselben Trick kennst du vom <code>?v=</code>
+    auf der Fitness-Website.</p>
+  </div>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="qr"><div class="bahn">
+  <p class="nummer">Frage 4: Der QR-Code</p>
+  <h2>Fertiges Plakat zum Ausdrucken</h2>
+
+  <p>Im Ordner <code>Werkzeuge</code> liegt <strong>QR-Plakat.html</strong>. Doppelklick,
+  es geht im Browser auf: A4-Plakat in Schwarz-Gold mit dem QR-Code, „Scanne mich“ und der
+  Adresse darunter. Die Adresse oben im Feld ändern → der Code baut sich sofort neu.
+  Ich habe ihn mit einem echten Scanner-Programm geprüft, er wird sauber gelesen.</p>
+
+  <ul class="punkte">
+    <li>Drucken mit <strong>⌘ + P</strong> — im Druckdialog unbedingt
+        <strong>Hintergrundgrafiken</strong> anhaken, sonst kommt das Plakat weiß heraus</li>
+    <li>Über den Knopf <em>Als Bild speichern</em> bekommst du den Code auch als PNG —
+        praktisch für die WhatsApp-Gruppe der Eltern</li>
+    <li>Die Adresse steht dort schon auf <code>poolparty.robschman.at</code></li>
+    <li>Mach <strong>drei Ausdrucke</strong> — einen pro Team und einen als Reserve. Und schreib die Adresse
+        zusätzlich lesbar dazu — wenn eine Kamera streikt, tippt man sie ab</li>
+  </ul>
+
+  <div class="kasten">
+    <p class="kastentitel">Zusatztipp fürs iPhone</p>
+    <p>Nach dem Scannen: Teilen-Knopf → <em>Zum Home-Bildschirm</em>. Dann liegt die
+    Jagd als eigenes Symbol (goldene Krone) am Handy und startet ohne Browser-Leiste,
+    wie eine richtige App. Das habe ich eingebaut.</p>
+  </div>
+</div></section>
+
+<!-- ================================================================== -->
+<section id="video"><div class="bahn">
+  <p class="nummer">Station 2</p>
+  <h2>Dein Video — zwei Wege ins Spiel</h2>
+
+  <p>Du machst das Video selbst. Die <strong>ausführliche Anleitung mit Drehbuch,
+  Aufstellung und Wort-für-Wort-Text</strong> liegt in
+  <code>Werkzeuge/Video-Anleitung.html</code>. Hier nur das Wichtigste:</p>
+
+  <ul class="punkte">
+    <li><strong>Quer filmen</strong>, nicht hochkant — der Player in der App ist quer</li>
+    <li><strong>1080p, 30 Bilder</strong> einstellen (Einstellungen → Kamera → Video aufnehmen).
+        In 4K wird die Datei zu groß fürs Handynetz</li>
+    <li>Das Codewort <strong>sagen und gleichzeitig auf einem Blatt hochhalten</strong> —
+        dann kommen auch die Teams weiter, bei denen es zu laut ist</li>
+    <li>Codewort ist derzeit <code>GOLDFISCH</code></li>
+  </ul>
+
+  <div class="kasten wichtig">
+    <p class="kastentitel">Neu: Du brauchst kein YouTube</p>
+    <p>Ich habe die App so erweitert, dass sie auch eine <strong>Videodatei direkt von
+    deinem Server</strong> abspielt. Datei nach <code>fotos/botschaft.mp4</code> legen,
+    in <code>stationen.js</code> eintragen — fertig. Kein Konto, keine Werbung,
+    keine Einstellungen, die man falsch machen kann.</p>
+    <p>YouTube geht weiterhin (dann auf <em>Nicht gelistet</em> stellen) — sinnvoll,
+    wenn die Datei größer als 30 MB wird.</p>
+  </div>
+</div></section>
+
+
+
+<!-- ================================================================== -->
+<section id="partytag"><div class="bahn">
+  <p class="nummer">Der Partytag</p>
+  <h2>Checkliste und Material</h2>
+
+  <h3>Am Abend vorher</h3>
+  <ul class="punkte">
+    <li>Adresse am eigenen Handy aufrufen — geht sie über https auf?</li>
+    <li>Eine Station wirklich durchspielen, nicht nur anschauen</li>
+    <li>QR-Plakate ausdrucken (drei Stück)</li>
+    <li><strong>Spielleiter-Zettel</strong> ausdrucken — liegt in <code>Werkzeuge</code>,
+        listet alle Lösungen, die Geheimwörter und den Notfallcode. Nicht herzeigen.</li>
+    <li>Die Wege selbst einmal abgehen: Ist die Hausnummer noch dran? Steht das Schild noch?</li>
+  </ul>
+
+  <h3>Material</h3>
+  <ul class="punkte">
+    <li>Drei ausgedruckte QR-Plakate, dazu die Adresse lesbar auf einen Zettel</li>
+    <li>Eine <strong>Powerbank pro Team</strong> — Kamera, Bildschirm und Suchen fressen Akku,
+        und mitten in der Jagd ohne Handy ist bitter</li>
+    <li>Etwas zum Schreiben pro Team für die Buchstaben (die App zeigt sie zwar mit,
+        aber Kinder schreiben sie gern auf die Hand)</li>
+    <li>Der „Schatz“ fürs Finale — was auch immer sie am Pool erwartet</li>
+    <li>Deine Handynummer auf jedem QR-Zettel, falls sich ein Team verläuft</li>
+  </ul>
+
+  <h3>Wenn etwas klemmt</h3>
+  <ul class="punkte">
+    <li><strong>Team steckt fest</strong> → Krone oben links 3× antippen, Code <code>9999</code>,
+        „Diese Station überspringen“</li>
+    <li><strong>Seite lädt nicht</strong> → einmal neu laden. Der Fortschritt ist gespeichert,
+        es geht an derselben Stelle weiter</li>
+    <li><strong>Kein Netz unterwegs</strong> → alle Handys vor dem Start einmal die Seite
+        laden lassen, solange sie noch im WLAN sind. Dann ist das Wichtigste im
+        Zwischenspeicher</li>
+    <li><strong>Ein Team hat kein Handy</strong> → dazuteilen. Ein Handy pro Team reicht.
+        Bei fünf bis sieben Kindern sind zwei Teams die richtige Größe</li>
+  </ul>
+
+  <div class="kasten achtung">
+    <p class="kastentitel">Was du vorher regeln solltest</p>
+    <p>Zwölf- bis Vierzehnjährige allein in der Umgebung: Steck den Bereich vorher ab und
+    sag ihn klar an — welche Straße ist die Grenze, wo wird nicht gequert. Und plane
+    ein, dass mindestens ein Erwachsener mitgeht oder mit dem Rad in der Nähe bleibt.
+    Die App kann das nicht ersetzen.</p>
+  </div>
+</div></section>
+
+<!-- ================================================================== -->
+
+
+<footer>
+  <div class="bahn">VIP-Schnitzeljagd · Stand 18. August 2026 · Party am 28. August</div>
+</footer>
+
+<script>
+document.querySelectorAll('.befehl button').forEach(function(k){
+  k.addEventListener('click', function(){
+    var text = k.previousElementSibling.textContent;
+    var fertig = function(){ k.textContent='Kopiert'; setTimeout(function(){ k.textContent='Kopieren'; },1600); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(fertig, ersatz);
+    } else { ersatz(); }
+    function ersatz(){
+      var f=document.createElement('textarea'); f.value=text;
+      f.style.position='fixed'; f.style.opacity='0'; document.body.appendChild(f);
+      f.select(); try{ document.execCommand('copy'); fertig(); }catch(e){ k.textContent='⌘C drücken'; }
+      document.body.removeChild(f);
+    }
+  });
+});
+</script>
+</body>
+</html>
