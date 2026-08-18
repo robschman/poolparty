@@ -412,6 +412,17 @@ body.silber .legezeile .platz.voll{color:#15171a}
 }
 .kachel:active{transform:scale(.92)}
 
+/* ---- 22. Gemeinsam mit dem anderen Team -------------------------------- */
+.gemeinsam{
+  border:1.5px solid var(--gruen); border-radius:13px; padding:13px 15px; margin:0 0 16px;
+  background:rgba(52,209,124,.10);
+}
+.gemeinsam > b{
+  display:block; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--gruen); margin-bottom:6px; font-weight:700;
+}
+.gemeinsam span{font-size:14.5px; color:var(--weiss); display:block; line-height:1.5}
+
 .zentriert{text-align:center}
 .start-logo{text-align:center; padding:26px 0 4px}
 .start-logo .untertitel{

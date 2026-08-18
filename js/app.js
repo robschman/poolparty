@@ -210,6 +210,12 @@ function ortBlock(st){
       ${weg ? "<span>"+weg+"</span>" : ""}
     </div></div>`;
 }
+function gemeinsamBlock(st){
+  if(!st.gemeinsam) return "";
+  return `<div class="gemeinsam"><b>👥 Zusammen mit dem anderen Team</b>
+    <span>${st.gemeinsamText || "Wartet aufeinander — diese Station macht ihr gemeinsam."}</span>
+  </div>`;
+}
 function medienBlock(st){
   let h = "";
   if(st.foto)  h += `<img class="bild" src="${st.foto}" alt="Hinweisbild" onerror="this.style.display='none'">`;
@@ -300,6 +306,7 @@ function bauCode(st,i){
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
+      ${gemeinsamBlock(st)}
       ${medienBlock(st)}
       <p>${fuerTeam(st.teamText, st.text)}</p>
       ${fehlerMeldung(i)}
@@ -451,6 +458,7 @@ function bauFoto(st,i){
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
+      ${gemeinsamBlock(st)}
       ${medienBlock(st)}
       <p>${fuerTeam(st.teamText, st.text)}</p>
       <ul class="liste">${(st.auftraege||[]).map((a,n)=>
@@ -489,6 +497,7 @@ function bauDuell(st,i){
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
+      ${gemeinsamBlock(st)}
       <p>${(fuerTeam(st.teamText, st.text)||"").replace("DAS RÄTSEL STEHT UNTEN", "")}</p>
       ${raetsel ? `<div class="emojis">${raetsel}</div>
         <p class="hinweis">Das ist euer Rätsel. Zeigt es dem anderen Team —

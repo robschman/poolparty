@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team-Auslosung — VIP CLUB</title>
+<style>
+:root{
+  --schwarz:#07070a; --schwarz-2:#101016; --karte:#15151d; --rand:rgba(212,175,55,.28);
+  --gold:#d4af37; --gold-hell:#f7e9a8; --gold-tief:#8c6d1f; --weiss:#f4f2ee; --grau:#9a9689;
+  --gruen:#34d17c;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0; background:var(--schwarz); color:var(--weiss); min-height:100vh;
+  font-family:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  line-height:1.55; overflow-x:hidden;
+  background-image:radial-gradient(120% 60% at 50% -10%, rgba(212,175,55,.16), transparent 60%);}
+.huelle{max-width:560px; margin:0 auto; padding:calc(env(safe-area-inset-top) + 26px) 18px 40px}
+.klein-label{font-size:11px; letter-spacing:.30em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 8px; text-align:center}
+h1{font-family:"Playfair Display","Didot","Bodoni 72",Georgia,serif; font-weight:900;
+  font-size:clamp(34px,11vw,54px); line-height:1; margin:0; text-align:center;
+  background:linear-gradient(180deg,var(--gold-hell) 8%,var(--gold) 48%,var(--gold-tief) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 3px 14px rgba(212,175,55,.25));}
+.dach{text-align:center; color:var(--grau); font-size:14px; margin:12px 0 0}
+.strich{height:1px; margin:22px 0; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.5}
+.karte{background:linear-gradient(160deg,var(--karte),var(--schwarz-2)); border:1px solid var(--rand);
+  border-radius:18px; padding:20px; margin:0 0 16px; box-shadow:0 18px 50px rgba(0,0,0,.65)}
+label{display:block; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 8px}
+textarea, input[type=number]{width:100%; padding:14px; border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.16); background:rgba(0,0,0,.45); color:var(--weiss);
+  font-family:inherit; font-size:16px; -webkit-appearance:none}
+textarea{min-height:150px; resize:vertical; line-height:1.7}
+textarea:focus, input:focus{outline:none; border-color:var(--gold); box-shadow:0 0 0 4px rgba(212,175,55,.14)}
+.reihe{display:flex; gap:12px; align-items:flex-end; margin-top:14px}
+.reihe > div{flex:1}
+.knopf{display:block; width:100%; border:0; border-radius:14px; cursor:pointer; padding:18px 20px;
+  font-family:inherit; font-size:18px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+  background:linear-gradient(180deg,var(--gold-hell),var(--gold) 55%,var(--gold-tief));
+  color:#1a1405; box-shadow:0 8px 26px rgba(212,175,55,.28); transition:transform .12s;
+  -webkit-appearance:none; margin-top:16px}
+.knopf:active{transform:scale(.975)}
+.knopf.leise{background:transparent; color:var(--grau); border:1px solid rgba(255,255,255,.14);
+  box-shadow:none; font-size:14px; font-weight:600; padding:13px}
+.hinweis{font-size:12.5px; color:var(--grau); text-align:center; margin:14px 0 0; line-height:1.5}
+
+/* Trommelwirbel */
+#trommel{display:none; text-align:center; padding:40px 0}
+#trommel.da{display:block}
+.wirbel{font-family:"Playfair Display",Georgia,serif; font-size:clamp(30px,9vw,44px); font-weight:900;
+  color:var(--gold); min-height:1.3em; letter-spacing:.04em}
+
+/* Ergebnis */
+#ergebnis{display:none} #ergebnis.da{display:block}
+.teamkarte{background:linear-gradient(160deg,var(--karte),var(--schwarz-2));
+  border:1.5px solid var(--gold); border-radius:18px; padding:20px; margin:0 0 14px;
+  box-shadow:0 18px 50px rgba(0,0,0,.65); animation:auf .5s cubic-bezier(.2,.8,.2,1) both}
+.teamkarte:nth-child(2){animation-delay:.15s} .teamkarte:nth-child(3){animation-delay:.3s}
+.teamkarte:nth-child(4){animation-delay:.45s}
+@keyframes auf{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.teamkarte h2{font-family:"Playfair Display",Georgia,serif; font-size:26px; font-weight:900;
+  margin:0 0 4px; color:var(--gold)}
+.teamkarte .geheim{font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--grau);
+  margin:0 0 14px; font-weight:700}
+.teamkarte ul{list-style:none; margin:0; padding:0}
+.teamkarte li{display:flex; align-items:center; gap:12px; padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.08); font-size:17px}
+.teamkarte li:last-child{border-bottom:0}
+.teamkarte li .rolle{margin-left:auto; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+  font-weight:700; padding:4px 9px; border-radius:6px; background:rgba(212,175,55,.16); color:var(--gold);
+  white-space:nowrap}
+.teamkarte li .rolle.handy{background:rgba(52,209,124,.16); color:var(--gruen)}
+.teamkarte li .zahl{width:26px; height:26px; border-radius:50%; flex:none;
+  background:linear-gradient(140deg,var(--gold-hell),var(--gold-tief)); color:#1a1405;
+  display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900}
+@media print{
+  body{background:#fff; color:#000; background-image:none}
+  .knopf, .hinweis, form, .strich{display:none}
+  .teamkarte{border:2px solid #999; box-shadow:none; break-inside:avoid; background:#fff}
+  .teamkarte h2{color:#000; -webkit-text-fill-color:#000}
+  h1{color:#000; -webkit-text-fill-color:#000; background:none}
+}
+</style>
+</head>
+<body>
+<div class="huelle">
+
+  <p class="klein-label">Nur für den Spielleiter</p>
+  <h1>Team-Auslosung</h1>
+  <p class="dach">Namen eintragen, Knopf drücken — der Club entscheidet.</p>
+
+  <div class="strich"></div>
+
+  <form id="form" onsubmit="return false">
+    <div class="karte">
+      <label for="namen">Wer ist da? Ein Name pro Zeile</label>
+      <textarea id="namen" placeholder="Zoe&#10;Emma&#10;Lena&#10;Max&#10;Paul&#10;Jonas"></textarea>
+      <div class="reihe">
+        <div>
+          <label for="anzahl">Wie viele Teams?</label>
+          <input type="number" id="anzahl" value="2" min="2" max="4" inputmode="numeric">
+        </div>
+      </div>
+      <button class="knopf" id="losen">Auslosen</button>
+      <p class="hinweis">Die App ist auf zwei Teams eingestellt. Mehr geht,
+      dann müssen in <b>stationen.js</b> die weiteren Teams freigeschaltet werden.</p>
+    </div>
+  </form>
+
+  <div id="trommel"><div class="wirbel" id="wirbel"></div></div>
+
+  <div id="ergebnis">
+    <div id="teams"></div>
+    <button class="knopf" id="nochmal">Nochmal auslosen</button>
+    <button class="knopf leise" id="drucken">Drucken</button>
+    <button class="knopf leise" id="neu">Andere Namen eingeben</button>
+    <p class="hinweis">Die Teamnamen und Geheimwörter kommen aus <b>stationen.js</b> —
+    sie stimmen also mit dem überein, was die Kinder am Handy sehen.</p>
+  </div>
+
+</div>
+
+<script src="../js/stationen.js"></script>
+<script>
+(function(){
+  var SPRUECHE = [
+    "Der Club prüft die Gästeliste …",
+    "Türsteher konsultiert …",
+    "Verbindungen werden gekappt …",
+    "Neue Allianzen entstehen …",
+    "Das Los ist gefallen."
+  ];
+  var ROLLEN = ["Handyträger", "Sprecher", "Zeitnehmer", "Fotograf"];
+
+  var TEAMNAMEN = (typeof SPIEL !== "undefined" && SPIEL.teams)
+    ? SPIEL.teams.map(function(t){ return t; })
+    : [{name:"Team 1"},{name:"Team 2"},{name:"Team 3"},{name:"Team 4"}];
+
+  function mischen(a){
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var h = a[i]; a[i] = a[j]; a[j] = h;
+    }
+    return a;
+  }
+
+  function auslosen(){
+    var namen = document.getElementById("namen").value
+      .split("\n").map(function(s){ return s.trim(); }).filter(Boolean);
+    var wieViele = Math.max(2, Math.min(4, parseInt(document.getElementById("anzahl").value,10)||2));
+    if(namen.length < wieViele){
+      alert("Für " + wieViele + " Teams brauchst du mindestens " + wieViele + " Namen.");
+      return;
+    }
+    try{ localStorage.setItem("vip_namen", document.getElementById("namen").value); }catch(e){}
+
+    mischen(namen);
+    var teams = [];
+    for(var i=0;i<wieViele;i++) teams.push([]);
+    namen.forEach(function(n,i){ teams[i % wieViele].push(n); });
+
+    /* Trommelwirbel, dann Auflösung */
+    document.getElementById("form").style.display = "none";
+    document.getElementById("ergebnis").classList.remove("da");
+    var tr = document.getElementById("trommel"), w = document.getElementById("wirbel");
+    tr.classList.add("da");
+    var n = 0;
+    var t = setInterval(function(){
+      w.textContent = SPRUECHE[n];
+      n++;
+      if(n >= SPRUECHE.length){
+        clearInterval(t);
+        setTimeout(function(){ tr.classList.remove("da"); zeigen(teams); }, 700);
+      }
+    }, 620);
+    w.textContent = SPRUECHE[0];
+  }
+
+  function zeigen(teams){
+    var h = "";
+    teams.forEach(function(mitglieder, i){
+      var info = TEAMNAMEN[i] || {name:"Team " + (i+1)};
+      h += '<div class="teamkarte"><h2>' + info.name + '</h2>'
+         + (info.geheimwort ? '<p class="geheim">Geheimwort: ' + info.geheimwort + '</p>' : '')
+         + '<ul>' + mitglieder.map(function(m, k){
+             var rolle = ROLLEN[k] || "";
+             return '<li><span class="zahl">' + (k+1) + '</span>' + m
+                  + (rolle ? '<span class="rolle' + (k===0?" handy":"") + '">' + rolle + '</span>' : '')
+                  + '</li>';
+           }).join("") + '</ul></div>';
+    });
+    document.getElementById("teams").innerHTML = h;
+    document.getElementById("ergebnis").classList.add("da");
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  document.getElementById("losen").onclick = auslosen;
+  document.getElementById("nochmal").onclick = auslosen;
+  document.getElementById("drucken").onclick = function(){ window.print(); };
+  document.getElementById("neu").onclick = function(){
+    document.getElementById("ergebnis").classList.remove("da");
+    document.getElementById("form").style.display = "block";
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
+  try{
+    var alt = localStorage.getItem("vip_namen");
+    if(alt) document.getElementById("namen").value = alt;
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

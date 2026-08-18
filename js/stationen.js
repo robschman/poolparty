@@ -239,18 +239,6 @@ const STATIONEN = [
   tipp: "Er sagt es nicht nur — er hält es auch schriftlich in die Kamera. Nochmal anschauen."
 },
 
-/* -------------------------------------------------------- 8 · QR-Zettel -- */
-{
-  typ: "code",
-  titel: "Die verstecken Zettel",
-  modi: ["lang"],
-  ort: "HIER SUCHGEBIET EINTRAGEN",
-  weg: "HIER WEG EINTRAGEN.",
-  text: "Irgendwo hier sind drei kleine Zettel versteckt — an Schildern, unter Bänken, an Zäunen. Auf jedem klebt ein QR-Code.\n\nScannt alle drei mit der Kamera. Jeder zeigt euch einen Buchstaben.\n\nSetzt die drei Buchstaben zusammen und tippt sie ein.",
-  antwort: "HIER ANTWORT EINTRAGEN",
-  tipp: "HIER TIPP EINTRAGEN — z. B. „Einer hängt tiefer, als ihr denkt.“"
-},
-
 /* ================== DIE PAUSE — drei Stationen an einem Ort ==============
    Hier stellst du Essen und Trinken hin. Beide Teams kommen her, bleiben
    eine Weile und haben in der Zeit drei Aufgaben. Ungefähr die Mitte der Jagd.
@@ -261,6 +249,7 @@ const STATIONEN = [
   typ: "code",
   titel: "Die Lounge",
   modi: ["kurz", "lang", "drinnen"],
+  gemeinsam: true,
   ort: "HIER PAUSENORT EINTRAGEN",
   weg: "Hier ist für euch gedeckt. Setzt euch, esst, trinkt — und schaut genau hin.",
   text: "Willkommen in der Lounge. Der Club sorgt für seine Mitglieder.\n\nAber nichts ist umsonst: An den Bechern und Tellern kleben kleine Zettel. Auf jedem steht ein Buchstabe und eine Zahl.\n\nDie Zahl sagt euch, an welche Stelle der Buchstabe gehört. Sammelt alle ein und setzt das Wort zusammen.\n\n(Ja, ihr müsst dafür alles anfassen. Genau das ist der Plan.)",
@@ -284,11 +273,26 @@ const STATIONEN = [
   mindestens: 3
 },
 
+/* --------------------------------------------------- 10 · Das Eisfach --- */
+{
+  typ: "code",
+  titel: "Das Eisfach",
+  modi: ["kurz", "lang", "drinnen"],
+  gemeinsam: true,
+  ort: "In der Lounge",
+  weg: "Bleibt hier. Das dauert.",
+  text: "Der Club bewahrt seine Geheimnisse kalt.\n\nIhr bekommt zwölf Eiswürfel. In manchen steckt ein Buchstabe — in anderen nichts als ein ✗. Die zählen nicht.\n\nHolt die Buchstaben raus. Wie, ist eure Sache: in die Sonne legen, in den Händen halten, drauftrampeln, in warmes Wasser werfen. Nur nicht in den Mund nehmen.\n\nAus den echten Buchstaben ergibt sich ein Wort. Welches?",
+  antwort: "EISKALT",
+  tipp: "Sieben Buchstaben sind echt, fünf sind Nieten. Und ja — das Wort passt zu dem, was ihr gerade in den Händen habt.",
+  gemeinsamText: "Diese Station macht ihr ZUSAMMEN mit dem anderen Team. Wartet aufeinander, teilt euch die Eiswürfel auf — jedes Team tippt die Antwort dann in sein eigenes Handy."
+},
+
 /* ------------------------------------------------------ 11 · Emoji-Duell -- */
 {
   typ: "duell",
   titel: "Das Emoji-Duell",
   buchstabe: true,
+  gemeinsam: true,
   ort: "In der Lounge",
   weg: "Beide Teams sind ohnehin hier. Wartet aufeinander.",
   text: "Jetzt wird es persönlich.\n\n1. Zeigt dem anderen Team diese vier Emojis:\n\nDAS RÄTSEL STEHT UNTEN\n\n2. Sie müssen raten, welcher Film oder Song gemeint ist.\n3. Dann zeigen sie euch ihres, und ihr ratet.\n4. Wer richtig rät, bekommt vom anderen Team dessen GEHEIMWORT.\n\nTragt das Geheimwort des anderen Teams unten ein.",
@@ -297,6 +301,20 @@ const STATIONEN = [
     "❄️ 👸 ⛄ 🎤"           // Team 2 zeigt das — Lösung: Die Eiskönigin
   ],
   tipp: "Euer eigenes Geheimwort steht ganz unten auf dieser Seite — aber nur herausrücken, wenn die anderen wirklich richtig geraten haben."
+},
+
+/* ------------------------------------------------- 12 · QR-Zettel ------ */
+{
+  typ: "code",
+  titel: "Die verstecken Zettel",
+  modi: ["lang"],
+  gemeinsam: true,
+  ort: "HIER SUCHGEBIET EINTRAGEN",
+  weg: "HIER WEG EINTRAGEN.",
+  text: "Irgendwo hier sind drei kleine Zettel versteckt — an Schildern, unter Bänken, an Zäunen. Auf jedem klebt ein QR-Code.\n\nScannt alle drei mit der Kamera. Jeder zeigt euch einen Buchstaben.\n\nSetzt die drei Buchstaben zusammen und tippt sie ein.",
+  antwort: "HIER ANTWORT EINTRAGEN",
+  tipp: "HIER TIPP EINTRAGEN — z. B. „Einer hängt tiefer, als ihr denkt.“",
+  gemeinsamText: "Sucht ZUSAMMEN mit dem anderen Team. Es gibt nur drei Zettel — wer sie zuerst findet, nimmt sie nicht weg, sondern zeigt sie her."
 },
 
 /* ---------------------------------------------------- 10 · Zählaufgabe --- */
@@ -380,8 +398,8 @@ const STATIONEN = [
   modi: ["kurz", "lang"],
   ort: "Zwei Verstecke",
   teamText: [
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 1 BESCHREIBEN\n\nDort liegt ein Zettel. Merkt euch, was darauf steht — und dann sucht das andere Team. Die haben die andere Hälfte.\n\nOhne die geht gar nichts.",
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 2 BESCHREIBEN\n\nDort liegt ein Zettel. Merkt euch, was darauf steht — und dann sucht das andere Team. Die haben die andere Hälfte.\n\nOhne die geht gar nichts."
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 1 BESCHREIBEN\n\nDort liegt EUER Zettel — das andere Team hat ein eigenes Versteck woanders, ihr kommt euch also nicht in die Quere.\n\nMerkt euch, was darauf steht, und sucht dann das andere Team. Ohne dessen Hälfte geht gar nichts.",
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 2 BESCHREIBEN\n\nDort liegt EUER Zettel — das andere Team hat ein eigenes Versteck woanders, ihr kommt euch also nicht in die Quere.\n\nMerkt euch, was darauf steht, und sucht dann das andere Team. Ohne dessen Hälfte geht gar nichts."
   ],
   frage: "Habt ihr beide Hälften? Dann tippt das ganze Kennwort ein.",
   tipp: "Beide Wörter hintereinander, in der richtigen Reihenfolge. Ihr merkt selbst, was zuerst kommt."
