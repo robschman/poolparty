@@ -48,9 +48,23 @@
 <script src="../js/stationen.js"></script>
 <script>
 (function(){
-  var buchstabenStationen = STATIONEN.filter(function(s){ return s.buchstabe; });
-  var wort = buchstabenStationen.map(function(s){ return s.buchstabe; }).join('');
-  var stimmt = !SPIEL.loesungswortKontrolle || wort === SPIEL.loesungswortKontrolle;
+  var MODUS = (new URLSearchParams(location.search).get('modus')) || SPIEL.modus || 'lang';
+  var AKTIV = STATIONEN.filter(function(s){ return !s.modi || s.modi.indexOf(MODUS) > -1; });
+  var buchstabenStationen = AKTIV.filter(function(s){ return s.buchstabe; });
+  var wort = (SPIEL.loesungswort||'').toUpperCase();
+  var stimmt = true;
+
+  /* Buchstaben durcheinander verteilen — genau wie in der App */
+  var BUCHSTABEN = (function(){
+    var misch = (SPIEL.buchstabenReihenfolge && SPIEL.buchstabenReihenfolge.length===wort.length)
+              ? SPIEL.buchstabenReihenfolge : wort.split('').map(function(_,i){ return i; });
+    var folge = misch.map(function(i){ return wort[i]; });
+    var st = [], karte = {};
+    AKTIV.forEach(function(s,i){ if(s.buchstabe){ st.push(i); karte[i]=[]; } });
+    if(!st.length) return karte;
+    folge.forEach(function(b,n){ karte[st[n % st.length]].push(b); });
+    return karte;
+  })();
 
   function loesungVon(s){
     if(s.typ==='code')     return '<span class="loesung">'+s.antwort+'</span>'
@@ -62,14 +76,20 @@
                                 + s.auftraege.length+' abhaken';
     if(s.typ==='handyaus') return '<b>Fake!</b> Läuft nach '+(s.sekunden||60)
                                 + ' Sekunden von selbst weiter — auch wenn niemand das Handy ausschaltet';
+    if(s.typ==='spiegel')  return '<span class="loesung">'+s.antwort+'</span> <span class="ort">gespiegelt: '+(s.spiegelText||'')+'</span>';
+    if(s.typ==='stoppuhr') return 'Schätzung, keine feste Lösung';
+    if(s.typ==='sprint')   return 'Countdown '+(s.sekunden||180)+' Sekunden';
+    if(s.typ==='kennwort') return '<span class="loesung">'+SPIEL.kennwortTeil1+' + '+SPIEL.kennwortTeil2+'</span>';
+    if(s.typ==='anruf')    return '<b>Am Telefon sagst du:</b> <span class="loesung">'+SPIEL.anrufCode+'</span>';
+    if(s.typ==='finale')   return '<span class="loesung">'+wort+'</span> selbst legen lassen';
     if(s.typ==='start')    return 'nur bestätigen';
     return '—';
   }
 
-  var zeilen = STATIONEN.map(function(s,i){
+  var zeilen = AKTIV.map(function(s,i){
     return '<tr>'
       + '<td class="nr">'+i+'</td>'
-      + '<td class="buchst">'+(s.buchstabe||'')+'</td>'
+      + '<td class="buchst">'+((BUCHSTABEN[i]||[]).join(''))+'</td>'
       + '<td><b>'+s.titel+'</b><br><span class="typ">'+s.typ+'</span>'
       + (s.ort? '<br><span class="ort">📍 '+s.ort+'</span>':'') + '</td>'
       + '<td>'+loesungVon(s) + (s.tipp? '<br><span class="ort">Tipp: '+s.tipp+'</span>':'') + '</td>'
@@ -82,11 +102,18 @@
 
   document.getElementById('blatt').innerHTML =
     '<h1>Spielleiter-Zettel</h1>'
-  + '<p class="unterzeile">'+SPIEL.titel+' · '+SPIEL.untertitel+' · '+SPIEL.datum+'</p>'
+  + '<p class="unterzeile">'+SPIEL.titel+' · '+SPIEL.untertitel+' · '+SPIEL.datum
+  + ' · Fassung <b>'+MODUS.toUpperCase()+'</b></p>'
   + '<div class="warnung"><b>Nicht herzeigen.</b> Auf diesem Blatt stehen alle Lösungen. '
   + 'Notfall im Spiel: oben links die <b>Krone 3× antippen</b>, Code <b>'+SPIEL.leiterCode
   + '</b> eingeben — dann kannst du eine Station überspringen.</div>'
 
+  + '<h2>Am Telefon</h2>'
+  + '<div class="kasten"><b>Kennwort, das sie nennen müssen:</b> <span class="loesung">'
+  + SPIEL.kennwortTeil1+' '+SPIEL.kennwortTeil2+'</span><br>'
+  + '<b>Code, den du herausgibst:</b> <span class="loesung">'+SPIEL.anrufCode+'</span><br>'
+  + '<span class="ort">Team 1 findet „'+SPIEL.kennwortTeil1+'", Team 2 findet „'+SPIEL.kennwortTeil2+'". '
+  + 'Ohne beide Hälften kommt niemand weiter.</span></div>'
   + '<h2>Das Losungswort am Ende</h2>'
   + '<div class="wort">'+wort+'</div>'
   + (stimmt ? '' : '<div class="warnung"><b>Achtung:</b> In stationen.js steht als Kontrolle „'

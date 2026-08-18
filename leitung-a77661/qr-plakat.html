@@ -13,6 +13,8 @@
   .leiste h1{font-size:20px;margin:0 0 6px}
   .leiste p{font-size:14px;color:#a9a9b3;line-height:1.6;margin:0 0 16px}
   .leiste label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#d4af37;margin:0 0 6px;font-weight:700}
+  .leiste select{width:100%;padding:13px 14px;border-radius:10px;border:1px solid #4a4a55;
+    background:#16161c;color:#fff;font-size:15px;font-family:inherit;-webkit-appearance:none}
   .leiste input{width:100%;padding:13px 14px;border-radius:10px;border:1px solid #4a4a55;background:#16161c;color:#fff;font-size:15px;font-family:inherit}
   .leiste .reihe{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
   .leiste button{flex:1;min-width:150px;padding:13px 18px;border:0;border-radius:10px;cursor:pointer;
@@ -32,6 +34,8 @@
     background:linear-gradient(180deg,#f7e9a8 8%,#d4af37 48%,#8c6d1f 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent}
   .unter{font-size:13pt;letter-spacing:.30em;text-transform:uppercase;color:#9a9689;margin:5mm 0 0}
+  .modusband{font-size:10pt;letter-spacing:.22em;text-transform:uppercase;color:#77746c;
+    margin:3mm 0 0;font-weight:700}
   .linie{width:60%;height:1px;margin:9mm 0;background:linear-gradient(90deg,transparent,#d4af37,transparent)}
   .qrrahmen{background:#fff;padding:7mm;border-radius:6mm;box-shadow:0 0 0 2px #d4af37, 0 14px 40px rgba(212,175,55,.28)}
   .qrrahmen svg,.qrrahmen img{display:block;width:82mm;height:82mm}
@@ -58,17 +62,27 @@
      den Haken bei <b>Hintergrundgrafiken</b> setzen, sonst wird das Plakat weiß).</p>
   <label for="url">Adresse der App</label>
   <input id="url" value="https://poolparty.robschman.at">
+  <label for="modus" style="margin-top:14px">Welche Fassung?</label>
+  <select id="modus" onchange="bauen()">
+    <option value="lang">LANG — alle Stationen, rund 170 Minuten (Regentag)</option>
+    <option value="kurz">KURZ — rund 110 Minuten (wenn der Pool wartet)</option>
+    <option value="drinnen">DRINNEN — rund 85 Minuten (nur was unter Dach geht)</option>
+  </select>
   <div class="reihe">
     <button onclick="bauen()">QR-Code neu bauen</button>
     <button class="grau" onclick="window.print()">Drucken</button>
     <button class="grau" onclick="pngLaden()">Als Bild speichern (PNG)</button>
   </div>
+  <p style="font-size:13px;color:#a9a9b3;margin-top:12px">
+    Druck dir am besten <b>alle drei</b> aus. Am Freitag schaust du aus dem Fenster
+    und legst den passenden auf den Tisch — die App richtet sich danach.</p>
 </div>
 
 <div class="blatt">
   <p class="oben">Very Important People</p>
   <h1 class="titel">VIP CLUB</h1>
   <p class="unter" id="unterzeile">Zoes Poolparty</p>
+  <p class="modusband" id="modusband"></p>
   <div class="linie"></div>
   <div class="qrrahmen" id="qr"></div>
   <p class="scanne">Scanne mich</p>
@@ -90,12 +104,18 @@
 <script src="qrcode.js"></script>
 <script>
 function bauen(){
-  var text = document.getElementById('url').value.trim();
+  var basis = document.getElementById('url').value.trim().replace(/\/+$/,'');
+  var modus = document.getElementById('modus').value;
+  var text  = basis + '/?modus=' + modus;
   var qr = qrcode(0, 'M');          // 0 = Größe automatisch, M = mittlere Fehlerkorrektur
   qr.addData(text);
   qr.make();
   document.getElementById('qr').innerHTML = qr.createSvgTag({ scalable:true, margin:0 });
   document.getElementById('adresse').textContent = text.replace(/^https?:\/\//,'');
+  var wieLang = { lang:'Alle Stationen · rund 170 Minuten',
+                  kurz:'Kurze Fassung · rund 110 Minuten',
+                  drinnen:'Schlechtwetter · rund 85 Minuten' }[modus];
+  document.getElementById('modusband').textContent = wieLang;
 }
 function pngLaden(){
   var svg = document.querySelector('#qr svg');

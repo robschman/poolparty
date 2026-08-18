@@ -321,6 +321,97 @@ body.silber .regeln{background:rgba(210,215,225,.06)}
 .regeln li:last-child{margin-bottom:0}
 .regeln li::marker{color:var(--akzent)}
 
+/* ---- 16. Spiegelschrift ------------------------------------------------ */
+.spiegelfeld{
+  transform:scaleX(-1); direction:ltr;
+  font-family:"Playfair Display",Georgia,serif; font-weight:900;
+  font-size:clamp(19px,5.6vw,26px); line-height:1.35; text-align:center;
+  color:var(--akzent); background:rgba(0,0,0,.4);
+  border:1px solid var(--karte-rand); border-radius:14px;
+  padding:20px 16px; margin:0 0 16px; letter-spacing:.03em;
+  user-select:none;
+}
+
+/* ---- 17. Video mit Störbild -------------------------------------------- */
+.videohuelle{position:relative; border-radius:14px; overflow:hidden; margin:0 0 16px;
+  border:1px solid var(--karte-rand); background:#000}
+.videohuelle .bild, .videohuelle .videobox{margin:0; border:0; border-radius:0}
+.gestoert{filter:blur(1.1px) contrast(1.45) saturate(.55) hue-rotate(65deg) brightness(.92)}
+.scanlinien{position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay; opacity:.5;
+  background:repeating-linear-gradient(to bottom,
+    rgba(255,255,255,.13) 0 1px, transparent 1px 3px)}
+.stoerband{position:absolute; left:0; right:0; height:14%; pointer-events:none;
+  background:linear-gradient(to bottom, transparent, rgba(120,255,190,.22), transparent);
+  animation:wandern 5.5s linear infinite}
+@keyframes wandern{from{top:-15%} to{top:100%}}
+.videoetikett{
+  position:absolute; left:0; right:0; bottom:0; pointer-events:none;
+  font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:10.5px; letter-spacing:.09em;
+  color:#8effc4; background:linear-gradient(to top, rgba(0,0,0,.78), transparent);
+  padding:14px 10px 6px; text-transform:uppercase;
+  animation:flackern 3.4s steps(2,end) infinite}
+@keyframes flackern{0%,92%{opacity:.92} 94%{opacity:.35} 96%{opacity:.92} 98%{opacity:.5}}
+
+/* ---- 18. Stoppuhr ------------------------------------------------------- */
+.countdown.blind{font-size:34px; color:var(--grau); letter-spacing:.14em}
+
+/* ---- 19. Emoji-Rätsel --------------------------------------------------- */
+.emojis{
+  font-size:clamp(38px,12vw,54px); text-align:center; letter-spacing:.09em;
+  background:rgba(0,0,0,.35); border:1px solid var(--karte-rand); border-radius:14px;
+  padding:20px 12px; margin:0 0 12px; line-height:1.25;
+}
+
+/* ---- 20. Telefon -------------------------------------------------------- */
+.telefon{
+  border:1px solid var(--karte-rand); border-radius:14px; padding:16px;
+  margin:0 0 14px; text-align:center; background:rgba(212,175,55,.07);
+}
+body.silber .telefon{background:rgba(210,215,225,.07)}
+.telefon > b{display:block; font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--grau); margin-bottom:10px; font-weight:700}
+.telefon .nummer{font-family:"Playfair Display",Georgia,serif; font-size:26px; font-weight:900;
+  color:var(--akzent); letter-spacing:.06em; display:block}
+.telefon .knopf{margin:0}
+
+/* ---- 21. Wort legen (Finale) ------------------------------------------- */
+.legezeile{
+  display:flex; flex-wrap:wrap; gap:7px; justify-content:center;
+  padding:16px 10px; margin:16px 0 0; border-radius:14px;
+  background:rgba(0,0,0,.35); border:1px dashed var(--karte-rand);
+}
+.legezeile .platz{
+  width:38px; height:50px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:"Playfair Display",Georgia,serif; font-size:25px; font-weight:900;
+  border:1.5px dashed rgba(255,255,255,.2); color:var(--weiss);
+  background:rgba(255,255,255,.03); transition:all .2s;
+}
+.legezeile .platz.voll{
+  border-style:solid; border-color:var(--akzent); cursor:pointer;
+  background:linear-gradient(180deg,var(--akzent-hell),var(--akzent) 60%,var(--akzent-tief));
+  color:#1a1405;
+}
+body.silber .legezeile .platz.voll{color:#15171a}
+.legezeile .platz.richtig{
+  border-color:var(--gruen); background:linear-gradient(180deg,#7ff0b4,var(--gruen)); color:#04240f;
+  animation:reinpop .4s cubic-bezier(.2,1.6,.4,1) both;
+}
+.legezeile .platz.falschrot{
+  border-color:var(--rot); background:rgba(255,59,48,.25); color:#ffd9d6;
+  animation:wackel .45s;
+}
+.kacheln{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 18px}
+.kachel{
+  width:46px; height:56px; border-radius:11px; cursor:pointer;
+  font-family:"Playfair Display",Georgia,serif; font-size:26px; font-weight:900;
+  border:1.5px solid var(--karte-rand); color:var(--akzent);
+  background:linear-gradient(160deg,var(--karte),var(--schwarz-2));
+  transition:transform .12s, box-shadow .2s;
+  box-shadow:0 4px 14px rgba(0,0,0,.45);
+}
+.kachel:active{transform:scale(.92)}
+
 .zentriert{text-align:center}
 .start-logo{text-align:center; padding:26px 0 4px}
 .start-logo .untertitel{

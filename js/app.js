@@ -1,7 +1,7 @@
 /* ==========================================================================
    VIP-SCHNITZELJAGD — die Spiel-Logik
-   Hier musst du normalerweise NICHTS aendern. Alles Inhaltliche steht
-   in  stationen.js .
+   Hier musst du normalerweise NICHTS ändern.
+   Alles Inhaltliche steht in  stationen.js .
    ========================================================================== */
 (function(){
 "use strict";
@@ -9,13 +9,46 @@
 /* --- Kurzbefehle --------------------------------------------------------- */
 const $   = (s)=>document.querySelector(s);
 const app = ()=>$("#app");
-const SPEICHER = "vip_jagd_v" + (SPIEL.version || "1");
+
+/* --- Modus bestimmen: QR-Code schlägt Datei ------------------------------ */
+const MODUS = (function(){
+  try{
+    const ausUrl = new URLSearchParams(location.search).get("modus");
+    if(ausUrl && ["kurz","lang","drinnen"].indexOf(ausUrl) > -1) return ausUrl;
+  }catch(e){}
+  return (SPIEL.modus && ["kurz","lang","drinnen"].indexOf(SPIEL.modus) > -1)
+         ? SPIEL.modus : "lang";
+})();
+
+/* Nur die Stationen, die in diesem Modus laufen */
+const AKTIV = STATIONEN.filter(s => !s.modi || s.modi.indexOf(MODUS) > -1);
+
+const SPEICHER = "vip_jagd_v" + (SPIEL.version || "1") + "_" + MODUS;
+
+/* --- Buchstaben auf die aktiven Stationen verteilen ----------------------
+   Das Losungswort wird durcheinandergewürfelt vergeben. Sind weniger
+   Stationen aktiv als Buchstaben, gibt eine Station eben zwei.
+   ------------------------------------------------------------------------ */
+const BUCHSTABEN_JE_STATION = (function(){
+  const wort = (SPIEL.loesungswort || "").toUpperCase();
+  const misch = SPIEL.buchstabenReihenfolge && SPIEL.buchstabenReihenfolge.length === wort.length
+              ? SPIEL.buchstabenReihenfolge
+              : wort.split("").map((_,i)=>i);
+  const folge = misch.map(i => wort[i]).filter(Boolean);
+  const stationen = AKTIV.map((s,i)=>({s,i})).filter(o=>o.s.buchstabe);
+  const karte = {};
+  if(!stationen.length) return karte;
+  stationen.forEach(o => karte[o.i] = []);
+  folge.forEach((b,n) => karte[stationen[n % stationen.length].i].push(b));
+  return karte;
+})();
+const BUCHSTABEN_STATIONEN = AKTIV.map((s,i)=>({s,i})).filter(o=>o.s.buchstabe);
 
 /* --- Spielstand ---------------------------------------------------------- */
 let Z = {
   team:null, station:0, punkte:0, start:null,
-  buchstaben:[], tipps:[], fehler:{}, haken:{}, quiz:{},
-  handyausAb:null, fertig:false
+  gesammelt:[], tipps:[], fehler:{}, haken:{}, quiz:{},
+  handyausAb:null, fertig:false, gelegt:[]
 };
 function laden(){
   try{ const d = localStorage.getItem(SPEICHER); if(d) Z = Object.assign(Z, JSON.parse(d)); }catch(e){}
@@ -28,7 +61,7 @@ function neuStarten(){
   location.reload();
 }
 
-/* --- Toene (leise, ohne Datei) ------------------------------------------- */
+/* --- Töne (ohne Datei) ---------------------------------------------------- */
 let AC=null;
 function ton(art){
   try{
@@ -54,11 +87,11 @@ function saeubern(s){
     .replace(/Ä/g,"AE").replace(/Ö/g,"OE").replace(/Ü/g,"UE").replace(/ß/g,"SS")
     .replace(/[^A-Z0-9]/g,"");
 }
-function stimmt(eingabe, station){
-  const soll = [station.antwort].concat(station.antwortAuch||[]);
-  const ist  = saeubern(eingabe);
+function stimmt(eingabe, soll, auch){
+  const liste = [soll].concat(auch||[]);
+  const ist = saeubern(eingabe);
   if(!ist) return false;
-  return soll.some(a=>saeubern(a)===ist);
+  return liste.some(a => saeubern(a) === ist);
 }
 function zeitText(){
   if(!Z.start) return "0:00";
@@ -72,27 +105,32 @@ function punkteFuer(i){
   p -= (Z.fehler[i]||0) * SPIEL.abzugFehler;
   return Math.max(Math.round(voll*0.2), p);
 }
-/* alle Stationen, die einen Buchstaben vergeben — in Reihenfolge */
-const BUCHSTABEN_STATIONEN = STATIONEN.map((s,i)=>({s,i})).filter(o=>o.s.buchstabe);
+/* Teamabhängiger Text: teamText ist eine Liste, einer je Team */
+function fuerTeam(feld, ersatz){
+  if(Array.isArray(feld) && Z.team !== null) return feld[Z.team % feld.length];
+  return ersatz || "";
+}
 
 /* ==========================================================================
-   KOPFZEILE + FORTSCHRITT
+   KOPFZEILE
    ========================================================================== */
 function kopfZeichnen(){
-  const geloest = Z.buchstaben.length;
-  const gesamt  = BUCHSTABEN_STATIONEN.length;
+  const gesamt = BUCHSTABEN_STATIONEN.length;
+  const geloest = Z.gesammelt.length;
   $("#kopfTeam").textContent = Z.team!==null ? SPIEL.teams[Z.team].name : SPIEL.titel;
   $("#kopfZahl").innerHTML   = '<b>'+Z.punkte+'</b> P &nbsp;·&nbsp; '+zeitText();
-  $("#balken i").style.width = (gesamt? (geloest/gesamt*100):0) + "%";
-  $("#kopf").style.display   = Z.team!==null ? "flex" : "none";
-  $("#balken").style.display = Z.team!==null ? "block" : "none";
+  const anteil = AKTIV.length>1 ? (Z.station/(AKTIV.length-1)*100) : 0;
+  $("#balken i").style.width  = Math.min(100, anteil) + "%";
+  $("#kopf").style.display    = Z.team!==null ? "flex" : "none";
+  $("#balken").style.display  = Z.team!==null ? "block" : "none";
 }
 setInterval(()=>{ if(Z.team!==null && !Z.fertig) kopfZeichnen(); }, 1000);
 
 /* ==========================================================================
-   BILDSCHIRM 1 — START
+   START UND TEAMWAHL
    ========================================================================== */
 function zeigeStart(){
+  const wieLang = { kurz:"rund 110 Minuten", lang:"rund 170 Minuten", drinnen:"rund 85 Minuten" }[MODUS];
   app().innerHTML = `
     <div class="start-logo">
       <div class="klein-label">Very Important People</div>
@@ -103,9 +141,9 @@ function zeigeStart(){
     <div class="karte">
       <p class="klein-label">Einladung</p>
       <p>Ihr steht vor der VIP-Lounge. Wer rein will, muss beweisen, dass er dazugehört.</p>
-      <p><b>${BUCHSTABEN_STATIONEN.length} Stationen</b> liegen vor euch, ungefähr <b>${SPIEL.dauerMinuten} Minuten</b>.
-      Bei jeder Station gibt es einen Buchstaben. Alle zusammen ergeben das Losungswort für den Türsteher.</p>
-      <p class="hinweis">${SPIEL.datum}</p>
+      <p>Unterwegs sammelt ihr <b>Buchstaben</b> — aber durcheinander. Am Ende müsst ihr
+      selbst das Losungswort daraus legen. Und dann steht da noch jemand am Tor.</p>
+      <p class="hinweis">${SPIEL.datum} · ${wieLang}</p>
     </div>
     <button class="knopf" id="los">Team wählen</button>
     <p class="hinweis">Ein Handy pro Team reicht. Der Fortschritt wird gespeichert —
@@ -113,9 +151,6 @@ function zeigeStart(){
   $("#los").onclick = ()=>{ ton("klick"); zeigeTeamwahl(); };
 }
 
-/* ==========================================================================
-   BILDSCHIRM 2 — TEAMWAHL
-   ========================================================================== */
 function zeigeTeamwahl(){
   app().innerHTML = `
     <div class="start-logo"><h1 class="gross" style="font-size:clamp(32px,11vw,52px)">Wer seid ihr?</h1></div>
@@ -123,7 +158,6 @@ function zeigeTeamwahl(){
     ${SPIEL.teams.map((t,i)=>`
       <button class="teamknopf" data-i="${i}"><span class="punkt"></span>${t.name}</button>`).join("")}
     <button class="knopf leise" id="zurueck" style="margin-top:14px">Zurück</button>`;
-
   document.querySelectorAll(".teamknopf").forEach(b=>{
     b.onclick = ()=>{
       Z.team = +b.dataset.i;
@@ -135,61 +169,69 @@ function zeigeTeamwahl(){
 }
 
 /* ==========================================================================
-   BILDSCHIRM 3 — DIE STATIONEN
+   DIE STATIONEN
    ========================================================================== */
 function zeigeStation(){
   kopfZeichnen();
   const i = Z.station;
-  if(i >= STATIONEN.length){ return zeigeFinale(); }
-  const st = STATIONEN[i];
+  if(i >= AKTIV.length) return zeigeFinale();
+  const st = AKTIV[i];
   window.scrollTo(0,0);
-
   switch(st.typ){
-    case "start":    return bauStart(st,i);
-    case "code":     return bauCode(st,i);
-    case "quiz":     return bauQuiz(st,i);
-    case "foto":     return bauFoto(st,i);
-    case "duell":    return bauDuell(st,i);
-    case "handyaus": return bauHandyAus(st,i);
-    case "finale":   return zeigeFinale();
-    default:         return bauCode(st,i);
+    case "start":     return bauStart(st,i);
+    case "code":      return bauCode(st,i);
+    case "quiz":      return bauQuiz(st,i);
+    case "foto":      return bauFoto(st,i);
+    case "duell":     return bauDuell(st,i);
+    case "handyaus":  return bauHandyAus(st,i);
+    case "spiegel":   return bauSpiegel(st,i);
+    case "stoppuhr":  return bauStoppuhr(st,i);
+    case "sprint":    return bauSprint(st,i);
+    case "kennwort":  return bauKennwort(st,i);
+    case "anruf":     return bauAnruf(st,i);
+    case "finale":    return zeigeFinale();
+    default:          return bauCode(st,i);
   }
 }
 
 /* --- gemeinsame Bausteine ------------------------------------------------ */
 function kopfBlock(st,i){
   const nr = BUCHSTABEN_STATIONEN.findIndex(o=>o.i===i);
-  return `
-    <p class="klein-label">${nr>=0 ? "Station "+(nr+1)+" von "+BUCHSTABEN_STATIONEN.length : "Willkommen"}</p>
-    <h2 class="mittel">${st.titel}</h2>`;
+  const zaehler = nr>=0
+    ? "Buchstabe " + (nr+1) + " von " + BUCHSTABEN_STATIONEN.length
+    : (st.typ==="start" ? "Willkommen" : "Station " + Z.station + " von " + (AKTIV.length-1));
+  return `<p class="klein-label">${zaehler}</p><h2 class="mittel">${st.titel}</h2>`;
 }
 function ortBlock(st){
-  if(!st.ort && !st.weg) return "";
+  const weg = st.weg || "";
+  if(!st.ort && !weg) return "";
   return `<div class="ort"><span class="pin">📍</span><div>
       ${st.ort ? "<b>"+st.ort+"</b>" : ""}
-      ${st.weg ? "<span>"+st.weg+"</span>" : ""}
+      ${weg ? "<span>"+weg+"</span>" : ""}
     </div></div>`;
 }
 function medienBlock(st){
   let h = "";
   if(st.foto)  h += `<img class="bild" src="${st.foto}" alt="Hinweisbild" onerror="this.style.display='none'">`;
-  if(st.video) h += videoBlock(st.video);
+  if(st.video) h += videoBlock(st.video, st.videoStoerung);
   return h;
 }
-function videoBlock(link){
-  /* 1. Eigene Videodatei auf dem Server — z. B. "fotos/botschaft.mp4" */
+function videoBlock(link, stoerung){
+  const kl = stoerung ? " gestoert" : "";
+  const huelle = (inhalt)=> stoerung
+    ? `<div class="videohuelle">${inhalt}<div class="scanlinien"></div>
+       <div class="stoerband"></div>
+       <div class="videoetikett">▲ Übertragung entschlüsselt · Signal schwach</div></div>`
+    : inhalt;
+
   if(/\.(mp4|m4v|mov|webm)(\?|$)/i.test(link))
-    return `<video class="bild" controls playsinline preload="metadata"
-              style="background:#000">
-              <source src="${link}">
-              Dein Browser kann dieses Video nicht abspielen.
-            </video>`;
-  /* 2. YouTube — läuft direkt in der App */
+    return huelle(`<video class="bild${kl}" controls playsinline preload="metadata"
+              style="background:#000"><source src="${link}">
+              Dein Browser kann dieses Video nicht abspielen.</video>`);
   const yt = String(link).match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/);
-  if(yt) return `<div class="videobox"><iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}"
+  if(yt) return huelle(`<div class="videobox${kl}"><iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}"
       allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
-      allowfullscreen loading="lazy"></iframe></div>`;
-  /* 3. Alles andere (z. B. TikTok) — Knopf, der es außerhalb öffnet */
+      allowfullscreen loading="lazy"></iframe></div>`);
   if(/^https?:\/\//.test(link))
     return `<a class="knopf" href="${link}" target="_blank" rel="noopener">▶︎ Video ansehen</a>
             <p class="hinweis">Das Video öffnet sich in einem neuen Fenster. Danach hierher zurück.</p>`;
@@ -197,8 +239,7 @@ function videoBlock(link){
 }
 function tippBlock(st,i){
   if(!st.tipp) return "";
-  if(Z.tipps.indexOf(i)>-1)
-    return `<div class="meldung tipp">💡 ${st.tipp}</div>`;
+  if(Z.tipps.indexOf(i)>-1) return `<div class="meldung tipp">💡 ${st.tipp}</div>`;
   return `<button class="knopf leise" id="tippKnopf">Tipp holen (−${SPIEL.abzugTipp} Punkte)</button>`;
 }
 function tippVerdrahten(st,i){
@@ -211,6 +252,29 @@ function fehlerMeldung(i){
   return `<div class="meldung minus">Leider falsch. ${n===1?"Ein Versuch":n+" Versuche"} daneben —
     schaut nochmal genau hin.</div>`;
 }
+/* Eingabefeld samt Prüfung — wird von mehreren Stationsarten benutzt */
+function eingabeBlock(st, platzhalter){
+  return `<input class="eingabe" id="feld" placeholder="${platzhalter||"Antwort"}"
+      inputmode="${st.eingabeArt==='zahl'?'numeric':'text'}"
+      autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="knopf" id="pruefen">Antwort prüfen</button>`;
+}
+function eingabeVerdrahten(i, soll, auch){
+  const feld = $("#feld");
+  if(!feld) return;
+  const pruefen = ()=>{
+    if(stimmt(feld.value, soll, auch)){
+      ton("gut"); ruckeln(40); geschafft(i, punkteFuer(i));
+    }else{
+      Z.fehler[i] = (Z.fehler[i]||0)+1; sichern();
+      ton("schlecht"); ruckeln([40,60,40]);
+      feld.classList.add("falsch");
+      setTimeout(()=>zeigeStation(), 500);
+    }
+  };
+  $("#pruefen").onclick = pruefen;
+  feld.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); pruefen(); }});
+}
 
 /* --- Typ: START ---------------------------------------------------------- */
 function bauStart(st,i){
@@ -222,10 +286,8 @@ function bauStart(st,i){
       <p>${st.text||""}</p>
       ${(st.auftraege||[]).length ? `<ul class="liste">${st.auftraege.map((a,n)=>
         `<li data-n="${n}"><span class="box">✓</span>${a}</li>`).join("")}</ul>` : ""}
-      ${(st.regeln||[]).length ? `<div class="regeln">
-        <b>Die Regeln</b>
-        <ul>${st.regeln.map(r=>`<li>${r}</li>`).join("")}</ul>
-      </div>` : ""}
+      ${(st.regeln||[]).length ? `<div class="regeln"><b>Die Regeln</b>
+        <ul>${st.regeln.map(r=>`<li>${r}</li>`).join("")}</ul></div>` : ""}
     </div>
     <button class="knopf" id="weiter">Los geht's</button>`;
   hakenVerdrahten(i);
@@ -239,28 +301,112 @@ function bauCode(st,i){
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
       ${medienBlock(st)}
-      <p>${st.text||""}</p>
+      <p>${fuerTeam(st.teamText, st.text)}</p>
       ${fehlerMeldung(i)}
-      <input class="eingabe" id="feld" placeholder="Antwort"
-        inputmode="${st.eingabeArt==='zahl'?'numeric':'text'}"
-        autocomplete="off" autocorrect="off" spellcheck="false">
-      <button class="knopf" id="pruefen">Antwort prüfen</button>
+      ${eingabeBlock(st)}
       ${tippBlock(st,i)}
     </div>`;
   tippVerdrahten(st,i);
-  const feld = $("#feld");
-  const pruefen = ()=>{
-    if(stimmt(feld.value, st)){
-      ton("gut"); ruckeln(40); geschafft(i, punkteFuer(i));
+  eingabeVerdrahten(i, st.antwort, st.antwortAuch);
+}
+
+/* --- Typ: SPIEGEL -------------------------------------------------------- */
+function bauSpiegel(st,i){
+  app().innerHTML = `
+    <div class="karte">
+      ${kopfBlock(st,i)}
+      ${ortBlock(st)}
+      <p>${fuerTeam(st.teamText, st.text)}</p>
+      <div class="spiegelfeld">${st.spiegelText||""}</div>
+      <p>${st.frage||"Was steht da?"}</p>
+      ${fehlerMeldung(i)}
+      ${eingabeBlock(st)}
+      ${tippBlock(st,i)}
+    </div>`;
+  tippVerdrahten(st,i);
+  eingabeVerdrahten(i, st.antwort, st.antwortAuch);
+}
+
+/* --- Typ: STOPPUHR ------------------------------------------------------- */
+function bauStoppuhr(st,i){
+  const ziel = st.sekunden || 30;
+  app().innerHTML = `
+    <div class="karte">
+      ${kopfBlock(st,i)}
+      ${ortBlock(st)}
+      <p>${st.text||""}</p>
+      <div class="countdown" id="uhr" style="color:var(--akzent)">0,0</div>
+      <button class="knopf" id="startstop">Start</button>
+      <p class="hinweis">Nicht auf die Uhr schauen — die zeigt sowieso nichts an.</p>
+    </div>`;
+  let laeuft = false, ab = 0, t = null;
+  const uhr = $("#uhr"), knopf = $("#startstop");
+  knopf.onclick = ()=>{
+    if(!laeuft){
+      laeuft = true; ab = Date.now(); knopf.textContent = "Stopp";
+      uhr.textContent = "läuft …"; uhr.classList.add("blind");
+      ton("klick");
     }else{
-      Z.fehler[i] = (Z.fehler[i]||0)+1; sichern();
-      ton("schlecht"); ruckeln([40,60,40]);
-      feld.classList.add("falsch");
-      setTimeout(()=>zeigeStation(), 500);
+      clearInterval(t);
+      const gebraucht = (Date.now()-ab)/1000;
+      const weg = Math.abs(gebraucht - ziel);
+      const punkte = Math.max(20, Math.round(SPIEL.punkteProStation - weg*12));
+      uhr.classList.remove("blind");
+      uhr.textContent = gebraucht.toFixed(1).replace(".", ",") + " s";
+      ton(weg < 3 ? "gut" : "schlecht"); ruckeln(40);
+      const urteil = weg < 1 ? "Wahnsinn. Das war fast auf die Zehntelsekunde."
+                   : weg < 3 ? "Sehr gut getroffen."
+                   : weg < 6 ? "Ordentlich."
+                   : "Da war jemand nervös.";
+      setTimeout(()=> geschafft(i, punkte, urteil + " " + weg.toFixed(1).replace(".",",") + " Sekunden daneben."), 900);
     }
   };
-  $("#pruefen").onclick = pruefen;
-  feld.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); pruefen(); }});
+}
+
+/* --- Typ: SPRINT --------------------------------------------------------- */
+function bauSprint(st,i){
+  const dauer = st.sekunden || 180;
+  const schonGelaufen = Z.haken["sprint"+i];
+  if(!schonGelaufen){
+    app().innerHTML = `
+      <div class="karte">
+        ${kopfBlock(st,i)}
+        ${ortBlock(st)}
+        <p>${st.text||""}</p>
+        <button class="knopf" id="losrennen">Countdown starten</button>
+        <p class="hinweis">Erst tippen, wenn wirklich alle bereit sind.</p>
+      </div>`;
+    $("#losrennen").onclick = ()=>{
+      Z.haken["sprint"+i] = Date.now(); sichern(); ton("klick"); bauSprint(st,i);
+    };
+    return;
+  }
+  const rest = Math.max(0, Math.round(dauer - (Date.now()-schonGelaufen)/1000));
+  app().innerHTML = `
+    <div class="karte ${rest>0?"alarm":""}">
+      ${kopfBlock(st,i)}
+      <div class="countdown" id="uhr">${Math.floor(rest/60)}:${String(rest%60).padStart(2,"0")}</div>
+      <p class="zentriert">${rest>0 ? "Los, los, los!" : "Zeit ist um."}</p>
+      <ul class="liste">${(st.auftraege||["Wir waren rechtzeitig dort"]).map((a,n)=>
+        `<li class="${(Z.haken[i]||[]).indexOf(n)>-1?'an':''}" data-n="${n}"><span class="box">✓</span>${a}</li>`
+        ).join("")}</ul>
+      <button class="knopf" id="weiter">Weiter</button>
+    </div>`;
+  hakenVerdrahten(i);
+  let t = setInterval(()=>{
+    const r = Math.max(0, Math.round(dauer - (Date.now()-schonGelaufen)/1000));
+    const u = $("#uhr");
+    if(!u){ clearInterval(t); return; }
+    u.textContent = Math.floor(r/60)+":"+String(r%60).padStart(2,"0");
+    if(r<=0){ clearInterval(t); u.closest(".karte").classList.remove("alarm"); }
+  },1000);
+  $("#weiter").onclick = ()=>{
+    const r = dauer - (Date.now()-schonGelaufen)/1000;
+    const geschafftInZeit = (Z.haken[i]||[]).length>0 && r>0;
+    clearInterval(t); ton(geschafftInZeit?"gut":"klick");
+    geschafft(i, geschafftInZeit ? punkteFuer(i)+50 : Math.round(SPIEL.punkteProStation*0.3),
+              geschafftInZeit ? "Rechtzeitig da: +50 Bonus" : "Knapp nicht geschafft — geht trotzdem weiter.");
+  };
 }
 
 /* --- Typ: QUIZ ----------------------------------------------------------- */
@@ -306,7 +452,7 @@ function bauFoto(st,i){
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
       ${medienBlock(st)}
-      <p>${st.text||""}</p>
+      <p>${fuerTeam(st.teamText, st.text)}</p>
       <ul class="liste">${(st.auftraege||[]).map((a,n)=>
         `<li class="${(Z.haken[i]||[]).indexOf(n)>-1?'an':''}" data-n="${n}"><span class="box">✓</span>${a}</li>`
         ).join("")}</ul>
@@ -329,21 +475,24 @@ function hakenVerdrahten(i){
       const p = Z.haken[i].indexOf(n);
       if(p>-1) Z.haken[i].splice(p,1); else { Z.haken[i].push(n); ton("klick"); ruckeln(20); }
       sichern();
-      const st = STATIONEN[i];
-      if(st.typ==="foto") zeigeStation(); else li.classList.toggle("an");
+      const st = AKTIV[i];
+      if(st && (st.typ==="foto")) zeigeStation(); else li.classList.toggle("an");
     };
   });
 }
 
-/* --- Typ: DUELL (Geheimwort eines anderen Teams) -------------------------- */
+/* --- Typ: DUELL ---------------------------------------------------------- */
 function bauDuell(st,i){
   const meins = SPIEL.teams[Z.team].geheimwort;
+  const raetsel = fuerTeam(st.teamRaetsel, "");
   app().innerHTML = `
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
-      ${medienBlock(st)}
-      <p>${st.text||""}</p>
+      <p>${(fuerTeam(st.teamText, st.text)||"").replace("DAS RÄTSEL STEHT UNTEN", "")}</p>
+      ${raetsel ? `<div class="emojis">${raetsel}</div>
+        <p class="hinweis">Das ist euer Rätsel. Zeigt es dem anderen Team —
+        <b>nicht</b> die Lösung verraten.</p>` : ""}
       ${fehlerMeldung(i)}
       <input class="eingabe" id="feld" placeholder="Geheimwort" autocomplete="off"
         autocorrect="off" spellcheck="false">
@@ -368,15 +517,11 @@ function bauDuell(st,i){
   feld.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); pruefen(); }});
 }
 
-/* --- Typ: HANDYAUS (der Fake) -------------------------------------------- */
+/* --- Typ: HANDYAUS (der Gag) --------------------------------------------- */
 function bauHandyAus(st,i){
-  /* War die Station schon offen? Dann kommt jetzt der Dank — egal ob sie
-     das Handy wirklich ausgeschaltet oder nur die Seite neu geladen haben. */
-  if(Z.handyausAb){
-    return handyAusDanke(st,i);
-  }
+  if(Z.handyausAb) return handyAusDanke(st,i);
   Z.handyausAb = Date.now(); sichern();
-  const dauer = st.sekunden || 60;
+  const dauer = st.sekunden || 120;
   app().innerHTML = `
     <div class="karte alarm">
       <div class="alarmzeichen">⚠️</div>
@@ -410,17 +555,67 @@ function handyAusDanke(st,i){
   $("#weiter").onclick = ()=> geschafft(i, punkteFuer(i));
 }
 
+/* --- Typ: KENNWORT (zwei Verstecke, je eine Hälfte) ---------------------- */
+function bauKennwort(st,i){
+  const meine = Z.team===0 ? SPIEL.kennwortTeil1 : SPIEL.kennwortTeil2;
+  app().innerHTML = `
+    <div class="karte">
+      ${kopfBlock(st,i)}
+      ${ortBlock(st)}
+      <p>${fuerTeam(st.teamText, st.text)}</p>
+      <div class="geheim"><b>Eure Hälfte lautet</b><span>${meine}</span></div>
+      <p class="hinweis">Erst wenn ihr sie am Versteck gefunden habt, steht sie auch hier.
+      Die andere Hälfte hat das andere Team.</p>
+      <div class="strich"></div>
+      <p>${st.frage||"Tippt das ganze Kennwort ein."}</p>
+      ${fehlerMeldung(i)}
+      ${eingabeBlock(st, "Kennwort")}
+      ${tippBlock(st,i)}
+    </div>`;
+  tippVerdrahten(st,i);
+  eingabeVerdrahten(i, SPIEL.kennwortTeil1 + SPIEL.kennwortTeil2,
+                       [SPIEL.kennwortTeil2 + SPIEL.kennwortTeil1]);
+}
+
+/* --- Typ: ANRUF ---------------------------------------------------------- */
+function bauAnruf(st,i){
+  const nr = SPIEL.telefonnummer || "";
+  const waehlbar = /^[\d +\/().-]+$/.test(nr);
+  app().innerHTML = `
+    <div class="karte">
+      ${kopfBlock(st,i)}
+      ${ortBlock(st)}
+      <p>${fuerTeam(st.teamText, st.text)}</p>
+      <div class="telefon">
+        <b>Der Empfang</b>
+        ${waehlbar
+          ? `<a class="knopf" href="tel:${nr.replace(/[^\d+]/g,"")}">📞 ${nr} anrufen</a>`
+          : `<span class="nummer">${nr}</span>`}
+      </div>
+      <p class="hinweis">Sagt beide Wörter des Kennworts, deutlich und in der richtigen
+      Reihenfolge. Wer nuschelt, wird nicht durchgestellt.</p>
+      <div class="strich"></div>
+      <p>${st.frage||"Wie lautet der Zutrittscode?"}</p>
+      ${fehlerMeldung(i)}
+      ${eingabeBlock(st, "Zutrittscode")}
+      ${tippBlock(st,i)}
+    </div>`;
+  tippVerdrahten(st,i);
+  eingabeVerdrahten(i, SPIEL.anrufCode);
+}
+
 /* ==========================================================================
    ERFOLGS-BILDSCHIRM
    ========================================================================== */
 function geschafft(i, punkte, zusatz){
-  const st = STATIONEN[i];
+  const st = AKTIV[i];
   Z.punkte += punkte;
-  if(st.buchstabe && Z.buchstaben.indexOf(i)===-1) Z.buchstaben.push(i);
+  const neue = BUCHSTABEN_JE_STATION[i] || [];
+  neue.forEach(b => { if(Z.gesammelt.length < SPIEL.loesungswort.length) Z.gesammelt.push(b); });
   Z.station = i+1;
   sichern(); kopfZeichnen();
 
-  if(!st.buchstabe){ return zeigeStation(); }   /* Startstation: direkt weiter */
+  if(!neue.length && st.typ==="start") return zeigeStation();
 
   window.scrollTo(0,0);
   app().innerHTML = `
@@ -431,29 +626,103 @@ function geschafft(i, punkte, zusatz){
         <p class="punkte">+${punkte}<small>Punkte</small></p>
         ${zusatz?`<p class="hinweis">${zusatz}</p>`:""}
       </div>
-      <div class="strich"></div>
-      <p class="klein-label zentriert">Euer Buchstabe</p>
-      ${sammlungHTML()}
-      <p class="hinweis">Merkt ihn euch — oder schreibt ihn auf die Hand.</p>
+      ${neue.length ? `<div class="strich"></div>
+        <p class="klein-label zentriert">${neue.length>1?"Eure Buchstaben":"Euer Buchstabe"}</p>
+        ${sammlungHTML()}
+        <p class="hinweis">Sie kommen durcheinander. Am Ende müsst ihr sie richtig ordnen.</p>` : ""}
     </div>
-    <button class="knopf" id="weiter">Nächste Station</button>`;
+    <button class="knopf" id="weiter">Weiter</button>`;
   ton("gut"); ruckeln([30,50,30]);
   $("#weiter").onclick = ()=>{ ton("klick"); zeigeStation(); };
 }
 function sammlungHTML(){
-  return `<div class="sammlung">${BUCHSTABEN_STATIONEN.map(o=>{
-    const hat = Z.buchstaben.indexOf(o.i)>-1;
-    return `<span class="${hat?'hat':''}">${hat?o.s.buchstabe:"?"}</span>`;
-  }).join("")}</div>`;
+  const gesamt = SPIEL.loesungswort.length;
+  let h = "";
+  for(let n=0; n<gesamt; n++){
+    const hat = n < Z.gesammelt.length;
+    h += `<span class="${hat?'hat':''}">${hat?Z.gesammelt[n]:"?"}</span>`;
+  }
+  return `<div class="sammlung">${h}</div>`;
 }
 
 /* ==========================================================================
-   FINALE
+   FINALE — die Buchstaben zum Losungswort legen
    ========================================================================== */
 function zeigeFinale(){
-  Z.fertig = true; sichern();
-  const st = STATIONEN[STATIONEN.length-1] || {};
-  const wort = BUCHSTABEN_STATIONEN.map(o=>o.s.buchstabe).join("");
+  const st = AKTIV[AKTIV.length-1] || {};
+  const wort = (SPIEL.loesungswort||"").toUpperCase();
+
+  /* Schon gelöst? Dann direkt der Türsteher-Bildschirm */
+  if(Z.fertig) return zeigeTuersteher(st);
+
+  Z.gelegt = Z.gelegt || [];
+  window.scrollTo(0,0);
+
+  const offen = Z.gesammelt.map((b,n)=>({b,n})).filter(o=>Z.gelegt.indexOf(o.n)===-1);
+
+  app().innerHTML = `
+    <div class="karte">
+      <p class="klein-label">Letzte Hürde</p>
+      <h2 class="mittel">${st.titel||"Die VIP-Lounge"}</h2>
+      ${ortBlock(st)}
+      <p>${st.text||""}</p>
+
+      <div class="legezeile" id="zeile">
+        ${Array.from({length: wort.length}, (_,k)=>{
+          const q = Z.gelegt[k];
+          return `<span class="platz ${q!==undefined?'voll':''}" data-k="${k}">${
+            q!==undefined ? Z.gesammelt[q] : ""}</span>`;
+        }).join("")}
+      </div>
+
+      <p class="klein-label zentriert" style="margin-top:18px">Eure Buchstaben</p>
+      <div class="kacheln" id="kacheln">
+        ${offen.map(o=>`<button class="kachel" data-n="${o.n}">${o.b}</button>`).join("")}
+      </div>
+
+      <button class="knopf" id="pruefen" ${Z.gelegt.length<wort.length?"disabled":""}>
+        ${Z.gelegt.length<wort.length ? (wort.length-Z.gelegt.length)+" Buchstaben fehlen noch" : "Code prüfen"}</button>
+      <button class="knopf leise" id="zurueckstellen">Alles zurücklegen</button>
+    </div>`;
+
+  /* Kachel antippen → auf den nächsten freien Platz */
+  document.querySelectorAll(".kachel").forEach(k=>{
+    k.onclick = ()=>{
+      if(Z.gelegt.length >= wort.length) return;
+      Z.gelegt.push(+k.dataset.n);
+      ton("klick"); ruckeln(15); sichern(); zeigeFinale();
+    };
+  });
+  /* Platz in der Zeile antippen → Buchstabe zurück */
+  document.querySelectorAll(".platz.voll").forEach(p=>{
+    p.onclick = ()=>{
+      const k = +p.dataset.k;
+      if(k < Z.gelegt.length){ Z.gelegt.splice(k,1); ton("klick"); sichern(); zeigeFinale(); }
+    };
+  });
+  $("#zurueckstellen").onclick = ()=>{ Z.gelegt = []; ton("klick"); sichern(); zeigeFinale(); };
+
+  const pk = $("#pruefen");
+  if(pk && !pk.disabled) pk.onclick = ()=>{
+    const versuch = Z.gelegt.map(n=>Z.gesammelt[n]).join("");
+    if(versuch === wort){
+      document.querySelectorAll(".platz").forEach(p=>p.classList.add("richtig"));
+      ton("gut"); setTimeout(()=>ton("gut"),260); ruckeln([60,80,60,80,200]);
+      Z.fertig = true; Z.punkte += 100; sichern();
+      konfetti();
+      setTimeout(()=>zeigeTuersteher(st), 1400);
+    }else{
+      document.querySelectorAll(".platz").forEach(p=>p.classList.add("falschrot"));
+      ton("schlecht"); ruckeln([60,80,60]);
+      Z.punkte = Math.max(0, Z.punkte - 10); sichern();
+      setTimeout(()=>{ Z.gelegt = []; sichern(); zeigeFinale(); }, 900);
+    }
+  };
+}
+
+/* --- Der Türsteher wartet ------------------------------------------------ */
+function zeigeTuersteher(st){
+  const wort = (SPIEL.loesungswort||"").toUpperCase();
   const min  = Z.start ? Math.round((Date.now()-Z.start)/60000) : 0;
   window.scrollTo(0,0);
   app().innerHTML = `
@@ -462,19 +731,13 @@ function zeigeFinale(){
       <h1 class="gross" style="font-size:clamp(34px,12vw,58px)">${wort}</h1>
     </div>
     <div class="karte">
-      <p class="klein-label zentriert">Eure Buchstaben</p>
-      ${sammlungHTML()}
-      <div class="strich"></div>
-      <p>${st.text||""}</p>
-      <p><b>${SPIEL.finaleText||""}</b></p>
+      <p>${st.danachText||""}</p>
       <div class="strich"></div>
       <div class="erfolg" style="padding:10px 0 0">
         <p class="punkte">${Z.punkte}<small>Punkte · ${min} Minuten</small></p>
       </div>
     </div>
-    <p class="hinweis">Zeigt diesen Bildschirm dem Türsteher.</p>`;
-  ton("gut"); setTimeout(()=>ton("gut"),300); ruckeln([60,80,60,80,200]);
-  konfetti();
+    <p class="hinweis">Zeigt diesen Bildschirm dem Türsteher — und sagt das Wort laut auf.</p>`;
   kopfZeichnen();
 }
 
@@ -526,18 +789,24 @@ function leiterFragen(){
   else alert("Falscher Code.");
 }
 function zeigeLeiter(){
-  const zeilen = STATIONEN.map((s,i)=>{
+  const zeilen = AKTIV.map((s,i)=>{
     let loesung = "—";
-    if(s.typ==="code")  loesung = s.antwort;
-    if(s.typ==="duell") loesung = "Geheimwort eines anderen Teams";
-    if(s.typ==="quiz")  loesung = s.fragen.map(f=>f.optionen[f.richtig]).join(" · ");
-    if(s.typ==="foto")  loesung = "mind. "+(s.mindestens||"alle")+" abhaken";
-    if(s.typ==="handyaus") loesung = "Fake — läuft nach "+(s.sekunden||60)+" Sek. von selbst weiter";
-    return `<tr><td>${i}. ${s.titel}${s.buchstabe?" ("+s.buchstabe+")":""}</td><td>${loesung}</td></tr>`;
+    if(s.typ==="code" || s.typ==="spiegel") loesung = s.antwort;
+    if(s.typ==="duell")    loesung = "Geheimwort eines anderen Teams";
+    if(s.typ==="quiz")     loesung = s.fragen.map(f=>f.optionen[f.richtig]).join(" · ");
+    if(s.typ==="foto")     loesung = "mind. "+(s.mindestens||"alle")+" abhaken";
+    if(s.typ==="handyaus") loesung = "Fake — läuft nach "+(s.sekunden||120)+" Sek. weiter";
+    if(s.typ==="stoppuhr") loesung = "Schätzung, keine feste Lösung";
+    if(s.typ==="sprint")   loesung = "Countdown "+(s.sekunden||180)+" Sek.";
+    if(s.typ==="kennwort") loesung = SPIEL.kennwortTeil1+" + "+SPIEL.kennwortTeil2;
+    if(s.typ==="anruf")    loesung = "Code am Telefon: "+SPIEL.anrufCode;
+    if(s.typ==="finale")   loesung = SPIEL.loesungswort;
+    const b = (BUCHSTABEN_JE_STATION[i]||[]).join("");
+    return `<tr><td>${i}. ${s.titel}${b?" ("+b+")":""}</td><td>${loesung}</td></tr>`;
   }).join("");
   app().innerHTML = `
     <div class="karte leiter">
-      <h3>Spielleiter</h3>
+      <h3>Spielleiter · Modus ${MODUS}</h3>
       <table>${zeilen}</table>
     </div>
     <div class="karte leiter">
@@ -547,10 +816,14 @@ function zeigeLeiter(){
       <button class="knopf leise" id="reset">Spiel komplett neu starten</button>
     </div>
     <button class="knopf" id="raus">Zurück ins Spiel</button>`;
-  $("#skip").onclick = ()=>{ Z.station=Math.min(Z.station+1,STATIONEN.length);
-    const st=STATIONEN[Z.station-1];
-    if(st&&st.buchstabe&&Z.buchstaben.indexOf(Z.station-1)===-1) Z.buchstaben.push(Z.station-1);
-    sichern(); zeigeStation(); };
+  $("#skip").onclick = ()=>{
+    const i = Z.station;
+    (BUCHSTABEN_JE_STATION[i]||[]).forEach(b=>{
+      if(Z.gesammelt.length < SPIEL.loesungswort.length) Z.gesammelt.push(b);
+    });
+    Z.station = Math.min(i+1, AKTIV.length);
+    sichern(); zeigeStation();
+  };
   $("#zurueck2").onclick = ()=>{ Z.station=Math.max(0,Z.station-1); sichern(); zeigeStation(); };
   $("#reset").onclick = ()=>{ if(confirm("Wirklich alles löschen und neu anfangen?")) neuStarten(); };
   $("#raus").onclick = zeigeStation;
