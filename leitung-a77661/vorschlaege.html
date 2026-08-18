@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Änderungen & Vorschläge — VIP-Schnitzeljagd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-tuell:#f3e9cd; --rot:#a4402c; --rot-tuell:#f8e6e0;
+  --gruen:#34694b; --gruen-tuell:#e2f0e6; --blau:#2f5d7c; --blau-tuell:#e3edf4;
+  --feld:#ffffff; --breite:min(100% - 2.2rem, 48rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019; --blau:#8fbcd8; --blau-tuell:#101b23;
+  --feld:#0c0a07;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019; --blau:#8fbcd8; --blau-tuell:#101b23;
+  --feld:#0c0a07;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.62;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.bahn{width:var(--breite); margin-inline:auto}
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(2rem,6vw,3.2rem) 0 clamp(1.4rem,4vw,2rem)}
+.marke{font-size:.68rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .8rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7vw,3.1rem); line-height:1.02; margin:0; text-wrap:balance}
+.dach{color:var(--schrift-2); margin:.85rem 0 0}
+.zurueck{display:inline-block; margin:1rem 0 0; font-size:.9rem; color:var(--gold);
+  text-decoration:none; border-bottom:1px solid currentColor}
+
+section{padding:clamp(1.8rem,5vw,2.6rem) 0; border-bottom:1px solid var(--rand)}
+section:last-of-type{border-bottom:0}
+.nummer{font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600;
+  letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin:0 0 .5rem}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:clamp(1.5rem,4.6vw,2.05rem); line-height:1.15; margin:0 0 .7rem; text-wrap:balance}
+h3{font-size:1.02rem; font-weight:700; margin:1.7rem 0 .6rem}
+p{margin:0 0 1rem} p:last-child{margin-bottom:0}
+code{font-family:"IBM Plex Mono",monospace; font-size:.86em; background:var(--gold-tuell);
+  color:var(--gold); padding:.08em .38em; border-radius:4px}
+ul.punkte{padding-left:1.2rem; margin:0 0 1rem}
+ul.punkte li{margin-bottom:.4rem}
+ul.punkte li::marker{color:var(--gold)}
+
+/* Status-Zeilen */
+.status{display:flex; gap:.85rem; align-items:flex-start; background:var(--karte);
+  border:1px solid var(--rand); border-radius:12px; padding:.9rem 1.05rem; margin:0 0 .6rem}
+.status .kennzeichen{flex:none; font-size:.64rem; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; padding:.28rem .55rem; border-radius:6px; margin-top:.15rem;
+  white-space:nowrap}
+.k-geht{background:var(--gruen-tuell); color:var(--gruen)}
+.k-bau{background:var(--blau-tuell); color:var(--blau)}
+.k-frage{background:var(--rot-tuell); color:var(--rot)}
+.status .txt b{display:block; margin-bottom:.1rem}
+.status .txt span{color:var(--schrift-2); font-size:.92rem}
+
+/* Auswahl-Kacheln */
+.wahl{display:block; background:var(--karte); border:1.5px solid var(--rand); border-radius:12px;
+  padding:.9rem 1.05rem; margin:0 0 .6rem; cursor:pointer; transition:all .15s}
+.wahl:hover{border-color:var(--gold)}
+.wahl.an{border-color:var(--gold); background:var(--gold-tuell)}
+.wahl .zeile{display:flex; gap:.85rem; align-items:flex-start}
+.wahl .box{flex:none; width:1.45rem; height:1.45rem; border-radius:6px; border:2px solid var(--rand);
+  display:flex; align-items:center; justify-content:center; font-weight:900; color:transparent;
+  font-size:.85rem; margin-top:.15rem; background:var(--feld)}
+.wahl.an .box{background:var(--gold); border-color:var(--gold); color:var(--grund)}
+.wahl b{display:block}
+.wahl .wie{color:var(--schrift-2); font-size:.92rem; display:block; margin-top:.15rem}
+.wahl .marken{display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.5rem}
+.marke-k{font-size:.63rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  padding:.2rem .45rem; border-radius:5px; background:var(--grund-2); color:var(--schrift-3)}
+.marke-k.gut{background:var(--gruen-tuell); color:var(--gruen)}
+.marke-k.acht{background:var(--rot-tuell); color:var(--rot)}
+input[type=checkbox],input[type=radio]{position:absolute; opacity:0; width:0; height:0}
+
+.kasten{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:1rem 1.15rem; margin:0 0 1rem}
+.kasten.wichtig{background:var(--gold-tuell); border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
+.kasten.achtung{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.kastentitel{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--gold); margin:0 0 .45rem}
+.kasten.achtung .kastentitel{color:var(--rot)}
+
+.notiz span{display:block; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase;
+  font-weight:700; color:var(--gold); margin:1.1rem 0 .35rem}
+.notiz textarea{width:100%; min-height:4rem; padding:.7rem .85rem; border-radius:10px;
+  border:1.5px solid var(--rand); background:var(--feld); color:var(--schrift);
+  font-family:inherit; font-size:.95rem; resize:vertical}
+.notiz textarea:focus{outline:none; border-color:var(--gold)}
+
+.zaehler{background:var(--blau-tuell); border:1px solid color-mix(in srgb,var(--blau) 34%,transparent);
+  border-radius:11px; padding:.8rem 1rem; font-size:.94rem; margin:1rem 0 0; color:var(--blau);
+  font-weight:600}
+.zaehler b{font-family:"IBM Plex Mono",monospace}
+
+.aktion{position:sticky; bottom:0; background:color-mix(in srgb,var(--grund) 94%,transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-top:1px solid var(--rand);
+  padding:.8rem 0 calc(.8rem + env(safe-area-inset-bottom)); margin-top:1.5rem; z-index:5}
+.aktion .bahn{display:flex; gap:.6rem}
+button{flex:1; padding:.9rem 1rem; border:0; border-radius:10px; cursor:pointer; font-family:inherit;
+  font-size:.94rem; font-weight:700; background:var(--gold); color:var(--grund)}
+button.leise{background:transparent; color:var(--schrift-2); border:1.5px solid var(--rand)}
+#ausgabe{display:none; margin:1.2rem 0 0}
+#ausgabe.da{display:block}
+pre{background:var(--karte); border:1px solid var(--rand); border-radius:11px; padding:.9rem 1rem;
+  overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:pre-wrap;
+  color:var(--schrift); margin:0}
+footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.84rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header><div class="bahn">
+  <p class="marke">Stand 18. August 2026 · noch nichts umgesetzt</p>
+  <h1>Änderungen &amp; Vorschläge</h1>
+  <p class="dach">Deine zehn Punkte mit Machbarkeits-Einschätzung — und Vorschläge
+     zum Ankreuzen. Umgesetzt wird alles erst, wenn du „jetzt Änderungen umsetzen“ sagst.</p>
+  <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
+</div></header>
+<section id="stand"><div class="bahn">
+  <p class="nummer">Teil 1</p>
+  <h2>Deine zehn Punkte — geht das?</h2>
+  <p>Kurze Antwort: <b>ja, alles.</b> Drei davon brauchen noch eine Entscheidung von dir.</p>
+
+  <div class="status"><span class="kennzeichen k-geht">geht sofort</span><span class="txt">
+    <b>Sicherheitsstufe Rot auf 120 Sekunden</b>
+    <span>Eine Zahl ändern. Der Gag wird dadurch sogar besser — zwei Minuten warten
+    ist deutlich unangenehmer als eine.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-geht">entschieden</span><span class="txt">
+    <b>VIPPARTY bleibt das Losungswort</b>
+    <span>Bleibt so. Die zwei P machen das Legen kniffliger.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-geht">geht sofort</span><span class="txt">
+    <b>Keine Grenze in den Regeln</b>
+    <span>Der Platzhalter fällt raus. Bleiben: 500 Meter, zusammenbleiben, anrufen.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-bau">neu zu bauen</span><span class="txt">
+    <b>Türsteher: zwei Wege, Teams starten gegengleich</b>
+    <span>Team Diamant geht zuerst in die eine Richtung, Team Platin in die andere,
+    dann tauschen sie. Die App zeigt jedem Team seine Reihenfolge. Damit können sie
+    nicht voneinander abschreiben — gute Idee, das baue ich gerne.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-bau">neu zu bauen</span><span class="txt">
+    <b>Video verfremden</b>
+    <span>Läuft künftig hinter einem Filter: leichte Unschärfe, harter Kontrast,
+    Grünstich und wandernde Störstreifen — wie eine abgefangene Überwachungsaufnahme.
+    Du musst dafür nichts können, das macht die App. Beim Drehen kannst du zusätzlich
+    tief sprechen und im Gegenlicht stehen, dann sieht man nur die Silhouette.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-frage">Entscheidung</span><span class="txt">
+    <b>Emoji-Duell: wie kommen die Emojis zum anderen Team?</b>
+    <span>Direkt in der App geht es nicht — sie läuft ohne Server, die Handys können
+    nicht miteinander reden. Drei Wege stehen unten zur Auswahl.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-frage">Entscheidung</span><span class="txt">
+    <b>Paparazzi: zwei Aufträge raus, zwei neue rein</b>
+    <span>„Fremde erwachsene Person“ und „Plattencover“ fliegen. Ersatz unten
+    zum Ankreuzen.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-bau">neu zu bauen</span><span class="txt">
+    <b>Buchstaben durcheinander + Wort am Handy legen</b>
+    <span>Genau wie du es beschreibst: antippen setzt auf Platz 1, 2, 3 …,
+    dann „Code prüfen“. Grün und fertig — oder rot, und die Buchstaben springen zurück.</span></span></div>
+
+  <div class="status"><span class="kennzeichen k-frage">Entscheidung</span><span class="txt">
+    <b>Mehr Stationen</b>
+    <span>Zehn Vorschläge unten. Kreuz an, was dir gefällt.</span></span></div>
+</div></section>
+
+<section id="emoji"><div class="bahn">
+  <p class="nummer">Teil 2 · Entscheidung</p>
+  <h2>Das Emoji-Duell</h2>
+  <p>Such einen Weg aus:</p>
+
+  <label class="wahl" data-gruppe="emoji" data-wert="Treffpunkt (App gibt Rätsel vor)">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>A · Sie treffen sich — mein Vorschlag</b>
+      <span class="wie">Die App schickt beide Teams an denselben Ort und gibt jedem ein
+      <b>fertiges Emoji-Rätsel</b> vor, das das andere Team raten muss. Sie zeigen sich
+      die Emojis am Handy, raten, tauschen die Geheimwörter.</span>
+      <span class="marken"><span class="marke-k gut">kein WhatsApp nötig</span>
+      <span class="marke-k gut">funktioniert garantiert</span>
+      <span class="marke-k">sie begegnen sich einmal wirklich</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="emoji" data-wert="WhatsApp, Emojis selbst ausdenken">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>B · Über WhatsApp, wie bisher gedacht</b>
+      <span class="wie">Jedes Team denkt sich selbst einen Film oder Song aus und schickt
+      dem anderen vier Emojis.</span>
+      <span class="marken"><span class="marke-k gut">kreativer</span>
+      <span class="marke-k acht">alle brauchen die Nummern voneinander</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="emoji" data-wert="Server, echtes Verschicken in der App">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>C · Echt in der App verschicken</b>
+      <span class="wie">Dafür bräuchte die App einen Server, der die Nachrichten
+      weiterreicht.</span>
+      <span class="marken"><span class="marke-k acht">großer Aufwand</span>
+      <span class="marke-k acht">kann am Partytag ausfallen</span>
+      <span class="marke-k acht">würde ich nicht machen</span></span>
+    </span></span></label>
+</div></section>
+
+<section id="fotos"><div class="bahn">
+  <p class="nummer">Teil 3 · Auswahl</p>
+  <h2>Ersatz für die zwei Foto-Aufträge</h2>
+  <p>Zwei sind rausgeflogen. Kreuz zwei neue an — oder mehr, dann wird die Station länger.</p>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Riesiges halten (Perspektive)">
+    <span class="zeile"><span class="box">✓</span><span><b>Perspektiven-Trick</b>
+    <span class="wie">Ein Foto, auf dem einer von euch etwas Riesiges zu halten scheint —
+    ein Haus, einen Baum, die Sonne.</span></span></span></label>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Unsichtbar (nur Schuhe schauen raus)">
+    <span class="zeile"><span class="box">✓</span><span><b>Der Unsichtbare</b>
+    <span class="wie">Ein Foto, auf dem einer von euch unsichtbar ist — man sieht nur
+    noch die Schuhe.</span></span></span></label>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Spiegelbild-Selfie">
+    <span class="zeile"><span class="box">✓</span><span><b>Spiegelbild-Selfie</b>
+    <span class="wie">Ein Selfie in einer spiegelnden Fläche — Schaufenster, Autoscheibe,
+    Pfütze.</span></span></span></label>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Gesicht, das keines ist">
+    <span class="zeile"><span class="box">✓</span><span><b>Das Gesicht, das keines ist</b>
+    <span class="wie">Etwas fotografieren, das aussieht wie ein Gesicht, aber keines ist —
+    eine Steckdose, ein Auto von vorn, zwei Fenster mit Tür.</span></span></span></label>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Filmplakat">
+    <span class="zeile"><span class="box">✓</span><span><b>Euer Filmplakat</b>
+    <span class="wie">Ein Foto, das aussieht wie das Plakat zu einem Actionfilm —
+    mit euch in der Hauptrolle.</span></span></span></label>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Genau drei Hände">
+    <span class="zeile"><span class="box">✓</span><span><b>Genau drei Hände</b>
+    <span class="wie">Ein Foto, auf dem exakt drei Hände zu sehen sind. Nicht zwei,
+    nicht vier.</span></span></span></label>
+
+  <label class="wahl" data-gruppe="foto" data-wert="Durch etwas hindurch fotografiert">
+    <span class="zeile"><span class="box">✓</span><span><b>Durchgeschaut</b>
+    <span class="wie">Ein Foto, das durch etwas hindurch aufgenommen ist — durch einen Zaun,
+    durch Blätter, durch eine Flasche.</span></span></span></label>
+</div></section>
+<section id="stationen"><div class="bahn">
+  <p class="nummer">Teil 4 · Auswahl</p>
+  <h2>Zehn Vorschläge für neue Stationen</h2>
+  <p>Kreuz an, was dir gefällt. Unten rechnet dir die Seite aus, wie lange die
+  Schnitzeljagd damit ungefähr dauert.</p>
+
+  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Spiegelschrift (Selfie-Kamera)">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>1 · Die Spiegelschrift</b>
+      <span class="wie">Auf dem Bildschirm steht eine Nachricht — aber spiegelverkehrt und
+      unlesbar. Der Trick: Die <b>Selfie-Kamera spiegelt</b>. Wer das Handy eines anderen
+      Teammitglieds vor die eigene Frontkamera hält, kann die Schrift plötzlich lesen.
+      Wer es nicht kapiert, findet auch jedes Schaufenster oder jede Autoscheibe.</span>
+      <span class="marken"><span class="marke-k gut">genau dein Spiegel-Wunsch</span>
+      <span class="marke-k gut">keine Vorbereitung</span>
+      <span class="marke-k">8 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="7" data-wert="Taschenrechner-Trick (302 = ZOE)">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>2 · Der Taschenrechner-Trick</b>
+      <span class="wie">Eine Rechenaufgabe, die sie am Handy lösen müssen — zum Beispiel
+      <code>1000 − 698</code>. Das Ergebnis ist <b>302</b>. Und wer den Taschenrechner
+      auf den Kopf dreht, liest dort <b>ZOE</b>. Der Klassiker, den jede Generation neu
+      entdeckt.</span>
+      <span class="marken"><span class="marke-k gut">Handy wird gebraucht</span>
+      <span class="marke-k gut">keine Vorbereitung</span>
+      <span class="marke-k gut">passt zum Geburtstagskind</span>
+      <span class="marke-k">7 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Der Anruf (Komplize am Telefon)">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>3 · Der Anruf</b>
+      <span class="wie">Die App gibt eine Telefonnummer heraus — von jemandem, den du
+      vorher eingeweiht hast (Oma, Nachbar, Zoes Mama). Wer dort anruft und das
+      <b>Kennwort</b> nennt, bekommt den Code gesagt. Wer ohne Kennwort anruft, wird
+      abgewimmelt. Erfahrungsgemäß der Moment, über den danach am meisten geredet wird.</span>
+      <span class="marken"><span class="marke-k gut">sehr lustig</span>
+      <span class="marke-k acht">du brauchst einen Komplizen</span>
+      <span class="marke-k">8 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="10" data-wert="Versteckte QR-Zettel">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>4 · Die versteckten QR-Zettel</b>
+      <span class="wie">Du versteckst vorher drei kleine laminierte QR-Codes in der
+      Umgebung — hinter einem Schild, unter einer Bank, an einem Zaun. Jeder Code zeigt
+      einen Buchstaben. Die App sagt nur ungefähr, wo gesucht werden soll.</span>
+      <span class="marken"><span class="marke-k gut">echtes Suchen</span>
+      <span class="marke-k acht">du musst vorher verstecken</span>
+      <span class="marke-k acht">Regen wäre schlecht</span>
+      <span class="marke-k">10 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Schritte abmessen">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>5 · Das Schrittmaß</b>
+      <span class="wie">„Wie viele Schritte sind es vom Hydranten bis zur Laterne?“ —
+      sie müssen die Strecke wirklich abgehen und zählen. Eine Abweichung von zwei, drei
+      Schritten wird akzeptiert, damit auch kürzere Beine gewinnen können.</span>
+      <span class="marken"><span class="marke-k gut">Bewegung</span>
+      <span class="marke-k">du musst es einmal selbst abgehen</span>
+      <span class="marke-k">8 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="5" data-wert="Stoppuhr-Probe (30 Sekunden blind)">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>6 · Die Stoppuhr-Probe</b>
+      <span class="wie">„Startet die Stoppuhr am Handy und stoppt nach genau 30 Sekunden —
+      ohne hinzuschauen.“ Je näher dran, desto mehr Punkte. Eine kurze Station zum
+      Durchschnaufen zwischen zwei Wegen.</span>
+      <span class="marken"><span class="marke-k gut">Handy wird gebraucht</span>
+      <span class="marke-k gut">keine Vorbereitung</span>
+      <span class="marke-k">5 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="9" data-wert="Zeitreise-Foto nachstellen">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>7 · Das Zeitreise-Foto</b>
+      <span class="wie">Du fotografierst vorher eine Stelle aus einem ungewöhnlichen
+      Winkel — von unten, ganz nah, schräg. Die Kinder müssen die Stelle finden und das
+      Foto <b>exakt nachstellen</b>, mit sich selbst darauf. Verwandt mit dem Suchbild,
+      aber sie müssen nicht nur finden, sondern nachbauen.</span>
+      <span class="marken"><span class="marke-k gut">macht schöne Erinnerungsfotos</span>
+      <span class="marke-k">ein Foto vorbereiten</span>
+      <span class="marke-k">9 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="9" data-wert="Geheimschrift entschlüsseln">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>8 · Die Geheimschrift</b>
+      <span class="wie">Eine Zahlenreihe wie <code>22-9-16</code>, dazu die Regel
+      A=1, B=2, C=3 … Sie müssen entschlüsseln. Die App zeigt die Tabelle erst, wenn sie
+      einen Tipp holen — sonst müssen sie selbst draufkommen.</span>
+      <span class="marken"><span class="marke-k gut">reines Kopfrätsel</span>
+      <span class="marke-k gut">keine Vorbereitung</span>
+      <span class="marke-k">9 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="6" data-wert="Sprint gegen die Uhr">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>9 · Der Sprint</b>
+      <span class="wie">Ein Countdown von drei Minuten läuft los. In der Zeit müssen sie
+      an einem bestimmten Punkt sein und dort ein Foto machen. Schaffen sie es,
+      gibt es Bonuspunkte — schaffen sie es nicht, geht es trotzdem weiter.</span>
+      <span class="marken"><span class="marke-k gut">Tempo</span>
+      <span class="marke-k acht">nur wo es sicher ist</span>
+      <span class="marke-k">6 Minuten</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Buchstabenjagd auf Schildern">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>10 · Die Buchstabenjagd</b>
+      <span class="wie">„Fotografiert die Buchstaben V, I und P — jeden einzeln, gefunden
+      auf einem Schild, einem Nummernschild oder einer Hausmauer.“ Sie laufen automatisch
+      durch die halbe Umgebung.</span>
+      <span class="marken"><span class="marke-k gut">viel Bewegung</span>
+      <span class="marke-k gut">keine Vorbereitung</span>
+      <span class="marke-k">8 Minuten</span></span>
+    </span></span></label>
+
+  <div class="zaehler" id="zaehler">Noch nichts angekreuzt — die Jagd dauert derzeit rund <b>90 Minuten</b>.</div>
+
+  <div class="kasten achtung" style="margin-top:1rem">
+    <p class="kastentitel">Denk an die Zeit</p>
+    <p>Acht Stationen sind rund 90 Minuten. Ab etwa <b>zwei Stunden</b> werden 12-Jährige
+    unruhig — vor allem, wenn der Pool schon wartet. Wenn du mehr als zwei neue Stationen
+    willst, nehmen wir dafür lieber eine bestehende raus. Mein Vorschlag wäre dann,
+    den VIP-Test (das Quiz) zu kürzen: Der ist am wenigsten mit der Umgebung verbunden.</p>
+  </div>
+</div></section>
+
+<section id="notizen"><div class="bahn">
+  <p class="nummer">Teil 5</p>
+  <h2>Deine Anmerkungen</h2>
+  <label class="notiz"><span>Eigene Ideen für Stationen</span>
+    <textarea data-notiz="EIGENE IDEEN" placeholder="Was dir sonst noch einfällt …"></textarea></label>
+  <label class="notiz"><span>Sonstiges — was noch geändert werden soll</span>
+    <textarea data-notiz="SONSTIGES" placeholder="…"></textarea></label>
+  <div id="ausgabe"><pre id="text"></pre></div>
+</div></section>
+
+<div class="aktion"><div class="bahn">
+  <button id="kopieren">Auswahl kopieren</button>
+  <button class="leise" id="leeren">Alles zurücksetzen</button>
+</div></div>
+
+<footer><div class="bahn">VIP-Schnitzeljagd · nichts davon ist umgesetzt, bis du es sagst</div></footer>
+
+<script>
+(function(){
+  var SCHLUESSEL = "vip_vorschlaege_v1";
+  var kannSpeichern = (function(){ try{ localStorage.setItem("t","1"); localStorage.removeItem("t"); return true; }catch(e){ return false; } })();
+  var stand = {};
+  if(kannSpeichern){ try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL)||"{}"); }catch(e){} }
+
+  var wahlen = [].slice.call(document.querySelectorAll(".wahl"));
+  wahlen.forEach(function(w, i){
+    w.dataset.nr = i;
+    if(stand["w"+i]) w.classList.add("an");
+    w.addEventListener("click", function(ev){
+      ev.preventDefault();
+      if(w.dataset.gruppe === "emoji"){
+        wahlen.filter(function(x){ return x.dataset.gruppe==="emoji"; })
+              .forEach(function(x){ x.classList.remove("an"); stand["w"+x.dataset.nr]=false; });
+        w.classList.add("an");
+      } else {
+        w.classList.toggle("an");
+      }
+      stand["w"+i] = w.classList.contains("an");
+      sichern(); rechnen();
+    });
+  });
+
+  var felder = [].slice.call(document.querySelectorAll("textarea[data-notiz]"));
+  felder.forEach(function(f, i){
+    if(stand["n"+i]) f.value = stand["n"+i];
+    f.addEventListener("input", function(){ stand["n"+i]=f.value; sichern(); });
+  });
+  function sichern(){ if(kannSpeichern){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){} } }
+
+  function rechnen(){
+    var zusatz = 0, anzahl = 0;
+    wahlen.forEach(function(w){
+      if(w.dataset.gruppe==="station" && w.classList.contains("an")){
+        zusatz += parseInt(w.dataset.minuten,10) || 0; anzahl++;
+      }
+    });
+    var k = document.getElementById("zaehler");
+    if(!anzahl){ k.innerHTML = "Noch nichts angekreuzt — die Jagd dauert derzeit rund <b>90 Minuten</b>."; return; }
+    var gesamt = 90 + zusatz;
+    var warnung = gesamt > 120 ? " — das ist für 12-Jährige zu lang, da sollte etwas raus"
+                : gesamt > 105 ? " — das ist die obere Grenze" : " — passt gut";
+    k.innerHTML = anzahl + (anzahl===1?" neue Station":" neue Stationen") + " · zusammen rund <b>"
+                + gesamt + " Minuten</b>" + warnung;
+  }
+  rechnen();
+
+  document.getElementById("kopieren").onclick = function(){
+    var k = this, z = ["AUSWAHL — VIP-Schnitzeljagd", ""];
+    var e = wahlen.filter(function(w){ return w.dataset.gruppe==="emoji" && w.classList.contains("an"); });
+    z.push("EMOJI-DUELL: " + (e.length ? e[0].dataset.wert : "(noch nicht entschieden)"));
+    var fo = wahlen.filter(function(w){ return w.dataset.gruppe==="foto" && w.classList.contains("an"); });
+    z.push("", "FOTO-AUFTRÄGE NEU (" + fo.length + "):");
+    if(fo.length) fo.forEach(function(w){ z.push("  + " + w.dataset.wert); });
+    else z.push("  (noch nichts ausgewählt)");
+    var st = wahlen.filter(function(w){ return w.dataset.gruppe==="station" && w.classList.contains("an"); });
+    var min = 0; st.forEach(function(w){ min += parseInt(w.dataset.minuten,10)||0; });
+    z.push("", "NEUE STATIONEN (" + st.length + ", rund " + min + " Minuten mehr):");
+    if(st.length) st.forEach(function(w){ z.push("  + " + w.dataset.wert); });
+    else z.push("  (noch nichts ausgewählt)");
+    z.push("", "GESAMTDAUER DANN: rund " + (90+min) + " Minuten");
+    felder.forEach(function(f){ if(f.value.trim()) z.push("", f.dataset.notiz + ": " + f.value.trim()); });
+    var t = z.join("\n");
+    document.getElementById("text").textContent = t;
+    document.getElementById("ausgabe").classList.add("da");
+    var fertig = function(){ k.textContent="Kopiert — jetzt einfügen"; setTimeout(function(){ k.textContent="Auswahl kopieren"; },2400); };
+    function ersatz(){
+      var x = document.createElement("textarea"); x.value=t;
+      x.style.position="fixed"; x.style.opacity="0"; document.body.appendChild(x);
+      x.select(); try{ document.execCommand("copy"); fertig(); }catch(y){ k.textContent="Text unten markieren"; }
+      document.body.removeChild(x);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(fertig, ersatz); }
+    else { ersatz(); }
+    document.getElementById("ausgabe").scrollIntoView({behavior:"smooth", block:"nearest"});
+  };
+
+  document.getElementById("leeren").onclick = function(){
+    if(!confirm("Alle Häkchen und Notizen löschen?")) return;
+    wahlen.forEach(function(w){ w.classList.remove("an"); });
+    felder.forEach(function(f){ f.value=""; });
+    stand = {}; sichern(); rechnen();
+    document.getElementById("ausgabe").classList.remove("da");
+  };
+})();
+</script>
+</body>
+</html>
