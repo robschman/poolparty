@@ -1,0 +1,3 @@
+# Private Familien-Seite — soll NICHT in Google auftauchen.
+User-agent: *
+Disallow: /
