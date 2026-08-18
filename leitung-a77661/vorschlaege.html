@@ -40,6 +40,33 @@ header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), tran
 h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
   font-size:clamp(2rem,7vw,3.1rem); line-height:1.02; margin:0; text-wrap:balance}
 .dach{color:var(--schrift-2); margin:.85rem 0 0}
+.zahlen{display:flex; flex-wrap:wrap; gap:.5rem; margin:1.3rem 0 0}
+.zahl{background:var(--karte); border:1px solid var(--rand); border-radius:9px; padding:.45rem .8rem;
+  font-size:.84rem}
+.zahl b{color:var(--gold); font-family:"IBM Plex Mono",monospace}
+.zahl.warn{background:var(--rot-tuell); border-color:color-mix(in srgb,var(--rot) 40%,transparent)}
+.zahl.warn b{color:var(--rot)}
+.tabelle{overflow-x:auto; border:1px solid var(--rand); border-radius:12px; background:var(--karte); margin:0 0 1rem}
+table{border-collapse:collapse; width:100%; font-size:.88rem; min-width:30rem}
+th{text-align:left; padding:.6rem .75rem; font-size:.64rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--schrift-3); font-weight:700; border-bottom:1px solid var(--rand); background:var(--grund-2)}
+td{padding:.6rem .75rem; border-bottom:1px solid var(--rand); vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.bu{text-align:center; font-family:"Bodoni Moda",Georgia,serif; font-size:1.1rem; font-weight:900;
+  color:var(--gold); width:2.2rem}
+td.neu{color:var(--gruen); font-weight:700; font-size:.78rem}
+.aufgaben{list-style:none; margin:1rem 0 0; padding:0}
+.aufgaben li{display:flex; gap:.85rem; align-items:flex-start; background:var(--karte);
+  border:1px solid var(--rand); border-radius:12px; padding:.85rem 1rem; margin-bottom:.55rem;
+  cursor:pointer}
+.aufgaben li.erledigt{opacity:.48}
+.aufgaben li.erledigt b{text-decoration:line-through}
+.aufgaben .box{flex:none; width:1.4rem; height:1.4rem; border-radius:6px; border:2px solid var(--rand);
+  display:flex; align-items:center; justify-content:center; font-weight:900; color:transparent;
+  font-size:.85rem; margin-top:.15rem}
+.aufgaben li.erledigt .box{background:var(--gruen); border-color:var(--gruen); color:var(--grund)}
+.aufgaben b{display:block}
+.aufgaben span.wie{color:var(--schrift-2); font-size:.9rem}
 .zurueck{display:inline-block; margin:1rem 0 0; font-size:.9rem; color:var(--gold);
   text-decoration:none; border-bottom:1px solid currentColor}
 
@@ -137,252 +164,165 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
 <header><div class="bahn">
   <p class="marke">Stand 18. August 2026, abends · noch nichts umgesetzt</p>
   <h1>Stand &amp; offene Fragen</h1>
-  <p class="dach">Oben steht, was beschlossen ist. Darunter zwei Fragen, die noch offen sind,
-     und die restlichen Stationsvorschläge. Umgesetzt wird alles erst, wenn du
-     „jetzt Änderungen umsetzen“ sagst.</p>
+  <p class="dach">Alle sechzehn Stationen stehen fest. Zwei Dinge muss ich noch von dir
+     wissen — und du hast eine Vorbereitungsliste bekommen. Umgesetzt wird erst,
+     wenn du „jetzt Änderungen umsetzen“ sagst.</p>
+  <div class="zahlen">
+    <span class="zahl">Stationen: <b>16</b></span>
+    <span class="zahl warn">Dauer: <b>rund 160 Min</b></span>
+    <span class="zahl">Vorzubereiten: <b>8 Dinge</b></span>
+    <span class="zahl">Party: <b>in 10 Tagen</b></span>
+  </div>
   <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
 </div></header>
-<section id="fest"><div class="bahn">
-  <p class="nummer">Beschlossen</p>
-  <h2>Das steht fest</h2>
-  <p>Alles davon wird gebaut, sobald du „jetzt Änderungen umsetzen“ sagst.</p>
+<section id="fragen"><div class="bahn">
+  <p class="nummer">Bevor ich baue</p>
+  <h2>Zwei Dinge muss ich noch wissen</h2>
 
-  <div class="fest"><span class="haken">✓</span><span><b>Sicherheitsstufe Rot: 120 Sekunden</b>
-    <span class="wie">Zwei Minuten warten ist deutlich unangenehmer als eine — der Gag wird besser.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>VIPPARTY bleibt das Losungswort</b></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Keine Grenze mehr in den Regeln</b></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Türsteher: zwei Wege, Teams starten gegengleich</b>
-    <span class="wie">Diamant zuerst in die eine Richtung, Platin in die andere, dann tauschen.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Video hinter dem Störbild-Filter</b>
-    <span class="wie">Unschärfe, harter Kontrast, Grünstich, wandernde Streifen. Du musst nichts können.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Buchstaben durcheinander, Wort am Handy legen</b>
-    <span class="wie">Antippen setzt auf Platz 1, 2, 3 … dann „Code prüfen“. Grün und fertig, oder rot und zurück.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Emoji-Duell: Treffpunkt</b>
-    <span class="wie">Die App schickt beide Teams an denselben Ort und gibt jedem ein fertiges Rätsel vor.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Foto-Aufträge: Perspektiven-Trick und „Das Gesicht, das keines ist“</b></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Neue Station: Die Spiegelschrift</b>
-    <span class="wie">Mit zwei verschiedenen Orten für Diamant und Platin, gegengleich wie beim Türsteher.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Neue Station: Der Taschenrechner-Trick</b>
-    <span class="wie">Mit deinem Zusatz: „Haltet das Handy nah ans Gesicht und schaut genau hin“ steht im Aufgabentext.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Neue Station: Der Anruf</b>
-    <span class="wie">Grundsätzlich ja — wer abhebt, ist noch offen. Gleich unten.</span></span></div>
-  <div class="fest"><span class="haken">✓</span><span><b>Die Jagd darf länger dauern</b>
-    <span class="wie">Wenn das Wetter am Freitag nicht mitspielt, trägt die Schnitzeljagd den Nachmittag.
-    Mit den drei neuen Stationen sind es rund <b>115 Minuten</b>.</span></span></div>
+  <div class="kasten achtung">
+    <p class="kastentitel">Frage 1 · Die Jagd dauert jetzt 2 Stunden 40</p>
+    <p>Mit allen sechzehn Stationen sind es rund <b>160 Minuten</b>. Für einen
+    verregneten Nachmittag ist das genau richtig. Wenn die Sonne scheint und der Pool
+    wartet, ist es zu viel — dann sitzen sechs Kinder um 17 Uhr immer noch über
+    Rätseln, während das Wasser ungenutzt daliegt.</p>
+  </div>
+
+  <label class="wahl" data-gruppe="dauer" data-wert="Schalter mit drei Stellungen (kurz/lang/drinnen)">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>Schalter mit drei Stellungen<span class="empfehlung">mein Vorschlag</span></b>
+      <span class="wie">Ein Wort in der Einstellungsdatei entscheidet, welche Stationen laufen:
+      <br><b>kurz</b> — rund 90 Minuten, die besten Stationen, wenn die Sonne scheint
+      <br><b>lang</b> — alle sechzehn, rund 160 Minuten, für einen Regennachmittag
+      <br><b>drinnen</b> — nur was unter Dach geht, rund 50 Minuten
+      <br><br>Umstellen dauert zehn Sekunden. Du entscheidest Freitagfrüh beim Blick
+      aus dem Fenster — nicht heute.</span>
+      <span class="marken"><span class="marke-k gut">Entscheidung erst am Partytag</span>
+      <span class="marke-k gut">alle Stationen bleiben gebaut</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="dauer" data-wert="Alles fix, 160 Minuten, Kuerzen ueber Spielleitermodus">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>Ohne Schalter — alles läuft immer</b>
+      <span class="wie">Wenn es zu lang wird, überspringst du am Partytag einzelne Stationen
+      über den Spielleitermodus (Krone 3× antippen). Das musst du dann aber bei jedem
+      Team einzeln machen.</span>
+      <span class="marken"><span class="marke-k">weniger Bauaufwand</span>
+      <span class="marke-k acht">Gefummel am Partytag</span></span>
+    </span></span></label>
+
+  <div class="kasten achtung" style="margin-top:1.6rem">
+    <p class="kastentitel">Frage 2 · Sechzehn Stationen, aber nur acht Buchstaben</p>
+    <p>VIPPARTY hat acht Buchstaben. Es gibt jetzt sechzehn Stationen — nicht jede
+    kann also einen geben.</p>
+  </div>
+
+  <label class="wahl" data-gruppe="buchstaben" data-wert="Raetselstationen geben Buchstaben, Rest gibt Punkte">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>Die acht Rätselstationen geben die Buchstaben<span class="empfehlung">mein Vorschlag</span></b>
+      <span class="wie">Türsteher, Video, Suchbild, Handy-aus, Emoji-Duell, Taschenrechner,
+      Spiegelschrift und Geheimschrift geben je einen Buchstaben. Die anderen acht geben
+      Punkte und Bonus.
+      <br><br>Das ist auch dramaturgisch besser: Nicht jede Station wiegt gleich schwer,
+      und ein Buchstabe bleibt etwas Besonderes.</span>
+      <span class="marken"><span class="marke-k gut">Buchstaben behalten ihren Wert</span></span>
+    </span></span></label>
+
+  <label class="wahl" data-gruppe="buchstaben" data-wert="Laengeres Loesungswort, jede Station gibt einen Buchstaben">
+    <span class="zeile"><span class="box">✓</span><span>
+      <b>Längeres Losungswort, jede Station gibt einen</b>
+      <span class="wie">Dann bräuchten wir ein Wort mit sechzehn Buchstaben —
+      etwa <code>VIPPARTYFUERZOE</code>. Am Handy zu legen wird damit deutlich mühsamer.</span>
+      <span class="marken"><span class="marke-k acht">16 Kacheln sind viel zum Sortieren</span></span>
+    </span></span></label>
 </div></section>
 
 <section id="anruf"><div class="bahn">
-  <p class="nummer">Frage 1</p>
-  <h2>Der Anruf — wer hebt ab?</h2>
-  <p>Du brauchst keinen Fremden dafür. Es gibt vier Wege, und zwei davon kommen
-  ganz ohne zweite Person aus.</p>
+  <p class="nummer">So wird der Anruf</p>
+  <h2>Das geteilte Kennwort</h2>
 
-  <label class="wahl" data-gruppe="anruf" data-wert="Robert hebt selbst ab, verstellte Stimme">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>A · Du hebst selbst ab<span class="empfehlung">mein Vorschlag</span></b>
-      <span class="wie">Du bist als Spielleiter ohnehin in der Nähe. Die App gibt „die geheime
-      Nummer des Concierge“ heraus — das ist deine. Du meldest dich tief und förmlich:
-      <em>„VIP-Club, Empfang. Kennwort?“</em> Nennen sie es, bekommen sie den Code.
-      Nennen sie es nicht, legst du auf.
-      <br><br>Dass sie irgendwann merken, dass es Papa ist, gehört zum Spaß dazu —
-      erfahrungsgemäß spielen Kinder in dem Alter genau deshalb erst recht mit.</span>
-      <span class="marken"><span class="marke-k gut">kostet nichts</span>
-      <span class="marke-k gut">geht sicher</span>
-      <span class="marke-k gut">keine zweite Person</span></span>
-    </span></span></label>
+  <p>Genau wie du es beschrieben hast — und es ist die beste Station im ganzen Spiel
+  geworden, weil sie beide Teams zwingt, zusammenzuarbeiten:</p>
 
-  <label class="wahl" data-gruppe="anruf" data-wert="Altes Handy als Anrufbeantworter">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>B · Ein altes Handy als Anrufbeantworter</b>
-      <span class="wie">Du sprichst auf die Mailbox eine Ansage mit dem Code. Dann schaltest
-      du das Handy <b>aus</b> — dadurch geht die Mailbox sofort ran, es klingelt nicht einmal.
-      Die Kinder rufen an und hören direkt die geheimnisvolle Stimme.
-      <br><br>Vorher einmal selbst anrufen und prüfen, ob die Mailbox wirklich sofort
-      abhebt — das hängt vom Mobilfunkanbieter ab.</span>
-      <span class="marken"><span class="marke-k gut">niemand muss aufpassen</span>
-      <span class="marke-k gut">klingt am geheimnisvollsten</span>
-      <span class="marke-k acht">vorher testen</span></span>
-    </span></span></label>
+  <ol class="punkte">
+    <li><b>Zwei Verstecke.</b> Die App schickt Team Diamant zu Versteck 1, Team Platin
+        zu Versteck 2. Dort liegt jeweils ein Zettel mit <b>einer Hälfte</b> des Kennworts.</li>
+    <li><b>Sie müssen sich austauschen.</b> Eine Hälfte allein nützt niemandem.
+        Sie müssen sich finden und die Hälften zusammensetzen.</li>
+    <li><b>Der Anruf.</b> Die App gibt deine Nummer heraus. Wer anruft und das
+        vollständige Kennwort nennt, bekommt von dir den Code — den tippen sie ein.</li>
+  </ol>
 
-  <label class="wahl" data-gruppe="anruf" data-wert="Ein Erwachsener nimmt ab">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>C · Jemand anderer nimmt ab</b>
-      <span class="wie">Oma, ein Nachbar, Zoes Mama. Du schickst der Person vorher eine
-      Nachricht mit Kennwort und Code — mehr braucht es nicht.</span>
-      <span class="marken"><span class="marke-k gut">echte fremde Stimme</span>
-      <span class="marke-k acht">jemand muss zur Zeit erreichbar sein</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="anruf" data-wert="Kein echter Anruf, Tonaufnahme in der App">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>D · Gar kein echtes Telefon</b>
-      <span class="wie">Die App spielt eine Tonaufnahme ab, die klingt wie ein
-      Anrufbeantworter — mit Freizeichen und Rauschen davor. Du sprichst sie einmal auf,
-      fertig.</span>
-      <span class="marken"><span class="marke-k gut">narrensicher</span>
-      <span class="marke-k">weniger aufregend als ein echter Anruf</span></span>
-    </span></span></label>
-</div></section>
-
-<section id="sieger"><div class="bahn">
-  <p class="nummer">Frage 2</p>
-  <h2>Gewinnt ein Team — oder kommen alle rein?</h2>
-  <p>Gute Frage, und sie war bisher nicht festgelegt. So wie das Spiel jetzt gebaut ist,
-  sammelt jedes Team eigene Punkte und sieht am Ende seinen Stand — ein ausgerufener
-  Sieger kommt aber nirgends vor.</p>
-
-  <label class="wahl" data-gruppe="sieger" data-wert="C: alle rein, besseres Team bekommt Ehrung">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>C · Alle kommen rein, das bessere Team bekommt einen Vorteil<span class="empfehlung">mein Vorschlag</span></b>
-      <span class="wie">Der Türsteher lässt erst auf, wenn <b>beide</b> Teams das Losungswort
-      haben — sie müssen sich am Schluss also noch einmal treffen. Wer mehr Punkte hat,
-      wird zum <b>VIP des Tages</b> ausgerufen: darf zuerst rein, zuerst in den Pool,
-      bekommt ein Extra-Goodie.
-      <br><br>Warum ich das vorschlage: Bei fünf, sechs befreundeten Kindern, die danach
-      noch den ganzen Nachmittag miteinander verbringen, ist ein echtes Verliererteam
-      heikel. Den Ehrgeiz ganz rauszunehmen wäre aber auch schade — die Punkte sind ja
-      der Motor. So bekommst du beides.</span>
-      <span class="marken"><span class="marke-k gut">niemand verliert</span>
-      <span class="marke-k gut">Ehrgeiz bleibt</span>
-      <span class="marke-k gut">gemeinsamer Schluss</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="sieger" data-wert="A: alle gewinnen gemeinsam">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>A · Alle gewinnen gemeinsam</b>
-      <span class="wie">Kein Sieger, keine Wertung. Die Teams arbeiten auf dasselbe Ziel hin
-      und kommen zusammen in die VIP-Lounge. Punkte werden gar nicht mehr angezeigt.</span>
-      <span class="marken"><span class="marke-k gut">völlig konfliktfrei</span>
-      <span class="marke-k">nimmt Spannung raus</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="sieger" data-wert="B: ein Team gewinnt, mit Preis">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>B · Ein Team gewinnt</b>
-      <span class="wie">Klassisch: mehr Punkte gewinnt, es gibt einen Preis fürs Siegerteam.
-      Das andere Team geht leer aus.</span>
-      <span class="marken"><span class="marke-k gut">klarer Wettkampf</span>
-      <span class="marke-k acht">kann Stimmung kippen</span></span>
-    </span></span></label>
-</div></section>
-<section id="mehr"><div class="bahn">
-  <p class="nummer">Frage 3</p>
-  <h2>Noch mehr Stationen?</h2>
-  <p>Weil die Jagd länger dauern darf, sind die restlichen sieben Vorschläge weiter offen.
-  Kreuz an, was du zusätzlich willst.</p>
-
-  <label class="wahl" data-gruppe="station" data-minuten="10" data-wert="Versteckte QR-Zettel">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Die versteckten QR-Zettel</b>
-      <span class="wie">Du versteckst vorher drei kleine laminierte QR-Codes in der Umgebung.
-      Jeder zeigt einen Buchstaben. Die App sagt nur ungefähr, wo gesucht wird.</span>
-      <span class="marken"><span class="marke-k gut">echtes Suchen</span>
-      <span class="marke-k acht">vorher verstecken</span>
-      <span class="marke-k acht">bei Regen schlecht</span>
-      <span class="marke-k">10 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Schritte abmessen">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Das Schrittmaß</b>
-      <span class="wie">„Wie viele Schritte vom Hydranten bis zur Laterne?“ Sie müssen die
-      Strecke abgehen. Zwei, drei Schritte Abweichung werden akzeptiert.</span>
-      <span class="marken"><span class="marke-k gut">Bewegung</span>
-      <span class="marke-k">einmal selbst abgehen</span>
-      <span class="marke-k">8 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="5" data-wert="Stoppuhr-Probe">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Die Stoppuhr-Probe</b>
-      <span class="wie">„Stoppt genau 30 Sekunden — ohne hinzuschauen.“ Je näher dran,
-      desto mehr Punkte. Kurze Station zum Durchschnaufen.</span>
-      <span class="marken"><span class="marke-k gut">geht auch im Regen</span>
-      <span class="marke-k gut">keine Vorbereitung</span>
-      <span class="marke-k">5 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="9" data-wert="Zeitreise-Foto nachstellen">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Das Zeitreise-Foto</b>
-      <span class="wie">Du fotografierst vorher eine Stelle aus ungewöhnlichem Winkel.
-      Die Kinder müssen sie finden und das Foto exakt nachstellen, mit sich darauf.</span>
-      <span class="marken"><span class="marke-k gut">schöne Erinnerungsfotos</span>
-      <span class="marke-k">ein Foto vorbereiten</span>
-      <span class="marke-k">9 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="9" data-wert="Geheimschrift entschlüsseln">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Die Geheimschrift</b>
-      <span class="wie">Eine Zahlenreihe wie <code>22-9-16</code>, dazu die Regel A=1, B=2, C=3.
-      Die Tabelle gibt es erst mit dem Tipp — sonst müssen sie selbst draufkommen.</span>
-      <span class="marken"><span class="marke-k gut">geht auch im Regen</span>
-      <span class="marke-k gut">keine Vorbereitung</span>
-      <span class="marke-k">9 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="6" data-wert="Sprint gegen die Uhr">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Der Sprint</b>
-      <span class="wie">Drei Minuten Countdown. In der Zeit an einem Punkt sein und ein Foto
-      machen. Geschafft gibt Bonuspunkte, nicht geschafft geht trotzdem weiter.</span>
-      <span class="marken"><span class="marke-k gut">Tempo</span>
-      <span class="marke-k acht">nur wo es sicher ist</span>
-      <span class="marke-k">6 Minuten</span></span>
-    </span></span></label>
-
-  <label class="wahl" data-gruppe="station" data-minuten="8" data-wert="Buchstabenjagd auf Schildern">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Die Buchstabenjagd</b>
-      <span class="wie">„Fotografiert die Buchstaben V, I und P — jeden einzeln, gefunden auf
-      einem Schild, Nummernschild oder einer Hausmauer.“</span>
-      <span class="marken"><span class="marke-k gut">viel Bewegung</span>
-      <span class="marke-k gut">keine Vorbereitung</span>
-      <span class="marke-k">8 Minuten</span></span>
-    </span></span></label>
-
-  <div class="zaehler" id="zaehler">Mit den drei beschlossenen neuen Stationen dauert die Jagd rund <b>115 Minuten</b>.</div>
-</div></section>
-
-<section id="wetter"><div class="bahn">
-  <p class="nummer">Vorschlag von mir</p>
-  <h2>Was, wenn es regnet?</h2>
-  <p>Du sagst, das Wetter ist unsicher. Das betrifft nicht nur den Pool — bei
-  Dauerregen macht auch eine Schnitzeljagd durch Ternitz keinen Spaß.</p>
-
-  <label class="wahl" data-gruppe="wetter" data-wert="Schlechtwetter-Schalter einbauen">
-    <span class="zeile"><span class="box">✓</span><span>
-      <b>Schlechtwetter-Schalter einbauen</b>
-      <span class="wie">Ein Wort in der Einstellungsdatei umstellen, und die Jagd läuft nur
-      noch über die Stationen, die drinnen oder unter einem Vordach funktionieren:
-      Quiz, Taschenrechner, Spiegelschrift, Geheimschrift, Emoji-Duell, Handy-aus,
-      Wort legen. Dauert dann rund 50 Minuten.
-      <br><br>Umlegen dauert zehn Sekunden — du kannst das Freitagfrüh entscheiden.</span>
-      <span class="marken"><span class="marke-k gut">Entscheidung erst am Partytag</span>
-      <span class="marke-k">kleiner Zusatzaufwand für mich</span></span>
-    </span></span></label>
+  <div class="kasten wichtig">
+    <p class="kastentitel">Vorschlag fürs Kennwort</p>
+    <p>Team Diamant findet <b>ROTER</b>, Team Platin findet <b>TEPPICH</b>.
+    Zusammen: <b>ROTER TEPPICH</b>. Passt zum VIP-Motto und ist am Telefon nicht
+    misszuverstehen — anders als etwas mit Zahlen oder Fremdwörtern.</p>
+    <p>Du kannst es frei ändern, sag mir einfach ein anderes.</p>
+  </div>
 
   <div class="kasten">
-    <p class="kastentitel">Geht auch ohne</p>
-    <p>Über den Spielleitermodus (Krone 3× antippen, Code <code>9999</code>) kannst du
-    am Partytag jede Station einzeln überspringen. Der Schalter ist nur bequemer,
-    weil du dann nicht bei jedem Team einzeln herumtippen musst.</p>
+    <p class="kastentitel">So meldest du dich</p>
+    <p>Tief und förmlich: <em>„VIP-Club, Empfang. Kennwort?“</em> — Nennen sie es,
+    sagst du den Code. Nennen sie es nicht: <em>„Ohne Kennwort kein Zutritt.“</em>
+    und auflegen. Sie rufen garantiert nochmal an.</p>
+    <p>Kennwort und Code stehen beide auf dem Spielleiter-Zettel, den du ausdruckst.</p>
   </div>
+</div></section>
+
+<section id="vorbereiten"><div class="bahn">
+  <p class="nummer">Für dich</p>
+  <h2>Was du körperlich vorbereiten musst</h2>
+  <p>Durch die neuen Stationen ist die Liste länger geworden. Rechne mit
+  <b>einer Stunde Arbeit</b> plus der Erkundungsrunde. Antippen zum Abhaken.</p>
+  <ul class="aufgaben" id="liste"></ul>
+</div></section>
+
+<section id="uebersicht"><div class="bahn">
+  <p class="nummer">Zum Überblick</p>
+  <h2>Alle sechzehn Stationen</h2>
+  <p>So sähe die lange Fassung aus. Die Buchstaben werden durcheinander vergeben —
+  in welcher Reihenfolge, würfle ich beim Bauen aus.</p>
+
+  <div class="tabelle"><table>
+    <tr><th></th><th>Station</th><th>was passiert</th><th>Min</th></tr>
+    <tr><td class="bu">–</td><td><b>Akkreditierung</b></td><td>Teamfoto, Regeln</td><td>5</td></tr>
+    <tr><td class="bu">●</td><td><b>Der Türsteher</b></td><td>zwei Hausnummern, Teams starten gegengleich</td><td>10</td></tr>
+    <tr><td class="bu">●</td><td><b>Die geheime Botschaft</b></td><td>dein Video hinter dem Störbild-Filter</td><td>10</td></tr>
+    <tr><td class="bu">●</td><td><b>Das Suchbild</b></td><td>Foto-Ausschnitt in echt finden</td><td>10</td></tr>
+    <tr><td class="bu">●</td><td><b>Sicherheitsstufe Rot</b></td><td>Handys aus, 120 Sekunden</td><td>8</td></tr>
+    <tr><td class="bu">●</td><td><b>Das Emoji-Duell</b></td><td>Treffpunkt, Rätsel tauschen</td><td>10</td></tr>
+    <tr><td class="bu">●</td><td class="neu"><b>Die Spiegelschrift</b> · neu</td><td>Selfie-Kamera spiegelt, zwei Orte je Team</td><td>8</td></tr>
+    <tr><td class="bu">●</td><td class="neu"><b>Der Taschenrechner-Trick</b> · neu</td><td>1000 − 698 = 302, umgedreht ZOE</td><td>7</td></tr>
+    <tr><td class="bu">●</td><td class="neu"><b>Die Geheimschrift</b> · neu</td><td>22-9-16 mit A=1, B=2 …</td><td>9</td></tr>
+    <tr><td class="bu">+</td><td><b>Der VIP-Test</b></td><td>fünf Quizfragen</td><td>8</td></tr>
+    <tr><td class="bu">+</td><td><b>Die Zählaufgabe</b></td><td>Stufen oder Fenster zählen</td><td>8</td></tr>
+    <tr><td class="bu">+</td><td><b>Die Paparazzi-Mission</b></td><td>sechs Foto-Aufträge</td><td>12</td></tr>
+    <tr><td class="bu">+</td><td class="neu"><b>Das geteilte Kennwort</b> · neu</td><td>zwei Verstecke, je eine Hälfte</td><td>7</td></tr>
+    <tr><td class="bu">+</td><td class="neu"><b>Der Anruf</b> · neu</td><td>dich anrufen, Kennwort nennen, Code bekommen</td><td>8</td></tr>
+    <tr><td class="bu">+</td><td class="neu"><b>Die versteckten QR-Zettel</b> · neu</td><td>drei laminierte Codes suchen</td><td>10</td></tr>
+    <tr><td class="bu">+</td><td class="neu"><b>Das Zeitreise-Foto</b> · neu</td><td>dein Foto exakt nachstellen</td><td>9</td></tr>
+    <tr><td class="bu">+</td><td class="neu"><b>Die Stoppuhr-Probe</b> · neu</td><td>30 Sekunden blind stoppen</td><td>5</td></tr>
+    <tr><td class="bu">+</td><td class="neu"><b>Der Sprint</b> · neu</td><td>drei Minuten bis zum Zielpunkt</td><td>6</td></tr>
+    <tr><td class="bu">–</td><td><b>Die VIP-Lounge</b></td><td>Wort legen, Konfetti, alle rein</td><td>10</td></tr>
+  </table></div>
+  <p style="font-size:.88rem; color:var(--schrift-2)">
+    <b style="color:var(--gold)">●</b> gibt einen Buchstaben ·
+    <b style="color:var(--gold)">+</b> gibt Punkte ·
+    <b style="color:var(--gold)">–</b> Anfang und Ende</p>
 </div></section>
 
 <section id="notizen"><div class="bahn">
   <p class="nummer">Zum Schluss</p>
   <h2>Deine Anmerkungen</h2>
-  <label class="notiz"><span>Eigene Ideen</span>
-    <textarea data-notiz="EIGENE IDEEN" placeholder="Was dir sonst noch einfällt …"></textarea></label>
+  <label class="notiz"><span>Anderes Kennwort? Andere Codes?</span>
+    <textarea data-notiz="KENNWORT" placeholder="z. B. ROTER + TEPPICH passt, oder: nimm lieber …"></textarea></label>
   <label class="notiz"><span>Sonstiges</span>
     <textarea data-notiz="SONSTIGES" placeholder="…"></textarea></label>
   <div id="ausgabe"><pre id="text"></pre></div>
 </div></section>
 
 <div class="aktion"><div class="bahn">
-  <button id="kopieren">Auswahl kopieren</button>
+  <button id="kopieren">Antworten kopieren</button>
   <button class="leise" id="leeren">Zurücksetzen</button>
 </div></div>
 
@@ -390,76 +330,68 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
 
 <script>
 (function(){
-  var SCHLUESSEL = "vip_stand_v2";
-  var BASIS = 115;   // 90 + Spiegelschrift + Taschenrechner + Anruf
+  var AUFGABEN = [
+    ["Erkundungsrunde gehen", "Zwei Hausnummern, ein Schild zum Fotografieren, etwas zum Zählen. Blatt: erkundung.html"],
+    ["Zwei Orte für die Spiegelschrift", "Gegengleich für die Teams — einer links, einer rechts"],
+    ["Drei QR-Zettel drucken und verstecken", "Laminieren oder in eine Klarsichthülle, dann festkleben"],
+    ["Zwei Kennwort-Zettel verstecken", "ROTER an einem Ort, TEPPICH am anderen"],
+    ["Zeitreise-Foto machen", "Eine Stelle aus ungewöhnlichem Winkel — von unten, ganz nah, schräg"],
+    ["Zielpunkt für den Sprint festlegen", "Drei Minuten Fußweg, sicher erreichbar"],
+    ["Video drehen", "25 Sekunden, Codewort GOLDFISCH. Anleitung: video.html"],
+    ["Nummer und Code für den Anruf festlegen", "Kennwort ROTER TEPPICH, Code frei wählbar"]
+  ];
+  var SCHLUESSEL = "vip_stand_v3";
   var kannSpeichern = (function(){ try{ localStorage.setItem("t","1"); localStorage.removeItem("t"); return true; }catch(e){ return false; } })();
   var stand = {};
   if(kannSpeichern){ try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL)||"{}"); }catch(e){} }
+  function sichern(){ if(kannSpeichern){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){} } }
 
-  var EINFACH = { anruf:1, sieger:1 };   // Gruppen, in denen nur eine Wahl gilt
+  var liste = document.getElementById("liste");
+  AUFGABEN.forEach(function(a,i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="box">✓</span><span><b>'+a[0]+'</b><span class="wie">'+a[1]+'</span></span>';
+    if(stand["a"+i]) li.className = "erledigt";
+    li.onclick = function(){ li.classList.toggle("erledigt");
+      stand["a"+i] = li.classList.contains("erledigt"); sichern(); };
+    liste.appendChild(li);
+  });
+
   var wahlen = [].slice.call(document.querySelectorAll(".wahl"));
-  wahlen.forEach(function(w, i){
+  wahlen.forEach(function(w,i){
     w.dataset.nr = i;
     if(stand["w"+i]) w.classList.add("an");
     w.addEventListener("click", function(ev){
       ev.preventDefault();
-      if(EINFACH[w.dataset.gruppe]){
-        wahlen.filter(function(x){ return x.dataset.gruppe===w.dataset.gruppe; })
-              .forEach(function(x){ x.classList.remove("an"); stand["w"+x.dataset.nr]=false; });
-        w.classList.add("an");
-      } else { w.classList.toggle("an"); }
-      stand["w"+i] = w.classList.contains("an");
-      sichern(); rechnen();
+      wahlen.filter(function(x){ return x.dataset.gruppe===w.dataset.gruppe; })
+            .forEach(function(x){ x.classList.remove("an"); stand["w"+x.dataset.nr]=false; });
+      w.classList.add("an"); stand["w"+i]=true; sichern();
     });
   });
 
   var felder = [].slice.call(document.querySelectorAll("textarea[data-notiz]"));
-  felder.forEach(function(f, i){
+  felder.forEach(function(f,i){
     if(stand["n"+i]) f.value = stand["n"+i];
     f.addEventListener("input", function(){ stand["n"+i]=f.value; sichern(); });
   });
-  function sichern(){ if(kannSpeichern){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){} } }
-
-  function rechnen(){
-    var zusatz = 0, anzahl = 0;
-    wahlen.forEach(function(w){
-      if(w.dataset.gruppe==="station" && w.classList.contains("an")){
-        zusatz += parseInt(w.dataset.minuten,10)||0; anzahl++;
-      }
-    });
-    var k = document.getElementById("zaehler"), g = BASIS + zusatz;
-    var satz = anzahl ? (anzahl + (anzahl===1?" weitere Station":" weitere Stationen") + " dazu · zusammen rund <b>"+g+" Minuten</b>")
-                      : ("Mit den drei beschlossenen neuen Stationen dauert die Jagd rund <b>"+BASIS+" Minuten</b>.");
-    var hinweis = g > 165 ? " — das ist auch für einen Regentag viel"
-                : g > 135 ? " — gut für einen Nachmittag ohne Pool"
-                : "";
-    k.innerHTML = satz + hinweis;
-  }
-  rechnen();
 
   document.getElementById("kopieren").onclick = function(){
-    var k = this, z = ["STAND & ENTSCHEIDUNGEN — VIP-Schnitzeljagd", ""];
-    function einzel(gruppe, titel){
-      var t = wahlen.filter(function(w){ return w.dataset.gruppe===gruppe && w.classList.contains("an"); });
+    var k = this, z = ["ANTWORTEN — VIP-Schnitzeljagd", ""];
+    function einzel(g, titel){
+      var t = wahlen.filter(function(w){ return w.dataset.gruppe===g && w.classList.contains("an"); });
       z.push(titel + ": " + (t.length ? t[0].dataset.wert : "(noch offen)"));
     }
-    einzel("anruf",  "DER ANRUF");
-    einzel("sieger", "WER GEWINNT");
-    var we = wahlen.filter(function(w){ return w.dataset.gruppe==="wetter" && w.classList.contains("an"); });
-    z.push("SCHLECHTWETTER-SCHALTER: " + (we.length ? "ja, bitte einbauen" : "nein / noch offen"));
-    var st = wahlen.filter(function(w){ return w.dataset.gruppe==="station" && w.classList.contains("an"); });
-    var min = 0; st.forEach(function(w){ min += parseInt(w.dataset.minuten,10)||0; });
-    z.push("", "ZUSÄTZLICHE STATIONEN (" + st.length + "):");
-    if(st.length) st.forEach(function(w){ z.push("  + " + w.dataset.wert); });
-    else z.push("  (keine weiteren)");
-    z.push("", "GESAMTDAUER DANN: rund " + (BASIS+min) + " Minuten");
+    einzel("dauer", "DAUER");
+    einzel("buchstaben", "BUCHSTABEN");
+    var offen = AUFGABEN.filter(function(a,i){ return !stand["a"+i]; });
+    z.push("", "VORBEREITUNG NOCH OFFEN (" + offen.length + " von " + AUFGABEN.length + "):");
+    offen.forEach(function(a){ z.push("  - " + a[0]); });
     felder.forEach(function(f){ if(f.value.trim()) z.push("", f.dataset.notiz + ": " + f.value.trim()); });
     var t = z.join("\n");
     document.getElementById("text").textContent = t;
     document.getElementById("ausgabe").classList.add("da");
-    var fertig = function(){ k.textContent="Kopiert — jetzt einfügen"; setTimeout(function(){ k.textContent="Auswahl kopieren"; },2400); };
+    var fertig = function(){ k.textContent="Kopiert — jetzt einfügen"; setTimeout(function(){ k.textContent="Antworten kopieren"; },2400); };
     function ersatz(){
-      var x = document.createElement("textarea"); x.value=t;
+      var x=document.createElement("textarea"); x.value=t;
       x.style.position="fixed"; x.style.opacity="0"; document.body.appendChild(x);
       x.select(); try{ document.execCommand("copy"); fertig(); }catch(y){ k.textContent="Text unten markieren"; }
       document.body.removeChild(x);
@@ -472,7 +404,8 @@ footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-si
     if(!confirm("Alle Häkchen und Notizen löschen?")) return;
     wahlen.forEach(function(w){ w.classList.remove("an"); });
     felder.forEach(function(f){ f.value=""; });
-    stand = {}; sichern(); rechnen();
+    [].slice.call(liste.children).forEach(function(li){ li.classList.remove("erledigt"); });
+    stand = {}; sichern();
     document.getElementById("ausgabe").classList.remove("da");
   };
 })();
