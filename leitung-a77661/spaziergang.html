@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spaziergang-Liste — VIP-Schnitzeljagd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-tuell:#f3e9cd; --rot:#a4402c; --rot-tuell:#f8e6e0;
+  --gruen:#34694b; --gruen-tuell:#e2f0e6; --breite:min(100% - 2.2rem, 40rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.5;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-text-size-adjust:100%}
+.bahn{width:var(--breite); margin-inline:auto}
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(1.6rem,5vw,2.4rem) 0 clamp(1.1rem,4vw,1.6rem)}
+.marke{font-size:.68rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .7rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7.4vw,3rem); line-height:1.02; margin:0}
+.dach{color:var(--schrift-2); margin:.7rem 0 0; font-size:.95rem}
+.zaehler{background:var(--karte); border:1px solid var(--rand); border-radius:10px;
+  padding:.6rem .9rem; margin:1rem 0 0; font-size:.9rem; font-weight:600}
+.zaehler b{color:var(--gold); font-family:"IBM Plex Mono",monospace}
+.zurueck{display:inline-block; margin:.9rem 0 0; font-size:.88rem; color:var(--gold);
+  text-decoration:none; border-bottom:1px solid currentColor}
+
+.hinweis{background:var(--gold-tuell); border:1px solid var(--rand); border-left:4px solid var(--gold);
+  border-radius:10px; padding:.85rem 1rem; margin:1.4rem 0 0; font-size:.92rem; color:var(--schrift-2)}
+.hinweis b{color:var(--schrift)}
+
+section{padding:clamp(1.2rem,4vw,1.7rem) 0 .2rem}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.3rem;
+  margin:0 0 .15rem}
+.warum{color:var(--schrift-2); font-size:.88rem; margin:0 0 .9rem}
+
+ol{list-style:none; margin:0; padding:0; counter-reset:nr}
+li{display:flex; gap:.85rem; align-items:flex-start; padding:.8rem .85rem; cursor:pointer;
+  border:1px solid var(--rand); border-radius:11px; background:var(--karte); margin:0 0 .6rem;
+  transition:opacity .15s; -webkit-tap-highlight-color:transparent}
+li.hab{opacity:.4}
+li.hab .was b{text-decoration:line-through}
+.nr{flex:none; width:1.85rem; height:1.85rem; border-radius:50%; border:2px solid var(--rand);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.85rem;
+  font-family:"IBM Plex Mono",monospace; color:var(--schrift-3); background:var(--grund)}
+li.hab .nr{background:var(--gruen); border-color:var(--gruen); color:var(--grund); font-size:1rem}
+li.hab .nr::after{content:"✓"}
+li.hab .nr span{display:none}
+.was{flex:1; min-width:0}
+.was b{display:block; font-size:1.02rem; font-weight:700; margin:0 0 .12rem}
+.was .station{font-size:.68rem; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--gold); font-weight:700; display:block; margin:0 0 .3rem}
+.was .dazu{font-size:.88rem; color:var(--schrift-2); margin:.3rem 0 0}
+.merk{display:inline-block; margin:.45rem 0 0; font-size:.8rem; font-weight:600;
+  background:var(--rot-tuell); color:var(--rot); border-radius:6px; padding:.2rem .5rem}
+.merk.gut{background:var(--gruen-tuell); color:var(--gruen)}
+
+footer{border-top:1px solid var(--rand); margin:2rem 0 0; padding:1.4rem 0 3rem;
+  color:var(--schrift-3); font-size:.85rem}
+footer b{color:var(--schrift-2)}
+
+@media print{
+  body{font-size:11pt; background:#fff}
+  header{background:#fff}
+  li{break-inside:avoid; opacity:1 !important}
+  .zurueck,.zaehler{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bahn">
+    <p class="marke">VIP Club · Zoes Poolparty</p>
+    <h1>Die Spaziergang&#8209;Liste</h1>
+    <p class="dach">13 Plätze, die du draußen suchen musst — in der Reihenfolge, wie sie in der App drankommen.</p>
+    <div class="zaehler">Gefunden: <b><span id="zahl">0</span> von 13</b></div>
+    <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
+  </div>
+</header>
+
+<div class="bahn">
+
+  <div class="hinweis">
+    <b>So gehst du vor:</b> Punkt lesen → Platz suchen → antippen (Haken bleibt gespeichert).
+    Die Details — genaue Adresse, Hausnummer, Antwort, Tipp — schreibst du danach in Ruhe
+    ins große <a href="vorort.html" style="color:var(--gold)">Vor&#8209;Ort&#8209;Blatt</a>.
+    Hier nur schauen und abhaken.
+  </div>
+
+  <section>
+    <h2>Der Anfang — zwei Richtungen</h2>
+    <p class="warum">Die zwei Teams starten gegengleich. Darum brauchst du hier immer ein Paar.</p>
+    <ol>
+
+      <li><span class="nr"><span>1</span></span><div class="was">
+        <span class="station">Der Türsteher · Weg A</span>
+        <b>Ein Haus mit gut sichtbarer Hausnummer</b>
+        <p class="dazu">In die eine Richtung vom Garten weg, 3–5 Minuten. Die Nummer muss man von der Straße aus lesen können.</p>
+        <span class="merk">Nummer aufschreiben</span>
+      </div></li>
+
+      <li><span class="nr"><span>2</span></span><div class="was">
+        <span class="station">Der Türsteher · Weg B</span>
+        <b>Noch ein Haus mit Hausnummer — andere Richtung</b>
+        <p class="dazu">In die <b>Gegenrichtung</b> von Weg A. Team 1 geht erst A dann B, Team 2 erst B dann A — so laufen sie sich nicht über den Weg.</p>
+        <span class="merk">Beide Nummern zusammenzählen = die Antwort</span>
+      </div></li>
+
+      <li><span class="nr"><span>3</span></span><div class="was">
+        <span class="station">Das Suchbild</span>
+        <b>Ein Ort mit etwas Auffälligem dran</b>
+        <p class="dazu">Keine 5 Minuten weg. Irgendetwas, das man zählen oder benennen kann und das nicht sofort ins Auge springt — eine Figur, ein Schild, eine Farbe, etwas oben am Dach.</p>
+        <span class="merk">Antwort + einen Tipp ausdenken</span>
+      </div></li>
+
+    </ol>
+  </section>
+
+  <section>
+    <h2>Die Spiegelschrift — wieder ein Paar</h2>
+    <p class="warum">Hier braucht es etwas Spiegelndes: Fensterscheibe, Schaufenster, Autoscheibe, Edelstahl.</p>
+    <ol start="4">
+
+      <li><span class="nr"><span>4</span></span><div class="was">
+        <span class="station">Spiegelschrift · Weg C</span>
+        <b>Ein Platz mit einer spiegelnden Fläche</b>
+        <p class="dazu">Dort halten die Kinder das Handy davor, um die verkehrte Schrift zu lesen.</p>
+      </div></li>
+
+      <li><span class="nr"><span>5</span></span><div class="was">
+        <span class="station">Spiegelschrift · Weg D</span>
+        <b>Noch so ein Platz — Gegenrichtung</b>
+        <p class="dazu">Wieder gegengleich zu Weg C, damit sich die Teams nicht treffen.</p>
+      </div></li>
+
+    </ol>
+  </section>
+
+  <section>
+    <h2>Die Mitte — die Lounge</h2>
+    <p class="warum">Hier kommen beide Teams zusammen. Ungefähr auf halbem Weg, Schatten wäre gut.</p>
+    <ol start="6">
+
+      <li><span class="nr"><span>6</span></span><div class="was">
+        <span class="station">Die Lounge</span>
+        <b>Der Pausenplatz mit Essen und Trinken</b>
+        <p class="dazu">Platz für 6 Kinder zum Sitzen, möglichst schattig, und du musst mit der Kühlbox hinkommen. Dort baust du auch den Strohhalm-Turm und das Eisfach auf.</p>
+        <span class="merk gut">Beide Teams treffen sich hier</span>
+      </div></li>
+
+      <li><span class="nr"><span>7</span></span><div class="was">
+        <span class="station">Die versteckten Zettel</span>
+        <b>Ein Suchgebiet für 3 kleine QR&#8209;Zettel — direkt bei der Lounge</b>
+        <p class="dazu">Wichtig: <b>nach</b> der Lounge, damit nicht ein Team allein alle drei einsammelt. Zaun, Baum, Laterne, Bank — Sachen, die man mit Klebeband befestigen kann.</p>
+        <span class="merk">3 Verstecke merken</span>
+      </div></li>
+
+    </ol>
+  </section>
+
+  <section>
+    <h2>Nach der Pause</h2>
+    <p class="warum">Ab hier geht es wieder Richtung Heimweg.</p>
+    <ol start="8">
+
+      <li><span class="nr"><span>8</span></span><div class="was">
+        <span class="station">Die Zählaufgabe</span>
+        <b>Ein Ort, wo man etwas abzählen kann</b>
+        <p class="dazu">Stufen einer Treppe, Fenster an einer Hausfront, Latten im Zaun, Poller am Gehsteig. Am besten zwischen 8 und 30 Stück — sonst zählen sie ewig.</p>
+        <span class="merk">Selber nachzählen und die Zahl notieren</span>
+      </div></li>
+
+      <li><span class="nr"><span>9</span></span><div class="was">
+        <span class="station">Das Zeitreise&#8209;Foto</span>
+        <b>Ein Platz, den du vorher fotografierst</b>
+        <p class="dazu">Du machst dort ein Foto, die Kinder müssen genau dieselbe Stelle finden und sich davorstellen. Etwas Markantes, aber nicht zu leicht.</p>
+        <span class="merk">Foto gleich beim Spazieren machen</span>
+      </div></li>
+
+      <li><span class="nr"><span>10</span></span><div class="was">
+        <span class="station">Der Sprint</span>
+        <b>Ein Zielpunkt, gut 3 Minuten entfernt</b>
+        <p class="dazu">Dorthin müssen sie laufen und ein Foto machen. Muss von der Station davor in 3 Minuten schaffbar sein — schau beim Gehen auf die Uhr.</p>
+        <span class="merk">Zeit stoppen beim Hingehen</span>
+      </div></li>
+
+    </ol>
+  </section>
+
+  <section>
+    <h2>Der Schluss — das Kennwort</h2>
+    <p class="warum">Zwei getrennte Verstecke, eines pro Team. Zusammen ergeben sie das Kennwort.</p>
+    <ol start="11">
+
+      <li><span class="nr"><span>11</span></span><div class="was">
+        <span class="station">Die halbe Wahrheit · Versteck 1</span>
+        <b>Versteck für den Zettel mit <span style="font-family:'IBM Plex Mono',monospace">ROTER</span></b>
+        <p class="dazu">Für Team Diamant. Muss von außen unsichtbar, aber mit deiner Beschreibung sicher findbar sein — unter einer Bank, hinter einem Schild, in einer Mauerritze.</p>
+      </div></li>
+
+      <li><span class="nr"><span>12</span></span><div class="was">
+        <span class="station">Die halbe Wahrheit · Versteck 2</span>
+        <b>Versteck für den Zettel mit <span style="font-family:'IBM Plex Mono',monospace">TEPPICH</span></b>
+        <p class="dazu">Für Team Platin, ein gutes Stück von Versteck 1 weg. Danach suchen sich die Teams gegenseitig, um die zwei Hälften zusammenzusetzen.</p>
+        <span class="merk">Weit weg von Versteck 1</span>
+      </div></li>
+
+      <li><span class="nr"><span>13</span></span><div class="was">
+        <span class="station">Der Anruf</span>
+        <b>Der Platz, von wo aus sie dich anrufen</b>
+        <p class="dazu">Der wichtigste Platz überhaupt: von dort muss der Rückweg in den Garten <b>mindestens 10 Minuten</b> dauern. Nur so hast du Zeit, dich als Türsteher umzuziehen.</p>
+        <span class="merk">Rückweg abgehen und Zeit stoppen!</span>
+      </div></li>
+
+    </ol>
+  </section>
+
+  <footer>
+    <p><b>Was du sonst noch brauchst</b> — steht nicht draußen, sondern daheim:
+    das Buffet&#8209;Wort in der Lounge, das Paparazzi&#8209;Foto, das Video, die zwei Emoji&#8209;Lieder
+    und deine Telefonnummer.</p>
+    <p><b>Nimm mit:</b> Handy (für die Fotos und zum Zeitstoppen) und etwas zum Notieren,
+    falls dir unterwegs schon Hausnummern und Antworten einfallen.</p>
+    <p style="margin-top:1.2rem"><a class="zurueck" href="index.html">← zurück zum Leitstand</a></p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var SCHLUESSEL = "vip_spaziergang_v1";
+  var punkte = Array.prototype.slice.call(document.querySelectorAll("li"));
+  var anzeige = document.getElementById("zahl");
+  var stand = {};
+  try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL) || "{}") || {}; }catch(e){ stand = {}; }
+
+  function zaehlen(){
+    var n = punkte.filter(function(p){ return p.classList.contains("hab"); }).length;
+    anzeige.textContent = n;
+  }
+  function sichern(){
+    try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){}
+  }
+
+  punkte.forEach(function(p, i){
+    if(stand[i]) p.classList.add("hab");
+    p.addEventListener("click", function(){
+      p.classList.toggle("hab");
+      stand[i] = p.classList.contains("hab");
+      sichern(); zaehlen();
+    });
+  });
+  zaehlen();
+})();
+</script>
+
+</body>
+</html>
