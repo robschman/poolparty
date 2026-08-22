@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vor-Ort-Blatt — VIP-Schnitzeljagd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-tuell:#f3e9cd; --rot:#a4402c; --rot-tuell:#f8e6e0;
+  --gruen:#34694b; --gruen-tuell:#e2f0e6; --feld:#fff; --breite:min(100% - 2.2rem, 44rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019; --feld:#0c0a07;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019; --feld:#0c0a07;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.6;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.bahn{width:var(--breite); margin-inline:auto}
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(2rem,6vw,3rem) 0 clamp(1.4rem,4vw,2rem)}
+.marke{font-size:.68rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .8rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7.4vw,3.1rem); line-height:1.02; margin:0}
+.dach{color:var(--schrift-2); margin:.85rem 0 0}
+.fortschritt{background:var(--karte); border:1px solid var(--rand); border-radius:11px;
+  padding:.7rem 1rem; margin:1.2rem 0 0; font-size:.92rem; font-weight:600}
+.fortschritt b{color:var(--gold); font-family:"IBM Plex Mono",monospace}
+.zurueck{display:inline-block; margin:1rem 0 0; font-size:.9rem; color:var(--gold);
+  text-decoration:none; border-bottom:1px solid currentColor}
+section{padding:clamp(1.6rem,5vw,2.4rem) 0 .5rem}
+.nummer{font-family:"IBM Plex Mono",monospace; font-size:.74rem; font-weight:600;
+  letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin:0 0 .5rem}
+.vorher{color:var(--schrift-2); margin:0 0 1.4rem}
+.auftrag{background:var(--karte); border:1px solid var(--rand); border-radius:14px;
+  padding:1.15rem 1.25rem; margin:0 0 .9rem; transition:opacity .2s}
+.auftrag.fertig{opacity:.5}
+.kopf{display:flex; gap:.9rem; align-items:flex-start; margin:0 0 .9rem}
+.ziffer{flex:none; width:2rem; height:2rem; border-radius:50%; background:var(--gold);
+  color:var(--grund); display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.88rem; margin-top:.1rem}
+.kopf > div{flex:1; min-width:0}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.22rem;
+  line-height:1.2; margin:0; text-wrap:balance}
+.station{font-size:.82rem; color:var(--schrift-3); margin:.15rem 0 0}
+.fertighaken{flex:none; display:flex; align-items:center; gap:.4rem; cursor:pointer;
+  font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+  color:var(--schrift-3)}
+.fertighaken input{width:1.15rem; height:1.15rem; accent-color:var(--gruen)}
+.text{font-size:.96rem; margin:0 0 1rem; color:var(--schrift)}
+.fotoauftrag{background:var(--gold-tuell); border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);
+  border-radius:11px; padding:.75rem .9rem; margin:0 0 .9rem; font-size:.93rem}
+.fotoauftrag b{display:block; color:var(--gold); font-size:.7rem; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:.3rem}
+.feld{display:block; margin:0 0 .85rem}
+.feld span{display:block; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:700; color:var(--gold); margin:0 0 .3rem}
+.feld input, .feld textarea{width:100%; padding:.7rem .85rem; border-radius:10px;
+  border:1.5px solid var(--rand); background:var(--feld); color:var(--schrift);
+  font-family:inherit; font-size:1rem; -webkit-appearance:none}
+.feld textarea{min-height:3.4rem; resize:vertical; line-height:1.5}
+.feld input:focus, .feld textarea:focus{outline:none; border-color:var(--gold);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 20%,transparent)}
+.summe{background:var(--gruen-tuell); border:1px solid color-mix(in srgb,var(--gruen) 36%,transparent);
+  border-radius:10px; padding:.7rem .9rem; margin:0 0 .85rem; font-weight:600; color:var(--gruen);
+  font-size:.94rem}
+.summe span{font-family:"IBM Plex Mono",monospace; font-size:1.2rem}
+.minihaken{display:flex; flex-wrap:wrap; gap:.5rem .9rem; padding-top:.3rem}
+.minihaken label{display:flex; align-items:center; gap:.4rem; font-size:.88rem;
+  color:var(--schrift-2); cursor:pointer}
+.minihaken input{width:1.1rem; height:1.1rem; accent-color:var(--gold)}
+.aktion{position:sticky; bottom:0; background:color-mix(in srgb,var(--grund) 94%,transparent);
+  backdrop-filter:blur(10px); border-top:1px solid var(--rand);
+  padding:.8rem 0 calc(.8rem + env(safe-area-inset-bottom)); margin-top:1.4rem; z-index:5}
+.aktion .bahn{display:flex; gap:.6rem}
+button{flex:1; padding:.9rem 1rem; border:0; border-radius:10px; cursor:pointer; font-family:inherit;
+  font-size:.94rem; font-weight:700; background:var(--gold); color:var(--grund)}
+button.leise{background:transparent; color:var(--schrift-2); border:1.5px solid var(--rand)}
+#ausgabe{display:none; margin:1.2rem 0 0} #ausgabe.da{display:block}
+pre{background:var(--karte); border:1px solid var(--rand); border-radius:11px; padding:.9rem 1rem;
+  overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:pre-wrap;
+  color:var(--schrift); margin:0}
+.warnung{background:var(--rot-tuell); border:1px solid color-mix(in srgb,var(--rot) 40%,transparent);
+  border-radius:11px; padding:.8rem 1rem; font-size:.92rem; margin:1.2rem 0 0}
+.warnung b{color:var(--rot)}
+footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.84rem}
+@media print{
+  body{background:#fff; color:#000}
+  .aktion, .zurueck, .fortschritt{display:none}
+  .auftrag{break-inside:avoid; border:1px solid #999; opacity:1}
+  .feld input, .feld textarea{border:1px solid #999; min-height:2.4rem; background:#fff}
+  @page{size:A4; margin:14mm}
+}
+</style>
+</head>
+<body>
+
+<header><div class="bahn">
+  <p class="marke">VIP-Schnitzeljagd · Vorbereitung</p>
+  <h1>Das Vor-Ort-Blatt</h1>
+  <p class="dach">Alles, was du suchen, fotografieren, verstecken und eintragen musst —
+     an einem Ort, mit einem Feld unter jedem Punkt.</p>
+  <div class="fortschritt" id="fortschritt">0 von 18 erledigt</div>
+  <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
+</div></header>
+
+<div class="bahn">
+  <div class="warnung" id="kein-speicher" style="display:none">
+    <b>Achtung:</b> Dieser Browser darf hier nichts speichern. Deine Eingaben bleiben stehen,
+    solange die Seite offen ist — mach sie unterwegs nicht zu und tippe zwischendurch auf
+    „Alles kopieren“.
+  </div>
+
+  <section>
+    <p class="nummer">Unterwegs — die Runde</p>
+    <p class="vorher">Nimm das Handy mit und geh los. Ungefähr 45 Minuten, wenn du nicht trödelst. Was du hier einträgst, bleibt gespeichert.</p>
+    
+      <article class="auftrag" id="a1">
+        <div class="kopf">
+          <span class="ziffer">1</span>
+          <div>
+            <h2>Zwei Häuser mit gut lesbaren Hausnummern</h2>
+            <p class="station">für die Station „Der Türsteher“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="1"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Such zwei Häuser in <b>entgegengesetzten Richtungen</b> — eines links, eines rechts vom Startpunkt. Team Diamant geht zuerst nach A, Team Platin zuerst nach B, danach tauschen sie. Beide Nummern müssen von der Straße aus lesbar sein, auch abends.</p>
+        
+          <label class="feld">
+            <span>Weg A — wie kommt man hin?</span>
+            <textarea data-f="1_0" placeholder="z. B. Die Grabengasse hinunter bis zur Kreuzung, dort das gelbe Haus rechts"></textarea>
+          </label>
+          <label class="feld">
+            <span>Hausnummer A</span>
+            <input type="text" data-f="1_1" placeholder="13">
+          </label>
+          <label class="feld">
+            <span>Weg B — wie kommt man hin?</span>
+            <textarea data-f="1_2" placeholder="z. B. In die andere Richtung bis zum Spielplatz, das Eckhaus mit dem roten Tor"></textarea>
+          </label>
+          <label class="feld">
+            <span>Hausnummer B</span>
+            <input type="text" data-f="1_3" placeholder="29">
+          </label>
+          <label class="feld">
+            <span>Ein Tipp, falls sie nicht draufkommen</span>
+            <input type="text" data-f="1_4" placeholder="z. B. Eine der beiden ist zweistellig.">
+          </label>
+        <div class="summe" id="summe">Die Lösung ergibt sich, sobald beide Nummern dastehen.</div>
+        
+      </article>
+      <article class="auftrag" id="a2">
+        <div class="kopf">
+          <span class="ziffer">2</span>
+          <div>
+            <h2>Ein Schild fotografieren — nur ein Ausschnitt</h2>
+            <p class="station">für die Station „Das Suchbild“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="2"><span>erledigt</span></label>
+        </div>
+        <div class="fotoauftrag"><b>📷 Foto machen</b><span>Ein <b>enger Ausschnitt</b> von etwas Beschriftetem. So knapp, dass man die Umgebung nicht erkennt.</span></div>
+        <p class="text">Straßenschild, Hinweistafel, Gedenktafel, Beschriftung am Stromkasten, Schild am Spielplatz. <b>Nichts, was in zehn Tagen weg sein kann</b> — keine Plakate, keine Aufsteller.</p>
+        
+          <label class="feld">
+            <span>Was ist es und wo steht es?</span>
+            <textarea data-f="2_0" placeholder="z. B. Hinweistafel beim Spielplatz"></textarea>
+          </label>
+          <label class="feld">
+            <span>Was steht drauf? (= die Lösung)</span>
+            <input type="text" data-f="2_1" placeholder="z. B. SPIELPLATZ ORDNUNG">
+          </label>
+          <label class="feld">
+            <span>Ein Tipp</span>
+            <input type="text" data-f="2_2" placeholder="z. B. Schaut nach oben, nicht nach unten.">
+          </label>
+          <label class="feld">
+            <span>Dateiname des Fotos</span>
+            <input type="text" data-f="2_3" placeholder="fotos/suchbild.jpg">
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a3">
+        <div class="kopf">
+          <span class="ziffer">3</span>
+          <div>
+            <h2>Zwei Orte mit etwas Spiegelndem</h2>
+            <p class="station">für die Station „Die Spiegelschrift“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="3"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Hier musst du <b>nichts aufhängen</b> — die Nachricht steht in der App und ist spiegelverkehrt. Die Kinder brauchen nur eine <b>spiegelnde Fläche</b>: Schaufenster, große Fensterscheibe, parkendes Auto, Edelstahltür. Such zwei solche Stellen, wieder in verschiedene Richtungen.</p>
+        
+          <label class="feld">
+            <span>Ort C (Team Diamant) — wie kommt man hin?</span>
+            <textarea data-f="3_0" placeholder="z. B. Zum Schaufenster der Trafik in der Hauptstraße"></textarea>
+          </label>
+          <label class="feld">
+            <span>Ort D (Team Platin) — wie kommt man hin?</span>
+            <textarea data-f="3_1" placeholder="z. B. Zur Bushaltestelle mit der Glaswand"></textarea>
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a4">
+        <div class="kopf">
+          <span class="ziffer">4</span>
+          <div>
+            <h2>Der Platz für Essen und Trinken</h2>
+            <p class="station">für die Station „Die Lounge (Pause)“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="4"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Hier kommen <b>beide Teams zusammen</b> und bleiben eine Weile — Buffet-Rätsel, Eisfach und Becherturm laufen hier. Es braucht: Sitzgelegenheit, Schatten, und Platz für die Getränke. Der eigene Garten geht auch, dann ist die Jagd eine Runde statt eine Schleife.</p>
+        
+          <label class="feld">
+            <span>Wo ist die Lounge?</span>
+            <textarea data-f="4_0" placeholder="z. B. Bei der Bank am Spielplatz / im eigenen Garten"></textarea>
+          </label>
+          <label class="feld">
+            <span>Wie kommt man von der letzten Station hin?</span>
+            <textarea data-f="4_1" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Welches Wort kleben die Zettel an den Bechern?</span>
+            <input type="text" data-f="4_2" placeholder="z. B. DURSTIG">
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a5">
+        <div class="kopf">
+          <span class="ziffer">5</span>
+          <div>
+            <h2>Suchgebiet festlegen — verstecken später</h2>
+            <p class="station">für die Station „Die versteckten QR-Zettel“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="5"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Ein überschaubares Gebiet in Sichtweite der Lounge — drei Zettel, alle innerhalb weniger Minuten. Denk daran: <b>Beide Teams suchen gemeinsam</b>, es gibt die Zettel nur einmal.</p>
+        
+          <label class="feld">
+            <span>In welchem Bereich wird gesucht?</span>
+            <textarea data-f="5_0" placeholder="z. B. Rund um den Spielplatz, zwischen Rutsche und Zaun"></textarea>
+          </label>
+          <label class="feld">
+            <span>Wie sagst du ihnen, wohin sie sollen?</span>
+            <textarea data-f="5_1" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Welche drei Buchstaben stehen auf den Zetteln? (ergeben ein Wort)</span>
+            <input type="text" data-f="5_2" placeholder="z. B. E · I · S">
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a6">
+        <div class="kopf">
+          <span class="ziffer">6</span>
+          <div>
+            <h2>Etwas zum Zählen — und selbst nachzählen</h2>
+            <p class="station">für die Station „Die Zählaufgabe“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="6"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Stufen einer öffentlichen Treppe, Fenster an einer Hausfront, Latten in einem Zaunabschnitt, Poller, Bäume in einer Reihe. <b>Zwischen 8 und 40</b> ist ideal. Zähl zweimal — deine Zahl gilt.</p>
+        
+          <label class="feld">
+            <span>Wo ist es?</span>
+            <textarea data-f="6_0" placeholder="z. B. Beim Bahnhofsaufgang"></textarea>
+          </label>
+          <label class="feld">
+            <span>Was genau soll gezählt werden?</span>
+            <textarea data-f="6_1" placeholder="z. B. die Stufen der Treppe von unten bis zum Podest"></textarea>
+          </label>
+          <label class="feld">
+            <span>Wie viele sind es?</span>
+            <input type="text" data-f="6_2" placeholder="23">
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a7">
+        <div class="kopf">
+          <span class="ziffer">7</span>
+          <div>
+            <h2>Ein Foto aus ungewöhnlichem Winkel</h2>
+            <p class="station">für die Station „Das Zeitreise-Foto“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="7"><span>erledigt</span></label>
+        </div>
+        <div class="fotoauftrag"><b>📷 Foto machen</b><span>Eine Stelle <b>von unten, ganz nah oder schräg</b> aufgenommen. Die Kinder müssen sie finden und das Foto exakt nachstellen — mit sich selbst darauf.</span></div>
+        <p class="text">Anders als beim Suchbild darf man hier ruhig erkennen, wo es ist. Der Reiz liegt im Nachstellen.</p>
+        
+          <label class="feld">
+            <span>Wo ist die Stelle?</span>
+            <textarea data-f="7_0" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Wie kommt man hin?</span>
+            <textarea data-f="7_1" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Dateiname des Fotos</span>
+            <input type="text" data-f="7_2" placeholder="fotos/zeitreise.jpg">
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a8">
+        <div class="kopf">
+          <span class="ziffer">8</span>
+          <div>
+            <h2>Ein Zielpunkt, drei Minuten entfernt</h2>
+            <p class="station">für die Station „Der Sprint“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="8"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Drei Minuten Fußweg — bei Kindern, die rennen, also gut fünf Minuten normal gegangen. <b>Sicher erreichbar</b>: keine Straße zu queren, kein unübersichtlicher Weg.</p>
+        
+          <label class="feld">
+            <span>Was ist das Ziel?</span>
+            <textarea data-f="8_0" placeholder="z. B. Die große Kastanie beim Sportplatz"></textarea>
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a9">
+        <div class="kopf">
+          <span class="ziffer">9</span>
+          <div>
+            <h2>Zwei Verstecke, weit auseinander</h2>
+            <p class="station">für die Station „Das geteilte Kennwort“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="9"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Jedes Team hat ein <b>eigenes</b> Versteck — sie kommen sich nicht in die Quere. Team Diamant findet <b>ROTER</b>, Team Platin findet <b>TEPPICH</b>. Erst zusammen ergibt es das Kennwort fürs Telefon.</p>
+        
+          <label class="feld">
+            <span>Versteck 1 (Diamant) — wo genau, und wie beschreibst du es?</span>
+            <textarea data-f="9_0" placeholder="z. B. Unter der dritten Bank vom Eingang, mit Klebeband unten drunter"></textarea>
+          </label>
+          <label class="feld">
+            <span>Versteck 2 (Platin) — wo genau?</span>
+            <textarea data-f="9_1" placeholder=""></textarea>
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a10">
+        <div class="kopf">
+          <span class="ziffer">10</span>
+          <div>
+            <h2>Der weiteste Punkt — mindestens 10 Minuten zurück</h2>
+            <p class="station">für die Station „Der Anruf“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="10"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text"><b>Der wichtigste Ort der ganzen Jagd.</b> Von hier rufen sie dich an — und der Rückweg ist deine Zeit, um dich als Türsteher umzuziehen. Miss den Weg wirklich: mindestens zehn Minuten, lieber zwölf.</p>
+        
+          <label class="feld">
+            <span>Wo rufen sie an?</span>
+            <textarea data-f="10_0" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Wie lange hast du von dort bis zum Garten gebraucht?</span>
+            <input type="text" data-f="10_1" placeholder="Minuten">
+          </label>
+        
+        
+      </article>
+  </section>
+  <section>
+    <p class="nummer">Zu Hause — basteln und vorbereiten</p>
+    <p class="vorher">Rechne mit gut einer Stunde. Am besten ein paar Tage vorher, nicht am Donnerstagabend.</p>
+    
+      <article class="auftrag" id="a11">
+        <div class="kopf">
+          <span class="ziffer">11</span>
+          <div>
+            <h2>Drucken, wetterfest machen, verstecken</h2>
+            <p class="station">für die Station „Die drei QR-Zettel“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="11"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Die Codes baue ich dir, sobald ich die drei Buchstaben habe. Ausdrucken, in eine Klarsichthülle oder laminieren, dann mit Klebeband befestigen. <b>Nicht lose hinlegen</b> — Wind.</p>
+        
+          <label class="feld">
+            <span>Wo hängt Zettel 1?</span>
+            <textarea data-f="11_0" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Wo hängt Zettel 2?</span>
+            <textarea data-f="11_1" placeholder=""></textarea>
+          </label>
+          <label class="feld">
+            <span>Wo hängt Zettel 3?</span>
+            <textarea data-f="11_2" placeholder=""></textarea>
+          </label>
+        
+        <div class="minihaken"><label><input type="checkbox" data-h="11_0"><span>gedruckt</span></label><label><input type="checkbox" data-h="11_1"><span>wetterfest verpackt</span></label><label><input type="checkbox" data-h="11_2"><span>aufgehängt</span></label></div>
+      </article>
+      <article class="auftrag" id="a12">
+        <div class="kopf">
+          <span class="ziffer">12</span>
+          <div>
+            <h2>Beschriften und verstecken</h2>
+            <p class="station">für die Station „Die zwei Kennwort-Zettel“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="12"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Auf den einen schreibst du <b>ROTER</b>, auf den anderen <b>TEPPICH</b>. Groß und deutlich. Am besten mit einem VIP-Stempel oder goldenem Rand, damit sie wie etwas Besonderes aussehen.</p>
+        
+        
+        <div class="minihaken"><label><input type="checkbox" data-h="12_0"><span>beschriftet</span></label><label><input type="checkbox" data-h="12_1"><span>verpackt</span></label><label><input type="checkbox" data-h="12_2"><span>versteckt</span></label></div>
+      </article>
+      <article class="auftrag" id="a13">
+        <div class="kopf">
+          <span class="ziffer">13</span>
+          <div>
+            <h2>Buchstaben einfrieren — fünf Nieten dabei</h2>
+            <p class="station">für die Station „Die zwölf Eiswürfel“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="13"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Sieben Würfel mit den Buchstaben von <b>EISKALT</b>, fünf mit einem ✗ als Niete. <br><br><b>So geht es:</b> Buchstaben mit <b>wasserfestem</b> Stift auf kleine Zettel (sonst verläuft die Tinte), in Frischhaltefolie wickeln. Eiswürfelform halb füllen, anfrieren lassen, Zettel drauflegen, dann auffüllen — so sitzt der Zettel in der Mitte und man sieht ihn schon von außen schimmern.<br><br>Am Partytag in einer Kühlbox oder Schüssel zur Lounge bringen.</p>
+        
+          <label class="feld">
+            <span>Anderes Wort statt EISKALT?</span>
+            <input type="text" data-f="13_0" placeholder="leer lassen, wenn EISKALT passt">
+          </label>
+        
+        <div class="minihaken"><label><input type="checkbox" data-h="13_0"><span>Zettel beschriftet</span></label><label><input type="checkbox" data-h="13_1"><span>eingefroren</span></label><label><input type="checkbox" data-h="13_2"><span>Kühlbox eingepackt</span></label></div>
+      </article>
+      <article class="auftrag" id="a14">
+        <div class="kopf">
+          <span class="ziffer">14</span>
+          <div>
+            <h2>Buchstaben an Becher und Teller kleben</h2>
+            <p class="station">für die Station „Die Buffet-Zettel“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="14"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Auf jeden Zettel ein <b>Buchstabe und eine Zahl</b> — die Zahl sagt, an welche Stelle er gehört. Kleb ein paar davon dorthin, wo man nicht sofort hinschaut: unter den Becher, unter den Tellerrand.</p>
+        
+          <label class="feld">
+            <span>Welches Wort ergeben die Zettel?</span>
+            <input type="text" data-f="14_0" placeholder="z. B. DURSTIG">
+          </label>
+        
+        <div class="minihaken"><label><input type="checkbox" data-h="14_0"><span>Zettel geschrieben</span></label><label><input type="checkbox" data-h="14_1"><span>angeklebt</span></label></div>
+      </article>
+      <article class="auftrag" id="a15">
+        <div class="kopf">
+          <span class="ziffer">15</span>
+          <div>
+            <h2>Bereitlegen, nicht suchen müssen</h2>
+            <p class="station">für die Station „Die Türsteher-Verkleidung“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="15"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Dunkles Sakko, Sonnenbrille, ein Kabel im Ohr, Klemmbrett mit „Gästeliste“. <b>An einen Platz legen, den du in zwei Minuten erreichst</b> — wenn das Telefon klingelt, hast du keine Zeit zum Suchen.</p>
+        
+          <label class="feld">
+            <span>Wo liegt die Verkleidung bereit?</span>
+            <textarea data-f="15_0" placeholder=""></textarea>
+          </label>
+        
+        <div class="minihaken"><label><input type="checkbox" data-h="15_0"><span>zusammengesucht</span></label><label><input type="checkbox" data-h="15_1"><span>bereitgelegt</span></label></div>
+      </article>
+  </section>
+  <section>
+    <p class="nummer">Am Mac oder Handy — eintragen</p>
+    <p class="vorher">Das Letzte, was fehlt.</p>
+    
+      <article class="auftrag" id="a16">
+        <div class="kopf">
+          <span class="ziffer">16</span>
+          <div>
+            <h2>Drehen und einbauen</h2>
+            <p class="station">für die Station „Das Video“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="16"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">25 Sekunden, Codewort <b>GOLDFISCH</b>. Anleitung steht im Leitstand unter „Die Videobotschaft“. Läuft in der App hinter dem Störbild-Filter, du musst also nichts verfremden.</p>
+        
+          <label class="feld">
+            <span>Dateiname oder YouTube-Link</span>
+            <input type="text" data-f="16_0" placeholder="fotos/botschaft.mp4">
+          </label>
+        
+        <div class="minihaken"><label><input type="checkbox" data-h="16_0"><span>gedreht</span></label><label><input type="checkbox" data-h="16_1"><span>hochgeladen</span></label><label><input type="checkbox" data-h="16_2"><span>eingetragen</span></label></div>
+      </article>
+      <article class="auftrag" id="a17">
+        <div class="kopf">
+          <span class="ziffer">17</span>
+          <div>
+            <h2>Deine Nummer für den Anruf</h2>
+            <p class="station">für die Station „Die Telefonnummer“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="17"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Die Nummer steht dann in der App — <b>nicht</b> im öffentlichen Repository, sondern nur in der Datei auf dem Server. Trotzdem: Wenn dir das lieber ist, nimm eine Zweitnummer oder ein altes Handy.</p>
+        
+          <label class="feld">
+            <span>Welche Nummer rufen sie an?</span>
+            <input type="text" data-f="17_0" placeholder="0650 …">
+          </label>
+          <label class="feld">
+            <span>Welchen Code gibst du am Telefon heraus?</span>
+            <input type="text" data-f="17_1" placeholder="SMOKING">
+          </label>
+        
+        
+      </article>
+      <article class="auftrag" id="a18">
+        <div class="kopf">
+          <span class="ziffer">18</span>
+          <div>
+            <h2>Zwei Lieder auswählen</h2>
+            <p class="station">für die Station „Die Emoji-Rätsel“</p>
+          </div>
+          <label class="fertighaken"><input type="checkbox" data-fertig="18"><span>erledigt</span></label>
+        </div>
+        
+        <p class="text">Zehn Vorschläge stehen im Leitstand unter „Emoji-Rätsel auswählen“. <b>Am besten Zoe zeigen</b> — sie weiß, was ihre Freundinnen kennen.</p>
+        
+          <label class="feld">
+            <span>Rätsel für Team Diamant</span>
+            <input type="text" data-f="18_0" placeholder="z. B. 🥇 ✨ 🎤 👑 = Golden">
+          </label>
+          <label class="feld">
+            <span>Rätsel für Team Platin</span>
+            <input type="text" data-f="18_1" placeholder="">
+          </label>
+        
+        
+      </article>
+  </section>
+  <div id="ausgabe"><pre id="text"></pre></div>
+</div>
+
+<div class="aktion"><div class="bahn">
+  <button id="kopieren">Alles kopieren</button>
+  <button class="leise" id="drucken">Drucken</button>
+</div></div>
+
+<footer><div class="bahn">VIP-Schnitzeljagd · Party am Freitag, 28. August 2026</div></footer>
+
+<script>
+(function(){
+  var SCHLUESSEL = "vip_vorort_v1";
+  var kannSpeichern = (function(){ try{ localStorage.setItem("t","1"); localStorage.removeItem("t"); return true; }catch(e){ return false; } })();
+  if(!kannSpeichern) document.getElementById("kein-speicher").style.display = "block";
+  var stand = {};
+  if(kannSpeichern){ try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL)||"{}"); }catch(e){} }
+  function sichern(){ if(kannSpeichern){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){} } }
+
+  var felder = [].slice.call(document.querySelectorAll("[data-f]"));
+  felder.forEach(function(f){
+    var k = "f_" + f.dataset.f;
+    if(stand[k]) f.value = stand[k];
+    f.addEventListener("input", function(){ stand[k] = f.value; sichern(); rechnen(); });
+  });
+  var haken = [].slice.call(document.querySelectorAll("[data-h]"));
+  haken.forEach(function(h){
+    var k = "h_" + h.dataset.h;
+    if(stand[k]) h.checked = true;
+    h.addEventListener("change", function(){ stand[k] = h.checked; sichern(); });
+  });
+  var fertig = [].slice.call(document.querySelectorAll("[data-fertig]"));
+  fertig.forEach(function(c){
+    var k = "fertig_" + c.dataset.fertig;
+    if(stand[k]){ c.checked = true; c.closest(".auftrag").classList.add("fertig"); }
+    c.addEventListener("change", function(){
+      stand[k] = c.checked; c.closest(".auftrag").classList.toggle("fertig", c.checked);
+      sichern(); zaehlen();
+    });
+  });
+  function zaehlen(){
+    var n = fertig.filter(function(c){ return c.checked; }).length;
+    document.getElementById("fortschritt").innerHTML =
+      "<b>" + n + "</b> von <b>" + fertig.length + "</b> erledigt"
+      + (n===fertig.length ? " — fertig!" : "");
+  }
+  zaehlen();
+
+  function rechnen(){
+    var k = document.getElementById("summe");
+    if(!k) return;
+    var a = parseInt((stand["f_1_1"]||""), 10), b = parseInt((stand["f_1_3"]||""), 10);
+    if(!isNaN(a) && !isNaN(b))
+      k.innerHTML = "Lösung für den Türsteher: " + a + " + " + b + " = <span>" + (a+b) + "</span>";
+    else k.textContent = "Die Lösung ergibt sich, sobald beide Nummern dastehen.";
+  }
+  rechnen();
+
+  document.getElementById("kopieren").onclick = function(){
+    var k = this, z = ["VOR-ORT-BLATT — VIP-Schnitzeljagd", ""];
+    document.querySelectorAll(".auftrag").forEach(function(a){
+      var titel = a.querySelector("h2").textContent.trim();
+      var st = a.querySelector(".station").textContent.trim();
+      var zeilen = [];
+      a.querySelectorAll("[data-f]").forEach(function(f){
+        if(f.value.trim()) zeilen.push("   " + f.closest(".feld").querySelector("span").textContent.trim() + ": " + f.value.trim());
+      });
+      var offeneHaken = [];
+      a.querySelectorAll("[data-h]").forEach(function(h){
+        if(!h.checked) offeneHaken.push(h.parentNode.querySelector("span").textContent.trim());
+      });
+      var erledigt = a.querySelector("[data-fertig]").checked;
+      if(zeilen.length || erledigt || offeneHaken.length < a.querySelectorAll("[data-h]").length){
+        z.push((erledigt ? "[x] " : "[ ] ") + titel + "  (" + st + ")");
+        zeilen.forEach(function(l){ z.push(l); });
+        if(offeneHaken.length) z.push("   noch offen: " + offeneHaken.join(", "));
+        z.push("");
+      }
+    });
+    var n = document.querySelectorAll("[data-fertig]:checked").length;
+    z.push("--- " + n + " von " + document.querySelectorAll("[data-fertig]").length + " Punkten erledigt ---");
+    var t = z.join("\n");
+    document.getElementById("text").textContent = t;
+    document.getElementById("ausgabe").classList.add("da");
+    var ok = function(){ k.textContent="Kopiert — jetzt einfügen"; setTimeout(function(){ k.textContent="Alles kopieren"; },2400); };
+    function ersatz(){
+      var x=document.createElement("textarea"); x.value=t;
+      x.style.position="fixed"; x.style.opacity="0"; document.body.appendChild(x);
+      x.select(); try{ document.execCommand("copy"); ok(); }catch(y){ k.textContent="Text unten markieren"; }
+      document.body.removeChild(x);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok, ersatz); }
+    else { ersatz(); }
+    document.getElementById("ausgabe").scrollIntoView({behavior:"smooth", block:"nearest"});
+  };
+  document.getElementById("drucken").onclick = function(){ window.print(); };
+})();
+</script>
+</body>
+</html>
