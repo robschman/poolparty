@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow">
 <title>VIP-Schnitzeljagd — QR-Plakat zum Ausdrucken</title>
 <style>
   *{box-sizing:border-box}
@@ -64,9 +63,10 @@
   <input id="url" value="https://poolparty.robschman.at">
   <label for="modus" style="margin-top:14px">Welche Fassung?</label>
   <select id="modus" onchange="bauen()">
-    <option value="lang">LANG — alle Stationen, rund 170 Minuten (Regentag)</option>
-    <option value="kurz">KURZ — rund 110 Minuten (wenn der Pool wartet)</option>
-    <option value="drinnen">DRINNEN — rund 85 Minuten (nur was unter Dach geht)</option>
+    <option value="lang">GROSS — alle 21 Stationen, rund 180 Minuten</option>
+    <option value="mittel">MITTEL — 17 Stationen, rund 140 Minuten</option>
+    <option value="kurz">KLEIN — 14 Stationen, rund 120 Minuten (wenn der Pool wartet)</option>
+    <option value="drinnen">SCHLECHTWETTER — 11 Stationen, rund 95 Minuten (alles unter Dach)</option>
   </select>
   <div class="reihe">
     <button onclick="bauen()">QR-Code neu bauen</button>
@@ -74,8 +74,9 @@
     <button class="grau" onclick="pngLaden()">Als Bild speichern (PNG)</button>
   </div>
   <p style="font-size:13px;color:#a9a9b3;margin-top:12px">
-    Druck dir am besten <b>alle drei</b> aus. Am Freitag schaust du aus dem Fenster
-    und legst den passenden auf den Tisch — die App richtet sich danach.</p>
+    Diese Plakate sind für <b>beide Teams gemeinsam</b> — jedes Team muss danach noch
+    selbst antippen, wer es ist. Willst du das sparen, nimm die Seite
+    <b>Der Start</b> im Leitstand: dort kommen zwei Codes heraus, einer je Team.</p>
 </div>
 
 <div class="blatt">
@@ -112,9 +113,10 @@ function bauen(){
   qr.make();
   document.getElementById('qr').innerHTML = qr.createSvgTag({ scalable:true, margin:0 });
   document.getElementById('adresse').textContent = text.replace(/^https?:\/\//,'');
-  var wieLang = { lang:'Alle Stationen · rund 170 Minuten',
-                  kurz:'Kurze Fassung · rund 110 Minuten',
-                  drinnen:'Schlechtwetter · rund 85 Minuten' }[modus];
+  var wieLang = { lang:'Große Fassung · rund 180 Minuten',
+                  mittel:'Mittlere Fassung · rund 140 Minuten',
+                  kurz:'Kleine Fassung · rund 120 Minuten',
+                  drinnen:'Schlechtwetter · rund 95 Minuten' }[modus];
   document.getElementById('modusband').textContent = wieLang;
 }
 function pngLaden(){

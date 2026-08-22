@@ -439,3 +439,37 @@ body.silber .legezeile .platz.voll{color:#15171a}
 .leiter table{width:100%; border-collapse:collapse; font-size:13px}
 .leiter td{padding:7px 4px; border-bottom:1px solid rgba(255,255,255,.07); vertical-align:top}
 .leiter td:first-child{color:var(--grau); width:34%}
+
+/* ---- 23. Ablauf-Schritte (Emoji-Duell) --------------------------------- */
+.schritte{
+  counter-reset:schritt; list-style:none; margin:14px 0 4px; padding:0;
+}
+.schritte li{
+  counter-increment:schritt; position:relative;
+  padding:9px 0 9px 38px; font-size:15px; line-height:1.5;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.schritte li:last-child{border-bottom:0}
+.schritte li::before{
+  content:counter(schritt); position:absolute; left:0; top:8px;
+  width:24px; height:24px; border-radius:50%;
+  border:1px solid rgba(212,175,55,.5); color:var(--akzent);
+  font-size:12px; font-weight:800; display:flex;
+  align-items:center; justify-content:center;
+}
+body.silber .schritte li::before{border-color:rgba(200,204,210,.5)}
+
+/* ---- 24. Kleiner Knopf + Schiedsspruch ---------------------------------- */
+.knopf.klein{
+  font-size:12.5px; letter-spacing:.08em; padding:11px; margin-top:14px;
+  text-transform:none; font-weight:600;
+}
+.meldung.schiri{
+  background:rgba(212,175,55,.09); border:1px solid rgba(212,175,55,.34);
+  color:var(--weiss); margin-top:12px;
+}
+.meldung.schiri b{color:var(--akzent)}
+body.silber .meldung.schiri{
+  background:rgba(200,204,210,.09); border-color:rgba(200,204,210,.34);
+}
+body.silber .meldung.schiri b{color:var(--weiss)}

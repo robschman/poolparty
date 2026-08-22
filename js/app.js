@@ -11,19 +11,40 @@ const $   = (s)=>document.querySelector(s);
 const app = ()=>$("#app");
 
 /* --- Modus bestimmen: QR-Code schlägt Datei ------------------------------ */
+const FASSUNGEN = ["kurz","mittel","lang","drinnen"];
 const MODUS = (function(){
   try{
     const ausUrl = new URLSearchParams(location.search).get("modus");
-    if(ausUrl && ["kurz","lang","drinnen"].indexOf(ausUrl) > -1) return ausUrl;
+    if(ausUrl && FASSUNGEN.indexOf(ausUrl) > -1) return ausUrl;
   }catch(e){}
-  return (SPIEL.modus && ["kurz","lang","drinnen"].indexOf(SPIEL.modus) > -1)
+  return (SPIEL.modus && FASSUNGEN.indexOf(SPIEL.modus) > -1)
          ? SPIEL.modus : "lang";
+})();
+
+/* --- Team aus dem QR-Code ------------------------------------------------
+   Steht  ?team=0  oder  ?team=1  in der Adresse, ist das Team schon gesetzt
+   und die Teamwahl entfällt. Jedes Team scannt seinen eigenen Code.
+   ------------------------------------------------------------------------ */
+const TEAM_AUS_URL = (function(){
+  try{
+    const t = new URLSearchParams(location.search).get("team");
+    if(t !== null && /^\d+$/.test(t)){
+      const n = +t;
+      if(n >= 0 && n < (SPIEL.teams||[]).length) return n;
+    }
+  }catch(e){}
+  return null;
 })();
 
 /* Nur die Stationen, die in diesem Modus laufen */
 const AKTIV = STATIONEN.filter(s => !s.modi || s.modi.indexOf(MODUS) > -1);
 
-const SPEICHER = "vip_jagd_v" + (SPIEL.version || "1") + "_" + MODUS;
+/* Kommt das Team aus dem QR-Code, bekommt jedes Team seinen eigenen
+   Speicherplatz. So kann dasselbe Handy beide Teams testen, ohne dass sich
+   die Spielstände in die Quere kommen — und ein zweites Scannen des Codes
+   holt den richtigen Stand zurück, statt ihn zu überschreiben. */
+const SPEICHER = "vip_jagd_v" + (SPIEL.version || "1") + "_" + MODUS
+               + (TEAM_AUS_URL !== null ? "_t" + TEAM_AUS_URL : "");
 
 /* --- Buchstaben auf die aktiven Stationen verteilen ----------------------
    Das Losungswort wird durcheinandergewürfelt vergeben. Sind weniger
@@ -48,7 +69,10 @@ const BUCHSTABEN_STATIONEN = AKTIV.map((s,i)=>({s,i})).filter(o=>o.s.buchstabe);
 let Z = {
   team:null, station:0, punkte:0, start:null,
   gesammelt:[], tipps:[], fehler:{}, haken:{}, quiz:{},
-  handyausAb:null, fertig:false, gelegt:[]
+  handyausAb:null, fertig:false, gelegt:[],
+  /* zuletzt = was die eben abgeschlossene Station gebracht hat.
+     Nur damit kann der Zurück-Knopf sauber rückgängig machen. */
+  zuletzt:null
 };
 function laden(){
   try{ const d = localStorage.getItem(SPEICHER); if(d) Z = Object.assign(Z, JSON.parse(d)); }catch(e){}
@@ -130,7 +154,9 @@ setInterval(()=>{ if(Z.team!==null && !Z.fertig) kopfZeichnen(); }, 1000);
    START UND TEAMWAHL
    ========================================================================== */
 function zeigeStart(){
-  const wieLang = { kurz:"rund 110 Minuten", lang:"rund 170 Minuten", drinnen:"rund 85 Minuten" }[MODUS];
+  const wieLang = { kurz:"rund 110 Minuten", mittel:"rund 140 Minuten",
+                    lang:"rund 170 Minuten", drinnen:"rund 85 Minuten" }[MODUS];
+  const festesTeam = TEAM_AUS_URL !== null ? SPIEL.teams[TEAM_AUS_URL].name : null;
   app().innerHTML = `
     <div class="start-logo">
       <div class="klein-label">Very Important People</div>
@@ -145,10 +171,23 @@ function zeigeStart(){
       selbst das Losungswort daraus legen. Und dann steht da noch jemand am Tor.</p>
       <p class="hinweis">${SPIEL.datum} · ${wieLang}</p>
     </div>
-    <button class="knopf" id="los">Team wählen</button>
+    ${festesTeam ? `<div class="gemeinsam" style="text-align:center">
+        <b>Ihr seid ${festesTeam}</b>
+        <span>Euer Code hat euch schon eingetragen.</span>
+      </div>` : ""}
+    <button class="knopf" id="los">${festesTeam ? "Los geht's" : "Team wählen"}</button>
     <p class="hinweis">Ein Handy pro Team reicht. Der Fortschritt wird gespeichert —
     auch wenn das Handy zwischendurch ausgeht.</p>`;
-  $("#los").onclick = ()=>{ ton("klick"); zeigeTeamwahl(); };
+  $("#los").onclick = ()=>{
+    ton("klick");
+    if(TEAM_AUS_URL !== null){
+      Z.team  = TEAM_AUS_URL;
+      Z.start = Z.start || Date.now();
+      ruckeln(30); sichern(); zeigeStation();
+    }else{
+      zeigeTeamwahl();
+    }
+  };
 }
 
 function zeigeTeamwahl(){
@@ -177,6 +216,16 @@ function zeigeStation(){
   if(i >= AKTIV.length) return zeigeFinale();
   const st = AKTIV[i];
   window.scrollTo(0,0);
+  const darf = darfZurueck();          /* vor dem Bauen fragen */
+  stationBauen(st, i);
+  /* Der Zurueck-Knopf haengt unten dran — auf allen Stationsarten gleich */
+  if(darf && !$("#einsZurueck")){
+    const halter = document.createElement("div");
+    halter.innerHTML = zurueckBlock();
+    if(halter.firstElementChild) app().appendChild(halter.firstElementChild);
+  }
+}
+function stationBauen(st, i){
   switch(st.typ){
     case "start":     return bauStart(st,i);
     case "code":      return bauCode(st,i);
@@ -193,6 +242,60 @@ function zeigeStation(){
     default:          return bauCode(st,i);
   }
 }
+
+/* --- Eine Station zurueck ------------------------------------------------
+   Nur fuer den Fall, dass jemand versehentlich zweimal auf Weiter tippt.
+   Bewusst eng gehalten:
+     - geht hoechstens EINE Station zurueck, nie weiter
+     - gibt die Punkte der Station wieder ab, es gibt sie also nicht doppelt
+     - nimmt auch die Buchstaben wieder weg, die sie gebracht hat
+     - verschwindet, sobald an der neuen Station irgendetwas passiert ist
+   Damit kann man einen Fehltipp reparieren, aber nicht durch die
+   Loesungen blaettern.
+   ------------------------------------------------------------------------ */
+function darfZurueck(){
+  const i = Z.station;
+  if(i <= 0 || Z.fertig) return false;
+  if(!Z.zuletzt || Z.zuletzt.station !== i-1) return false;
+  const st = AKTIV[i];
+  if(!st) return false;
+  /* Stationen, die von selbst loslaufen, sind schon begonnen */
+  if(st.typ === "handyaus" || st.typ === "finale") return false;
+  /* An dieser Station wurde schon etwas gemacht */
+  if(Z.tipps.indexOf(i) > -1) return false;
+  if(Z.fehler[i]) return false;
+  if((Z.haken[i] || []).length) return false;
+  if(Z.haken["sprint"+i]) return false;
+  if(Z.haken["uhr"+i]) return false;
+  if(Z.quiz[i]) return false;
+  return true;
+}
+/* Manche Stationen zeichnen sich beim Starten nicht neu — dann muss der
+   Knopf von Hand weg, sonst steht er noch da, während die Uhr schon läuft. */
+function zurueckKnopfWeg(){
+  const k = $("#einsZurueck");
+  if(k) k.remove();
+}
+function zurueckBlock(){
+  if(!darfZurueck()) return "";
+  return `<button class="knopf leise klein" id="einsZurueck">↩︎ Ups — eine Station zurück</button>`;
+}
+function eineZurueck(){
+  if(!darfZurueck()) return;
+  const z = Z.zuletzt;
+  Z.punkte = Math.max(0, Z.punkte - (z.punkte || 0));
+  for(let n = 0; n < (z.buchstaben || 0); n++) Z.gesammelt.pop();
+  /* Der Sprint haengt an der Uhr — der Countdown muss neu gestartet werden */
+  delete Z.haken["sprint" + z.station];
+  Z.station = z.station;
+  Z.zuletzt = null;
+  sichern(); ton("klick"); ruckeln(20); zeigeStation();
+}
+/* Ein einziger Zuhoerer fuer alle Bildschirme — ueberlebt jedes Neuzeichnen */
+document.addEventListener("click", function(e){
+  const k = e.target && e.target.closest && e.target.closest("#einsZurueck");
+  if(k){ e.preventDefault(); eineZurueck(); }
+});
 
 /* --- gemeinsame Bausteine ------------------------------------------------ */
 function kopfBlock(st,i){
@@ -352,6 +455,7 @@ function bauStoppuhr(st,i){
     if(!laeuft){
       laeuft = true; ab = Date.now(); knopf.textContent = "Stopp";
       uhr.textContent = "läuft …"; uhr.classList.add("blind");
+      Z.haken["uhr"+i] = 1; sichern(); zurueckKnopfWeg();
       ton("klick");
     }else{
       clearInterval(t);
@@ -499,6 +603,9 @@ function bauDuell(st,i){
       ${ortBlock(st)}
       ${gemeinsamBlock(st)}
       <p>${(fuerTeam(st.teamText, st.text)||"").replace("DAS RÄTSEL STEHT UNTEN", "")}</p>
+      ${(st.ablauf||[]).length ? `<ol class="schritte">${
+        st.ablauf.map(a=>`<li>${a}</li>`).join("")}</ol>
+        ${st.ablaufHinweis ? `<p class="hinweis">${st.ablaufHinweis}</p>` : ""}` : ""}
       ${raetsel ? `<div class="emojis">${raetsel}</div>
         <p class="hinweis">Das ist euer Rätsel. Zeigt es dem anderen Team —
         <b>nicht</b> die Lösung verraten.</p>` : ""}
@@ -509,7 +616,16 @@ function bauDuell(st,i){
       ${tippBlock(st,i)}
       <div class="geheim"><b>Euer eigenes Geheimwort</b><span>${meins}</span></div>
       <p class="hinweis">Nur verraten, wenn das andere Team seine Aufgabe wirklich gelöst hat.</p>
+      ${st.streitText ? `<button class="knopf leise klein" id="streit">🕴 Türsteher rufen</button>
+        <div class="meldung schiri" id="schiri" hidden>${st.streitText}</div>` : ""}
     </div>`;
+  const streitKnopf = $("#streit");
+  if(streitKnopf) streitKnopf.onclick = ()=>{
+    const kasten = $("#schiri");
+    if(kasten){ kasten.hidden = false; ton("klick"); ruckeln(20);
+                kasten.scrollIntoView({behavior:"smooth", block:"nearest"}); }
+    streitKnopf.hidden = true;
+  };
   tippVerdrahten(st,i);
   const feld = $("#feld");
   const pruefen = ()=>{
@@ -620,8 +736,13 @@ function geschafft(i, punkte, zusatz){
   const st = AKTIV[i];
   Z.punkte += punkte;
   const neue = BUCHSTABEN_JE_STATION[i] || [];
-  neue.forEach(b => { if(Z.gesammelt.length < SPIEL.loesungswort.length) Z.gesammelt.push(b); });
+  let dazu = 0;
+  neue.forEach(b => {
+    if(Z.gesammelt.length < SPIEL.loesungswort.length){ Z.gesammelt.push(b); dazu++; }
+  });
   Z.station = i+1;
+  /* Fuer den Zurueck-Knopf merken, was diese Station gebracht hat */
+  Z.zuletzt = { station:i, punkte:punkte, buchstaben:dazu };
   sichern(); kopfZeichnen();
 
   if(!neue.length && st.typ==="start") return zeigeStation();

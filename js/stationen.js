@@ -85,7 +85,7 @@ const SPIEL = {
   /* ---- VERSION ------------------------------------------------------------
      Bei jeder Änderung um 1 hochzählen, sonst zeigen Handys die alte Fassung.
      ----------------------------------------------------------------------- */
-  version: "2"
+  version: "3"
 };
 
 
@@ -145,7 +145,7 @@ const STATIONEN = [
 {
   typ: "code",
   titel: "Der Türsteher",
-  modi: ["kurz", "lang"],
+  modi: ["kurz", "mittel", "lang"],
   buchstabe: true,
   ort: "Zwei Häuser, zwei Richtungen",
   // Die Teams starten gegengleich, damit keiner abschreiben kann:
@@ -174,7 +174,7 @@ const STATIONEN = [
 {
   typ: "code",
   titel: "Das Suchbild",
-  modi: ["kurz", "lang"],
+  modi: ["kurz", "mittel", "lang"],
   buchstabe: true,
   ort: "In Gehweite",
   weg: "Sucht diesen Ort. Er ist keine fünf Minuten entfernt.",
@@ -188,7 +188,7 @@ const STATIONEN = [
 {
   typ: "stoppuhr",
   titel: "Die Ruhe-Probe",
-  modi: ["lang", "drinnen"],
+  modi: ["mittel", "lang", "drinnen"],
   ort: "Bleibt stehen",
   sekunden: 30,
   text: "Ein VIP wird nie nervös. Beweist es.\n\nTippt auf START und stoppt nach genau 30 Sekunden — ohne auf eine Uhr zu schauen. Zählen im Kopf ist erlaubt, aber niemand darf mitzählen helfen.\n\nJe näher ihr dran seid, desto mehr Punkte."
@@ -209,12 +209,12 @@ const STATIONEN = [
 {
   typ: "spiegel",
   titel: "Die Spiegelschrift",
-  modi: ["kurz", "lang"],
+  modi: ["kurz", "mittel", "lang"],
   buchstabe: true,
   ort: "Zwei Orte, zwei Richtungen",
   teamText: [
-    "HIER WEG C EINTRAGEN — dort hängt etwas, das ihr lesen sollt.\n\nAber Achtung: Die Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine Fensterscheibe, ein Schaufenster oder eine Autoscheibe — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.",
-    "HIER WEG D EINTRAGEN — dort hängt etwas, das ihr lesen sollt.\n\nAber Achtung: Die Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine Fensterscheibe, ein Schaufenster oder eine Autoscheibe — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich."
+    "HIER WEG C EINTRAGEN — dort gibt es etwas Spiegelndes.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine Fensterscheibe, ein Schaufenster oder eine Autoscheibe — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.",
+    "HIER WEG D EINTRAGEN — dort gibt es etwas Spiegelndes.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine Fensterscheibe, ein Schaufenster oder eine Autoscheibe — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich."
   ],
   spiegelText: "DAS LOSUNGSWORT BEGINNT MIT EINEM V",
   frage: "Und jetzt tippt ein: Womit beginnt das Losungswort?",
@@ -248,7 +248,7 @@ const STATIONEN = [
 {
   typ: "code",
   titel: "Die Lounge",
-  modi: ["kurz", "lang", "drinnen"],
+  modi: ["kurz", "mittel", "lang", "drinnen"],
   gemeinsam: true,
   ort: "HIER PAUSENORT EINTRAGEN",
   weg: "Hier ist für euch gedeckt. Setzt euch, esst, trinkt — und schaut genau hin.",
@@ -277,7 +277,7 @@ const STATIONEN = [
 {
   typ: "code",
   titel: "Das Eisfach",
-  modi: ["kurz", "lang", "drinnen"],
+  modi: ["kurz", "mittel", "lang", "drinnen"],
   gemeinsam: true,
   ort: "In der Lounge",
   weg: "Bleibt hier. Das dauert.",
@@ -295,7 +295,18 @@ const STATIONEN = [
   gemeinsam: true,
   ort: "In der Lounge",
   weg: "Beide Teams sind ohnehin hier. Wartet aufeinander.",
-  text: "Jetzt wird es persönlich.\n\n1. Zeigt dem anderen Team diese vier Emojis:\n\nDAS RÄTSEL STEHT UNTEN\n\n2. Sie müssen raten, welcher Film oder Song gemeint ist.\n3. Dann zeigen sie euch ihres, und ihr ratet.\n4. Wer richtig rät, bekommt vom anderen Team dessen GEHEIMWORT.\n\nTragt das Geheimwort des anderen Teams unten ein.",
+  text: "Jetzt wird es persönlich. Jedes Team hat ein Rätsel — und ein Geheimwort, das nur ihm gehört.",
+  /* Der Ablauf steht als Schritte auf dem Bildschirm, damit ihn niemand erklären muss */
+  ablauf: [
+    "Zeigt dem anderen Team eure vier Emojis (stehen unten).",
+    "Sie raten <b>laut</b>, welches Lied gemeint ist.",
+    "<b>Ihr entscheidet</b>, ob es stimmt.",
+    "Stimmt es, sagt ihr ihnen euer Geheimwort — sonst darf weitergeraten werden.",
+    "Dasselbe umgekehrt: sie zeigen ihr Rätsel, ihr ratet.",
+    "Tragt zum Schluss das Geheimwort des <b>anderen</b> Teams unten ein."
+  ],
+  ablaufHinweis: "Falsch raten kostet nichts. Es gibt so oft einen neuen Versuch, wie ihr wollt.",
+  streitText: "Wenn ihr euch nicht einig seid, ob geraten wurde oder nicht: <b>Der Türsteher entscheidet.</b> Er ist in der Nähe — ruft ihn laut. Sein Wort gilt.",
   teamRaetsel: [
     "🦁 👑 🌍 🎵",          // Team 1 zeigt das — Lösung: Der König der Löwen
     "❄️ 👸 ⛄ 🎤"           // Team 2 zeigt das — Lösung: Die Eiskönigin
@@ -307,7 +318,7 @@ const STATIONEN = [
 {
   typ: "code",
   titel: "Die verstecken Zettel",
-  modi: ["lang"],
+  modi: ["mittel", "lang"],
   gemeinsam: true,
   ort: "HIER SUCHGEBIET EINTRAGEN",
   weg: "HIER WEG EINTRAGEN.",
@@ -382,7 +393,7 @@ const STATIONEN = [
 {
   typ: "sprint",
   titel: "Der Sprint",
-  modi: ["lang"],
+  modi: ["mittel", "lang"],
   ort: "HIER ZIELPUNKT EINTRAGEN",
   sekunden: 180,
   text: "Jetzt zählt Tempo.\n\nIhr habt DREI MINUTEN, um HIER ZIELPUNKT EINTRAGEN zu erreichen und dort ein Foto von euch zu machen.\n\nSchafft ihr es, gibt es Bonuspunkte. Schafft ihr es nicht, geht es trotzdem weiter — aber ohne Bonus.\n\nBereit?",
@@ -395,7 +406,7 @@ const STATIONEN = [
 {
   typ: "kennwort",
   titel: "Die halbe Wahrheit",
-  modi: ["kurz", "lang"],
+  modi: ["kurz", "mittel", "lang"],
   ort: "Zwei Verstecke",
   teamText: [
     "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 1 BESCHREIBEN\n\nDort liegt EUER Zettel — das andere Team hat ein eigenes Versteck woanders, ihr kommt euch also nicht in die Quere.\n\nMerkt euch, was darauf steht, und sucht dann das andere Team. Ohne dessen Hälfte geht gar nichts.",
@@ -409,7 +420,7 @@ const STATIONEN = [
 {
   typ: "anruf",
   titel: "Der Anruf",
-  modi: ["kurz", "lang"],
+  modi: ["kurz", "mittel", "lang"],
   ort: "HIER ORT EINTRAGEN — weit weg vom Garten",
   weg: "Von hier ist es ein ordentliches Stück zurück. Das ist Absicht.",
   text: "Letzte Hürde vor dem Club.\n\nRuft den Empfang an. Wer sich meldet, will nur eines hören: euer Kennwort.\n\nStimmt es, bekommt ihr den Zutrittscode. Stimmt es nicht, wird aufgelegt.",
