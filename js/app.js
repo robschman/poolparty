@@ -623,11 +623,28 @@ function bauDuell(st,i){
         autocorrect="off" spellcheck="false">
       <button class="knopf" id="pruefen">Eintragen</button>
       ${tippBlock(st,i)}
-      <div class="geheim"><b>Euer eigenes Geheimwort</b><span>${meins}</span></div>
-      <p class="hinweis">Nur verraten, wenn das andere Team seine Aufgabe wirklich gelöst hat.</p>
+      <div class="geheim zu" id="geheimkasten">
+        <b>Euer eigenes Geheimwort</b>
+        <span class="verdeckt" id="geheimwort">${meins}</span>
+        <button class="knopf leise klein" id="geheimAuf">👁 Antippen zum Anzeigen</button>
+      </div>
+      <p class="hinweis">Erst aufdecken, wenn ihr es wirklich verraten wollt —
+      und dann das Handy <b>nicht</b> herumzeigen. Vorlesen reicht.</p>
       ${st.streitText ? `<button class="knopf leise klein" id="streit">🕴 Türsteher rufen</button>
         <div class="meldung schiri" id="schiri" hidden>${st.streitText}</div>` : ""}
     </div>`;
+  /* Das Geheimwort bleibt verdeckt, bis es jemand absichtlich aufdeckt.
+     Sonst liest das andere Team es im Vorbeigehen vom Bildschirm ab. */
+  const geheimKnopf = $("#geheimAuf");
+  if(geheimKnopf) geheimKnopf.onclick = ()=>{
+    const kasten = $("#geheimkasten"), wort = $("#geheimwort");
+    const offen = kasten.classList.toggle("auf");
+    kasten.classList.toggle("zu", !offen);
+    wort.classList.toggle("verdeckt", !offen);
+    geheimKnopf.textContent = offen ? "🙈 Wieder verstecken" : "👁 Antippen zum Anzeigen";
+    ton("klick"); ruckeln(15);
+  };
+
   const streitKnopf = $("#streit");
   if(streitKnopf) streitKnopf.onclick = ()=>{
     const kasten = $("#schiri");

@@ -483,3 +483,19 @@ body.silber .meldung.schiri b{color:var(--weiss)}
 body.silber .merkkasten{
   background:rgba(200,204,210,.08); border-color:rgba(200,204,210,.36);
 }
+
+/* ---- 26. Geheimwort verdecken ------------------------------------------ */
+.geheim .verdeckt{
+  filter:blur(11px); user-select:none; pointer-events:none;
+  transition:filter .18s;
+}
+.geheim.zu .verdeckt::after{
+  content:""; /* Platzhalter, damit die Höhe gleich bleibt */
+}
+.geheim .knopf.klein{
+  margin-top:12px; width:100%;
+}
+.geheim.auf{
+  border-color:rgba(212,175,55,.55);
+}
+body.silber .geheim.auf{border-color:rgba(200,204,210,.55)}
