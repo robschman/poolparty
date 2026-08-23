@@ -475,7 +475,13 @@ function medienBlock(st){
 function videoBlock(link, stoerung, tempo){
   /* stoerung:  true = normal, "stark" = kaum noch erkennbar
      tempo:     kleiner als 1 = langsamer und tiefere Stimme */
-  const kl = stoerung ? (stoerung === "stark" ? " gestoert stark" : " gestoert") : "";
+  /* "nurband" = nur die Scanlinien und das wandernde Band drüberlegen.
+     Für Videos, die schon in der Datei selbst verfremdet sind — sonst wird
+     doppelt geweichzeichnet und man sieht gar nichts mehr. */
+  const kl = !stoerung ? ""
+           : stoerung === "stark"   ? " gestoert stark"
+           : stoerung === "nurband" ? ""
+           : " gestoert";
   const langsam = (tempo && tempo !== 1) ? ` data-tempo="${tempo}"` : "";
   const huelle = (inhalt)=> stoerung
     ? `<div class="videohuelle">${inhalt}<div class="scanlinien"></div>

@@ -263,20 +263,21 @@ const STATIONEN = [
   // oder ein YouTube-Link:                video: "https://youtu.be/XXXXXXXXXXX",
   video: "fotos/botschaft.mp4",
 
-  /* videoStoerung: true = verfremdet, "stark" = kaum noch zu erkennen.
+  /* Die Störung steckt seit 23.08. IN DER DATEI selbst: Schleier, Rauschen,
+     Blitze alle 3,3 Sekunden, kurze Bildaussetzer alle 4,7 Sekunden, wandernde
+     Farbe und ab und zu ein hängendes Bild. Die Stimme ist echt heruntergestimmt
+     (auf 72 % der Tonhöhe, Länge unverändert) und dumpf gefiltert.
 
-     ACHTUNG bei "stark": Auf dem Schild im Video steht das Codewort. Mit der
-     starken Störung ist die Schrift kaum noch zu lesen — dann hängt alles am
-     Ton. Darum steht hier absichtlich nur true. Wer unbedingt will, tauscht
-     true gegen "stark" — aber dann vorher selbst anschauen, ob man das Wort
-     noch erkennt.
+     Deshalb hier nur noch "nurband": das legt bloß die Scanlinien und das
+     wandernde Band darüber. Würde man zusätzlich den CSS-Filter draufsetzen,
+     wäre alles doppelt weichgezeichnet und das Codewort auf dem Schild ganz weg.
 
-     videoTempo:    kleiner als 1 macht das Bild langsamer UND die Stimme
-                    tiefer. 0.85 klingt schon deutlich anders, man versteht
-                    aber jedes Wort. Bei 0.75 wird es dumpf.
-                    Auf 1 stellen, wenn du das Video selbst bearbeitet hast. */
-  videoStoerung: true,
-  videoTempo: 0.85,
+     Andere Werte: true = normaler CSS-Filter, "stark" = starker CSS-Filter,
+     weglassen = gar keine Störung.
+
+     videoTempo bleibt auf 1 — die tiefe Stimme steckt schon in der Datei. */
+  videoStoerung: "nurband",
+  videoTempo: 1,
   antwort: "GOLDFISCH",
   antwortAuch: ["GOLD FISCH"],
   tipp: "Er sagt es nicht nur — er hält es auch schriftlich in die Kamera. Nochmal anschauen."
