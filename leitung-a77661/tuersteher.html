@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Türsteher-Seite — VIP-Schnitzeljagd</title>
+<title>Türsteher — VIP-Schnitzeljagd</title>
+<link rel="apple-touch-icon" href="../fotos/app-symbol.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
 :root{
@@ -28,33 +29,112 @@
 *{box-sizing:border-box}
 body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.55;
   font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
-  -webkit-text-size-adjust:100%}
+  -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent}
 .bahn{width:var(--breite); margin-inline:auto}
+
 header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
-  border-bottom:1px solid var(--rand); padding:clamp(1.7rem,5vw,2.6rem) 0 clamp(1.1rem,4vw,1.7rem)}
-.marke{font-size:.68rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
-  font-weight:700; margin:0 0 .7rem}
+  border-bottom:1px solid var(--rand); padding:clamp(1.4rem,4vw,2.1rem) 0 0}
+.marke{font-size:.66rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .6rem}
 h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
-  font-size:clamp(2rem,7.4vw,3rem); line-height:1.02; margin:0}
-.dach{color:var(--schrift-2); margin:.7rem 0 0; font-size:.95rem}
-.zurueck{display:inline-block; margin:.9rem 0 0; font-size:.88rem; color:var(--gold);
-  text-decoration:none; border-bottom:1px solid currentColor}
+  font-size:clamp(1.9rem,7vw,2.8rem); line-height:1.02; margin:0}
+.dach{color:var(--schrift-2); margin:.6rem 0 0; font-size:.93rem}
 
-h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.5rem;
-  margin:2.2rem 0 .2rem}
-h2 .schritt{font-family:"Archivo",sans-serif; font-size:.66rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--gold); font-weight:700; display:block; margin-bottom:.3rem}
-.warum{color:var(--schrift-2); font-size:.92rem; margin:0 0 1.1rem}
+/* Schrittleiste */
+.leiste{display:flex; gap:.15rem; margin:1.1rem 0 0; overflow-x:auto; padding-bottom:1px}
+.leiste button{flex:1 0 auto; font-family:inherit; font-size:.68rem; letter-spacing:.06em;
+  text-transform:uppercase; font-weight:700; cursor:pointer; white-space:nowrap;
+  padding:.7rem .55rem; border:0; border-bottom:3px solid transparent;
+  background:transparent; color:var(--schrift-3)}
+.leiste button .zahl{display:inline-flex; width:1.25rem; height:1.25rem; border-radius:50%;
+  border:1px solid currentColor; align-items:center; justify-content:center;
+  font-size:.62rem; margin-right:.3rem; font-family:"IBM Plex Mono",monospace}
+.leiste button.an{color:var(--gold); border-bottom-color:var(--gold)}
+.leiste button.fertig{color:var(--gruen)}
+.leiste button.fertig .zahl{background:var(--gruen); border-color:var(--gruen); color:var(--grund)}
+.leiste button.fertig .zahl::after{content:"✓"}
+.leiste button.fertig .zahl i{display:none}
 
+main{padding:clamp(1.2rem,4vw,1.9rem) 0 1rem}
+.schritt{display:none}
+.schritt.an{display:block}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.6rem; margin:0 0 .25rem}
+h2.spaeter{margin-top:2.4rem}
+.warum{color:var(--schrift-2); font-size:.92rem; margin:0 0 1rem}
+
+.kasten{background:var(--karte); border:1px solid var(--rand); border-radius:12px; padding:1.1rem}
+label.feld{display:block; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase;
+  font-weight:700; color:var(--schrift-3); margin:0 0 .4rem}
+textarea, input[type=text], input[type=number]{
+  width:100%; padding:.75rem .85rem; font-family:inherit; font-size:1rem;
+  background:var(--grund); color:var(--schrift); border:1px solid var(--rand); border-radius:9px}
+textarea{min-height:9.5rem; line-height:1.8; resize:vertical}
+textarea:focus, input:focus{outline:2px solid var(--gold); outline-offset:1px}
+.zaehlung{margin:.7rem 0 0; font-size:.9rem; color:var(--schrift-2)}
+.zaehlung b{color:var(--gold); font-family:"IBM Plex Mono",monospace}
+
+.wahlreihe{display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); gap:.55rem; margin:0 0 1rem}
+.wahlreihe button{font-family:inherit; text-align:left; cursor:pointer; padding:.8rem .85rem;
+  border-radius:11px; border:1px solid var(--rand); background:var(--karte); color:var(--schrift)}
+.wahlreihe button b{display:block; font-size:1.02rem; margin-bottom:.12rem}
+.wahlreihe button small{display:block; color:var(--schrift-3); font-size:.78rem; line-height:1.4}
+.wahlreihe button.an{border-color:var(--gold); background:var(--gold-tuell); box-shadow:inset 0 0 0 1px var(--gold)}
+.wahlreihe button.an b{color:var(--gold)}
+
+.gross{width:100%; font-family:inherit; font-size:1.05rem; font-weight:700; cursor:pointer;
+  padding:1rem; margin:1.1rem 0 0; border-radius:11px; border:1px solid var(--gold);
+  background:var(--gold); color:var(--grund); letter-spacing:.03em}
+.gross:active{transform:scale(.99)}
+.gross[disabled]{opacity:.35; cursor:default}
+.gross.stil2{background:var(--karte); color:var(--gold)}
+.knopfzeile{display:flex; gap:.55rem; margin:1.1rem 0 0; flex-wrap:wrap}
+.knopfzeile button{flex:1 1 9rem; font-family:inherit; font-size:.9rem; font-weight:600; cursor:pointer;
+  padding:.8rem 1rem; border-radius:10px; border:1px solid var(--rand);
+  background:var(--karte); color:var(--schrift-2)}
+.knopfzeile button.stark{border-color:var(--gold); background:var(--gold-tuell); color:var(--gold); font-weight:700}
+
+/* Teams zuteilen */
+.teamtafel{display:grid; gap:.8rem; margin:1rem 0 0}
+.tafel{background:var(--karte); border:1px solid var(--rand); border-radius:12px; padding:.9rem 1rem}
+.tafel.pool{border-style:dashed; background:var(--grund-2)}
+.tafel > h3{font-family:"Bodoni Moda",Didot,Georgia,serif; font-size:1.25rem; font-weight:600;
+  margin:0 0 .1rem; display:flex; justify-content:space-between; align-items:baseline; gap:.6rem}
+.tafel > h3 .wieviele{font-family:"IBM Plex Mono",monospace; font-size:.82rem; color:var(--schrift-3); font-weight:400}
+.tafel > .hin{font-size:.78rem; color:var(--schrift-3); margin:0 0 .6rem}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem; min-height:2.2rem}
+.chip{font-family:inherit; font-size:.95rem; font-weight:600; cursor:pointer;
+  padding:.45rem .75rem; border-radius:999px; border:1px solid var(--rand);
+  background:var(--grund); color:var(--schrift); display:inline-flex; align-items:center; gap:.4rem}
+.chip .rolle{font-size:.64rem; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--schrift-3); font-weight:700}
+.chip:active{transform:scale(.96)}
+.tafel.t0 .chip{border-color:color-mix(in srgb,var(--gold) 55%,transparent); background:var(--gold-tuell)}
+.tafel.t1 .chip{border-color:color-mix(in srgb,var(--gruen) 45%,transparent); background:var(--gruen-tuell)}
+.tafel.t2 .chip{border-color:color-mix(in srgb,var(--rot) 40%,transparent); background:var(--rot-tuell)}
+.leerhin{color:var(--schrift-3); font-size:.88rem; font-style:italic}
+
+/* Codes */
+.codekarte{background:var(--karte); border:2px solid var(--gold); border-radius:16px;
+  padding:1.4rem 1.2rem; text-align:center}
+.codekarte .wer{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--gold); font-weight:700; margin:0 0 .3rem}
+.codekarte h3{font-family:"Bodoni Moda",Didot,Georgia,serif; font-size:2rem; font-weight:600; margin:0 0 .2rem}
+.codekarte .namen{font-size:.92rem; color:var(--schrift-2); margin:0 0 1.1rem}
+.codebild{background:#fff; padding:.9rem; border-radius:12px; max-width:19rem; margin:0 auto}
+.codebild svg{width:100%; height:auto; display:block}
+.codekarte .adresse{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--schrift-3);
+  margin:.8rem 0 0; word-break:break-all}
+.codekarte .anweisung{font-size:1rem; font-weight:700; color:var(--schrift); margin:1rem 0 0}
+
+/* Prüfteil am Schluss */
 .pruefung{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
   padding:1rem 1.1rem; margin:0 0 .8rem}
 .pruefung h3{font-size:1.05rem; margin:0 0 .1rem; display:flex; align-items:center; gap:.6rem}
 .pruefung .nr{flex:none; width:1.6rem; height:1.6rem; border-radius:50%; background:var(--gold-tuell);
   color:var(--gold); border:1px solid var(--rand); display:flex; align-items:center;
-  justify-content:center; font-size:.78rem; font-weight:700; font-family:"IBM Plex Mono",monospace}
-.pruefung .wo{font-size:.82rem; color:var(--schrift-3); margin:0 0 .8rem}
+  justify-content:center; font-size:.76rem; font-weight:700; font-family:"IBM Plex Mono",monospace}
+.pruefung .wo{font-size:.8rem; color:var(--schrift-3); margin:0 0 .8rem}
 .fassung{color:var(--gold); font-weight:600}
-
 figure.vergleich{margin:0 0 .9rem; display:flex; gap:.9rem; align-items:flex-start;
   background:var(--grund-2); border:1px solid var(--rand); border-radius:10px; padding:.7rem}
 figure.vergleich img{width:8rem; flex:none; border-radius:7px; display:block}
@@ -64,25 +144,20 @@ figure.vergleich.fehlt img{display:none}
 figure.vergleich.fehlt .fehltext{display:block; margin-top:.4rem; color:var(--rot); font-weight:600}
 code{font-family:"IBM Plex Mono",monospace; font-size:.85em; background:var(--gold-tuell);
   color:var(--gold); padding:.1em .35em; border-radius:4px}
-
+.rollrahmen{overflow-x:auto; -webkit-overflow-scrolling:touch}
 table.haken{width:100%; border-collapse:collapse; font-size:.92rem}
-table.haken th{font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+table.haken th{font-size:.64rem; letter-spacing:.08em; text-transform:uppercase;
   color:var(--schrift-3); font-weight:700; text-align:left; padding:0 .4rem .45rem; border-bottom:1px solid var(--rand)}
 table.haken th.team, table.haken td.team{text-align:center; width:6.5rem}
-.rollrahmen{overflow-x:auto; -webkit-overflow-scrolling:touch}
-@media (max-width:30rem){
-  table.haken{font-size:.86rem}
-  table.haken th.team, table.haken td.team{width:3.2rem}
-  table.haken th{font-size:.6rem; letter-spacing:.04em}
-  table.haken th.team{white-space:normal; line-height:1.2}
-  figure.vergleich{flex-direction:column}
-  figure.vergleich img{width:100%; max-width:11rem}
-  .bonusreihe{grid-template-columns:1fr auto; row-gap:.5rem}
-  .bonusreihe .wahl{grid-column:1 / -1; justify-content:flex-start}
-}
 table.haken td{padding:.55rem .4rem; border-bottom:1px solid var(--rand); vertical-align:middle}
 table.haken tr:last-child td{border-bottom:0}
 input[type=checkbox]{width:1.4rem; height:1.4rem; accent-color:var(--gruen); cursor:pointer; margin:0}
+
+.bandreihe{display:grid; grid-template-columns:auto 1fr; gap:.8rem; align-items:center;
+  padding:.5rem 0; border-bottom:1px solid var(--rand)}
+.bandreihe:last-of-type{border-bottom:0}
+.bandname{font-size:1rem; font-weight:600}
+.bandname.leer{color:var(--schrift-3); font-style:italic; font-weight:400}
 
 .punktekasten{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
   padding:1.1rem; margin:0 0 .8rem}
@@ -91,18 +166,8 @@ input[type=checkbox]{width:1.4rem; height:1.4rem; accent-color:var(--gruen); cur
 .punktereihe:last-child{border-bottom:0}
 .punktereihe b{display:block; font-size:1rem}
 .punktereihe small{display:block; color:var(--schrift-3); font-size:.82rem; line-height:1.4}
-input[type=number]{width:6.5rem; padding:.6rem .7rem; font-size:1.1rem; font-weight:700;
-  font-family:"IBM Plex Mono",monospace; text-align:right;
-  background:var(--grund); color:var(--schrift); border:1px solid var(--rand); border-radius:8px}
-input[type=number]:focus{outline:2px solid var(--gold); outline-offset:1px}
-
-.bandreihe{display:grid; grid-template-columns:auto 1fr; gap:.8rem; align-items:center;
-  padding:.5rem 0; border-bottom:1px solid var(--rand)}
-.bandreihe:last-of-type{border-bottom:0}
-.bandreihe input[type=text]{width:100%; padding:.55rem .7rem; font-family:inherit;
-  font-size:1rem; background:var(--grund); color:var(--schrift);
-  border:1px solid var(--rand); border-radius:8px}
-.bandreihe input[type=text]:focus{outline:2px solid var(--gold); outline-offset:1px}
+input[type=number]{width:6.5rem; font-size:1.1rem; font-weight:700;
+  font-family:"IBM Plex Mono",monospace; text-align:right}
 .bonusreihe{display:grid; grid-template-columns:1fr auto auto; gap:.6rem; align-items:center;
   padding:.6rem 0; border-bottom:1px solid var(--rand)}
 .bonusreihe:last-child{border-bottom:0}
@@ -122,42 +187,146 @@ input[type=number]:focus{outline:2px solid var(--gold); outline-offset:1px}
 .ergebnis .summe{font-family:"IBM Plex Mono",monospace; font-size:1.7rem; font-weight:600; color:var(--gold)}
 .ergebnis .zeile.sieger .name::after{content:" 👑"}
 .ergebnis .zeile.sieger .summe{font-size:2.1rem}
-.spruch{margin:1rem 0 0; font-size:.95rem; color:var(--schrift-2); text-align:center}
+.spruch{margin:1rem 0 0; font-size:.94rem; color:var(--schrift-2); text-align:center}
 
+.hinweis{background:var(--gold-tuell); border:1px solid var(--rand); border-left:4px solid var(--gold);
+  border-radius:10px; padding:.85rem 1rem; margin:1.1rem 0 0; font-size:.9rem; color:var(--schrift-2)}
+.hinweis b{color:var(--schrift)}
 .merker{background:var(--rot-tuell); border:1px solid color-mix(in srgb,var(--rot) 40%,transparent);
-  border-left:4px solid var(--rot); border-radius:10px; padding:.85rem 1rem; margin:1.2rem 0 0; font-size:.92rem}
+  border-left:4px solid var(--rot); border-radius:10px; padding:.85rem 1rem; margin:1.1rem 0 0; font-size:.9rem}
 .merker b{color:var(--rot)}
-.knopfzeile{display:flex; gap:.6rem; margin:1.4rem 0 0; flex-wrap:wrap}
-.knopfzeile button{font-family:inherit; font-size:.88rem; font-weight:600; cursor:pointer;
-  padding:.7rem 1rem; border-radius:9px; border:1px solid var(--rand);
-  background:var(--karte); color:var(--schrift-2)}
-footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3rem;
-  color:var(--schrift-3); font-size:.85rem}
+footer{border-top:1px solid var(--rand); margin:2.2rem 0 0; padding:1.3rem 0 3rem;
+  color:var(--schrift-3); font-size:.84rem}
+.zurueck{display:inline-block; font-size:.86rem; color:var(--gold);
+  text-decoration:none; border-bottom:1px solid currentColor}
+
+@media (min-width:34rem){ .teamtafel{grid-template-columns:repeat(auto-fit,minmax(14rem,1fr))} }
+@media (max-width:30rem){
+  table.haken{font-size:.86rem}
+  table.haken th.team, table.haken td.team{width:3.2rem}
+  table.haken th{font-size:.6rem; letter-spacing:.03em}
+  table.haken th.team{white-space:normal; line-height:1.2}
+  figure.vergleich{flex-direction:column}
+  figure.vergleich img{width:100%; max-width:11rem}
+  .bonusreihe{grid-template-columns:1fr auto; row-gap:.5rem}
+  .bonusreihe .wahl{grid-column:1 / -1; justify-content:flex-start}
+}
 @media print{
   body{font-size:10.5pt; background:#fff}
-  header{background:#fff}
-  .knopfzeile,.zurueck{display:none}
-  .pruefung,.punktekasten,.ergebnis{break-inside:avoid}
+  header, .leiste, .knopfzeile, .gross, footer{display:none}
+  .schritt{display:block !important}
+  .pruefung, .punktekasten, .ergebnis, .codekarte, .tafel{break-inside:avoid}
 }
 </style>
 </head>
 <body>
 
 <header><div class="bahn">
-  <p class="marke">Nur für dich · am Tor</p>
-  <h1>Die Türsteher&#8209;Seite</h1>
-  <p class="dach">Wenn die Teams zurückkommen: Fotos durchgehen, Punkte eintragen,
-     Sieger ausrufen. Alles, was du hier antippst, bleibt gespeichert.</p>
-  <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
+  <p class="marke">Nur für dich · der ganze Partytag</p>
+  <h1>Türsteher</h1>
+  <p class="dach" id="dach">Namen eintippen, Teams machen, Codes herzeigen —
+     und am Schluss die Kontrolle am Tor.</p>
+  <nav class="leiste" id="leiste">
+    <button data-zu="1"><span class="zahl"><i>1</i></span>Gäste</button>
+    <button data-zu="2"><span class="zahl"><i>2</i></span>Teams</button>
+    <button data-zu="3"><span class="zahl"><i>3</i></span>Aufstellung</button>
+    <button data-zu="4"><span class="zahl"><i>4</i></span>Codes</button>
+    <button data-zu="5"><span class="zahl"><i>5</i></span>Am Schluss</button>
+  </nav>
 </div></header>
 
-<div class="bahn">
+<main><div class="bahn">
 
-  <h2><span class="schritt">Schritt 1</span>Die Fotos gegenprüfen</h2>
+<!-- ============================================ SCHRITT 1 — GÄSTE ======= -->
+<section class="schritt" data-schritt="1">
+  <h2>Wer ist da?</h2>
+  <p class="warum">Ein Name je Zeile. Die Reihenfolge ist egal.</p>
+  <div class="kasten">
+    <label class="feld" for="namen">Die Gäste</label>
+    <textarea id="namen" placeholder="Zoe&#10;Lena&#10;Marie&#10;Paul&#10;Sophie&#10;Jonas"></textarea>
+    <p class="zaehlung"><b id="anzahl">0</b> Namen eingetragen</p>
+  </div>
+  <button class="gross" id="zuTeams" disabled>Weiter zu den Teams</button>
+</section>
+
+<!-- ============================================ SCHRITT 2 — TEAMS ======= -->
+<section class="schritt" data-schritt="2">
+  <h2>Wie soll gespielt werden?</h2>
+  <p class="warum">Das entscheidest du am besten am Partymorgen — nach Wetter und Laune.</p>
+  <div class="wahlreihe" id="fassungen">
+    
+      <button type="button" data-modus="kurz">
+        <b>Klein</b>
+        <small>15 Stationen · rund 130 Min<br>wenn der Pool ruft</small>
+      </button>
+      <button type="button" data-modus="mittel">
+        <b>Mittel</b>
+        <small>18 Stationen · rund 150 Min<br>der Mittelweg</small>
+      </button>
+      <button type="button" data-modus="lang" class="an">
+        <b>Groß</b>
+        <small>22 Stationen · rund 195 Min<br>alles, was drin ist</small>
+      </button>
+      <button type="button" data-modus="drinnen">
+        <b>Schlechtwetter</b>
+        <small>11 Stationen · rund 95 Min<br>ohne Wege</small>
+      </button>
+  </div>
+
+  <h2 class="spaeter">Wie aufteilen?</h2>
+  <p class="warum">Es gibt <b>genau zwei Teams</b> — Team Diamant und Team Platin.
+     Bei mehr Kindern werden die Teams größer, nicht mehr.</p>
+  <div class="knopfzeile">
+    <button id="wuerfeln" class="stark">🎲 Zufällig aufteilen</button>
+    <button id="selber">✋ Selbst zuteilen</button>
+  </div>
+  <div class="hinweis"><b>Beides geht.</b> Auch nach dem Würfeln kannst du noch
+    jeden Namen antippen und ihn ins andere Team schieben.</div>
+  <div class="merker"><b>Warum nur zwei Teams?</b> Die Jagd ist darauf gebaut:
+    Beim Türsteher und bei der Spiegelschrift laufen die Teams <b>gegengleich</b>,
+    damit sie sich nicht über den Weg laufen. Das Kennwort hat genau
+    <b>zwei Hälften</b> — ROTER und TEPPICH.
+    Und beim Emoji-Duell rätselt jedes Team gegen das andere.
+    Ein drittes Team hätte keinen eigenen Weg und keine eigene Kennworthälfte —
+    es würde denselben Weg gehen wie Team 1. Deshalb gibt es die Möglichkeit
+    gar nicht erst.</div>
+</section>
+
+<!-- ======================================== SCHRITT 3 — AUFSTELLUNG ===== -->
+<section class="schritt" data-schritt="3">
+  <h2>Die Aufstellung</h2>
+  <p class="warum">Tipp einen Namen an, um ihn ins nächste Team zu schieben.
+     Die Rollen vergeben sich von selbst.</p>
+  <div class="teamtafel" id="tafeln"></div>
+  <div class="knopfzeile">
+    <button id="nochmal">🎲 Nochmal mischen</button>
+    <button id="drucken1">Aufstellung drucken</button>
+  </div>
+  <button class="gross" id="zuCodes">Passt — Codes anzeigen</button>
+</section>
+
+<!-- ============================================ SCHRITT 4 — CODES ======= -->
+<section class="schritt" data-schritt="4">
+  <h2>Der Code für <span id="codeTeamName">Team 1</span></h2>
+  <p class="warum" id="codeHilfe">Halt das Handy hoch. Nur dieses Team scannt diesen Code —
+     mit der normalen Kamera draufhalten, auf die Einblendung tippen, fertig.</p>
+  <div class="codekarte" id="codekarte"></div>
+  <button class="gross" id="codeWeiter">Haben gescannt — weiter</button>
+  <button class="gross stil2" id="codeZurueck">Einen Code zurück</button>
+  <div class="merker"><b>Nicht die Codes vertauschen.</b> Sonst bekommen beide Teams
+    dieselben Wege und laufen sich über den Weg.</div>
+</section>
+
+<!-- ========================================= SCHRITT 5 — AM SCHLUSS ===== -->
+<section class="schritt" data-schritt="5">
+  <h2>Am Tor: die Bändchen</h2>
+  <p class="warum">Bevor du aufmachst: jedes Handgelenk einzeln anschauen.
+     Wer kein Band hat, wird nochmal losgeschickt — als Gag, zwei Schritte weit.</p>
+  <div class="punktekasten" id="bandkasten"></div>
+
+  <h2 class="spaeter">Die Fotos gegenprüfen</h2>
   <p class="warum">Die App kann Fotos nicht sehen — sie glaubt den Kindern.
-     Hier schaust du selbst nach. Lass dir die Fotos auf ihrem Handy zeigen
-     und hak ab, was wirklich da ist.</p>
-
+     Lass sie dir zeigen und hak ab, was wirklich da ist.</p>
   
   <section class="pruefung">
     <h3><span class="nr">1</span>Akkreditierung</h3>
@@ -167,20 +336,17 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Stellt euch in eure beste VIP-Pose und macht ein Teamfoto</td>
+          <tr><td>Stellt euch in eure beste VIP-Pose und macht ein Teamfoto</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p1_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p1_0_1"></td>
           </tr>
-          <tr>
-            <td>Einigt euch, wer das Handy trägt</td>
+          <tr><td>Einigt euch, wer das Handy trägt</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p1_1_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p1_1_1"></td>
           </tr>
-          <tr>
-            <td>Ruft euren Teamnamen so laut, dass man es bis zum Pool hört</td>
+          <tr><td>Ruft euren Teamnamen so laut, dass man es bis zum Pool hört</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p1_2_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p1_2_1"></td>
@@ -196,20 +362,17 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Wir sitzen und haben etwas getrunken</td>
+          <tr><td>Wir sitzen und haben etwas getrunken</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p2_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p2_0_1"></td>
           </tr>
-          <tr>
-            <td>Das andere Team ist auch da</td>
+          <tr><td>Das andere Team ist auch da</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p2_1_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p2_1_1"></td>
           </tr>
-          <tr>
-            <td>Wir haben uns gegenseitig erzählt, was bisher passiert ist</td>
+          <tr><td>Wir haben uns gegenseitig erzählt, was bisher passiert ist</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p2_2_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p2_2_1"></td>
@@ -225,20 +388,17 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Unser Turm steht zehn Sekunden ohne Hilfe</td>
+          <tr><td>Unser Turm steht zehn Sekunden ohne Hilfe</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p3_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p3_0_1"></td>
           </tr>
-          <tr>
-            <td>Wir haben ein Foto von ihm gemacht</td>
+          <tr><td>Wir haben ein Foto von ihm gemacht</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p3_1_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p3_1_1"></td>
           </tr>
-          <tr>
-            <td>Auf dem Foto ist zu sehen, wie hoch er wirklich ist</td>
+          <tr><td>Auf dem Foto ist zu sehen, wie hoch er wirklich ist</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p3_2_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p3_2_1"></td>
@@ -260,20 +420,17 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Wir haben die Stelle gefunden</td>
+          <tr><td>Wir haben die Stelle gefunden</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p4_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p4_0_1"></td>
           </tr>
-          <tr>
-            <td>Wir haben das Foto im gleichen Winkel nachgestellt</td>
+          <tr><td>Wir haben das Foto im gleichen Winkel nachgestellt</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p4_1_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p4_1_1"></td>
           </tr>
-          <tr>
-            <td>Alle aus dem Team sind mit drauf</td>
+          <tr><td>Alle aus dem Team sind mit drauf</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p4_2_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p4_2_1"></td>
@@ -289,38 +446,32 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Ein Foto, auf dem euer ganzes Team gleichzeitig in der Luft ist</td>
+          <tr><td>Ein Foto, auf dem euer ganzes Team gleichzeitig in der Luft ist</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p5_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p5_0_1"></td>
           </tr>
-          <tr>
-            <td>Ein Foto mit einem Tier (Schnecke zählt auch)</td>
+          <tr><td>Ein Foto mit einem Tier (Schnecke zählt auch)</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p5_1_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p5_1_1"></td>
           </tr>
-          <tr>
-            <td>Ein Foto, auf dem einer von euch etwas Riesiges zu halten scheint</td>
+          <tr><td>Ein Foto, auf dem einer von euch etwas Riesiges zu halten scheint</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p5_2_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p5_2_1"></td>
           </tr>
-          <tr>
-            <td>Etwas, das aussieht wie ein Gesicht, aber keines ist</td>
+          <tr><td>Etwas, das aussieht wie ein Gesicht, aber keines ist</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p5_3_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p5_3_1"></td>
           </tr>
-          <tr>
-            <td>Ein Foto von etwas Goldenem</td>
+          <tr><td>Ein Foto von etwas Goldenem</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p5_4_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p5_4_1"></td>
           </tr>
-          <tr>
-            <td>Ein 5-Sekunden-Video, in dem alle gleichzeitig dieselbe Pose machen</td>
+          <tr><td>Ein 5-Sekunden-Video, in dem alle gleichzeitig dieselbe Pose machen</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p5_5_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p5_5_1"></td>
@@ -342,8 +493,7 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Wir waren rechtzeitig dort und haben das Foto gemacht</td>
+          <tr><td>Wir waren rechtzeitig dort und haben das Foto gemacht</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p6_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p6_0_1"></td>
@@ -359,20 +509,17 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
       <tbody>
         
-          <tr>
-            <td>Jeder von uns trägt ein Band am Handgelenk</td>
+          <tr><td>Jeder von uns trägt ein Band am Handgelenk</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p7_0_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p7_0_1"></td>
           </tr>
-          <tr>
-            <td>Auch das andere Team hat Bänder</td>
+          <tr><td>Auch das andere Team hat Bänder</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p7_1_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p7_1_1"></td>
           </tr>
-          <tr>
-            <td>Wir haben ein Foto von uns allen mit Band gemacht</td>
+          <tr><td>Wir haben ein Foto von uns allen mit Band gemacht</td>
             <td class="team">
               <input type="checkbox" data-schluessel="p7_2_0"></td><td class="team">
               <input type="checkbox" data-schluessel="p7_2_1"></td>
@@ -382,56 +529,13 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
   </section>
 
   <div class="merker">
-    <b>Der Trick beim Sprint:</b> In der Fotos-App auf dem iPhone das Bild öffnen
-    und nach oben wischen — dort steht die <b>Uhrzeit auf die Minute genau</b>.
-    So siehst du, ob sie es wirklich in den drei Minuten geschafft haben.
+    <b>Der Trick beim Sprint:</b> In der Fotos-App das Bild öffnen und nach oben
+    wischen — dort steht die <b>Uhrzeit auf die Minute genau</b>. So siehst du,
+    ob sie es wirklich in den drei Minuten geschafft haben.
   </div>
 
-  <h2><span class="schritt">Am Tor</span>Die Bändchen-Kontrolle</h2>
-  <p class="warum">Bevor du aufmachst: jedes Handgelenk einzeln anschauen.
-     Wer kein Band hat, wird nochmal losgeschickt — als Gag, zwei Schritte weit.
-     Trag die Namen ein, sobald du sie kennst.</p>
-  <div class="punktekasten">
-    
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_0">
-        <input type="text" data-schluessel="bandname_0" placeholder="Name 1">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_1">
-        <input type="text" data-schluessel="bandname_1" placeholder="Name 2">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_2">
-        <input type="text" data-schluessel="bandname_2" placeholder="Name 3">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_3">
-        <input type="text" data-schluessel="bandname_3" placeholder="Name 4">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_4">
-        <input type="text" data-schluessel="bandname_4" placeholder="Name 5">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_5">
-        <input type="text" data-schluessel="bandname_5" placeholder="Name 6">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_6">
-        <input type="text" data-schluessel="bandname_6" placeholder="Name 7">
-      </div>
-      <div class="bandreihe">
-        <input type="checkbox" data-schluessel="band_7">
-        <input type="text" data-schluessel="bandname_7" placeholder="Name 8">
-      </div>
-    <p class="warum" style="margin:.9rem 0 0">Acht Zeilen, damit auch Platz ist,
-       wenn kurzfristig noch jemand mitkommt. Leere Zeilen einfach ignorieren.</p>
-  </div>
-
-  <h2><span class="schritt">Schritt 2</span>Punkte aus der App</h2>
-  <p class="warum">Auf dem Schlussbildschirm jedes Teams steht die Punktzahl groß.
-     Lass sie dir zeigen und trag sie hier ein.</p>
+  <h2 class="spaeter">Die Punkte aus der App</h2>
+  <p class="warum">Auf dem Schlussbildschirm jedes Teams steht die Punktzahl groß.</p>
   <div class="punktekasten">
     
       <div class="punktereihe">
@@ -444,9 +548,9 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       </div>
   </div>
 
-  <h2><span class="schritt">Schritt 3</span>Deine Bonuspunkte</h2>
-  <p class="warum">Das kann nur der Türsteher entscheiden. Tipp den Teamnamen an,
-     der den Bonus bekommt — nochmal antippen nimmt ihn wieder weg.</p>
+  <h2 class="spaeter">Deine Bonuspunkte</h2>
+  <p class="warum">Das kann nur der Türsteher entscheiden. Tipp das Team an,
+     das den Bonus bekommt — nochmal antippen nimmt ihn weg.</p>
   <div class="punktekasten">
     
       <div class="bonusreihe">
@@ -477,7 +581,7 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
         </div>
       </div>
       <div class="bonusreihe">
-        <div><b>Bester Auftritt beim Türsteher</b><small>Wer sagt das Losungswort überzeugender auf?</small></div>
+        <div><b>Bester Auftritt am Tor</b><small>Wer sagt das Losungswort überzeugender auf?</small></div>
         <span class="wert">+30</span>
         <div class="wahl">
           <button data-bonus="laut" data-team="0"
@@ -487,46 +591,278 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       </div>
   </div>
 
-  <h2><span class="schritt">Schritt 4</span>Das Ergebnis</h2>
+  <h2 class="spaeter">Das Ergebnis</h2>
   <div class="ergebnis" id="ergebnis"></div>
   <p class="spruch">Sag es laut an — mit Sonnenbrille wirkt es besser.</p>
 
   <div class="knopfzeile">
-    <button id="drucken">Seite ausdrucken</button>
+    <button id="drucken2">Seite ausdrucken</button>
     <button id="leeren">Alles zurücksetzen</button>
   </div>
+</section>
 
   <footer>
-    <p>Die Fotos bleiben auf den Handys der Kinder. Nichts davon wird
-    irgendwohin geschickt — diese Seite rechnet nur zusammen, was du einträgst.</p>
+    <p>Alles, was du hier einträgst, bleibt in diesem Browser gespeichert — auch
+    wenn du die Seite zumachst. Die Namen und Fotos werden nirgendwohin geschickt.</p>
     <p><a class="zurueck" href="index.html">← zurück zum Leitstand</a></p>
   </footer>
-</div>
+</div></main>
 
+<script src="qrcode.js"></script>
 <script>
 (function(){
-  var SCHLUESSEL = "vip_tuersteher_v1";
-  var TEAMS = ["Team Diamant","Team Platin"];
+  "use strict";
+  var SCHLUESSEL = "vip_tuersteher_v2";
+  var TEAMS  = ["Team Diamant","Team Platin"];
+  var ROLLEN = ["Handyträger", "Sprecher", "Zeitnehmer", "Fotograf", "Kartenleser"];
+  var BASIS  = "https://poolparty.robschman.at";
+
   var stand = {};
   try{ stand = JSON.parse(localStorage.getItem(SCHLUESSEL) || "{}") || {}; }catch(e){ stand = {}; }
+  if(!stand.modus)     stand.modus = "lang";
+  if(!stand.verteilt)  stand.verteilt = null;   /* {name: teamnummer oder null} */
   function sichern(){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(stand)); }catch(e){} }
 
-  /* Haken und Zahlenfelder */
-  document.querySelectorAll("[data-schluessel]").forEach(function(f){
-    var k = f.dataset.schluessel;
-    if(stand[k] !== undefined){
-      if(f.type === "checkbox") f.checked = !!stand[k]; else f.value = stand[k];
-    }
-    f.addEventListener("change", function(){
-      stand[k] = (f.type === "checkbox") ? f.checked : f.value;
-      sichern(); rechnen();
+  var $ = function(s){ return document.querySelector(s); };
+
+  /* ---------------------------------------------------------- Schritte -- */
+  var schritt = 1;
+  function zeige(n){
+    schritt = n;
+    document.querySelectorAll(".schritt").forEach(function(s){
+      s.classList.toggle("an", +s.dataset.schritt === n);
     });
-    if(f.type === "number" || f.type === "text") f.addEventListener("input", function(){
-      stand[k] = f.value; sichern(); rechnen();
+    document.querySelectorAll("#leiste button").forEach(function(k){
+      var z = +k.dataset.zu;
+      k.classList.toggle("an", z === n);
+      k.classList.toggle("fertig", z < n);
+    });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("#leiste button").forEach(function(k){
+    k.addEventListener("click", function(){
+      var z = +k.dataset.zu;
+      if(z >= 3 && !hatVerteilung()) { zeige(Math.min(z, 2)); return; }
+      zeige(z);
     });
   });
 
-  /* Bonusknöpfe */
+  /* ------------------------------------------------------------- Namen -- */
+  var feldNamen = $("#namen");
+  if(stand.namen) feldNamen.value = stand.namen;
+
+  function namenListe(){
+    return (feldNamen.value || "").split("\n")
+      .map(function(s){ return s.trim(); })
+      .filter(Boolean);
+  }
+  function namenGezaehlt(){
+    var n = namenListe().length;
+    $("#anzahl").textContent = n;
+    $("#zuTeams").disabled = n < 2;
+  }
+  feldNamen.addEventListener("input", function(){
+    stand.namen = feldNamen.value; sichern(); namenGezaehlt();
+  });
+  namenGezaehlt();
+  $("#zuTeams").addEventListener("click", function(){ zeige(2); });
+
+  /* --------------------------------------------------- Fassung / Anzahl -- */
+  document.querySelectorAll("[data-modus]").forEach(function(k){
+    k.classList.toggle("an", k.dataset.modus === stand.modus);
+    k.addEventListener("click", function(){
+      stand.modus = k.dataset.modus; sichern();
+      document.querySelectorAll("[data-modus]").forEach(function(a){
+        a.classList.toggle("an", a === k);
+      });
+      if(hatVerteilung()) codeZeigen();
+    });
+  });
+  /* ---------------------------------------------------------- Verteilen -- */
+  /* So viele Teams, wie in stationen.js stehen — nicht mehr und nicht weniger */
+  function wieViele(){ return TEAMS.length; }
+  function hatVerteilung(){
+    if(!stand.verteilt) return false;
+    var namen = namenListe();
+    if(!namen.length) return false;
+    return namen.some(function(n){ return stand.verteilt[n] !== undefined
+                                       && stand.verteilt[n] !== null; });
+  }
+  function mischen(a){
+    a = a.slice();
+    for(var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var h = a[i]; a[i] = a[j]; a[j] = h;
+    }
+    return a;
+  }
+  function wuerfeln(){
+    var namen = namenListe();
+    if(namen.length < 2){ alert("Trag zuerst mindestens zwei Namen ein."); zeige(1); return; }
+    var v = {}, w = wieViele();
+    mischen(namen).forEach(function(n, i){ v[n] = i % w; });
+    stand.verteilt = v; sichern();
+    tafelnZeichnen(); zeige(3);
+  }
+  function selberZuteilen(){
+    var namen = namenListe();
+    if(namen.length < 2){ alert("Trag zuerst mindestens zwei Namen ein."); zeige(1); return; }
+    var v = {};
+    namen.forEach(function(n){ v[n] = null; });   /* alle in den Pool */
+    stand.verteilt = v; sichern();
+    tafelnZeichnen(); zeige(3);
+  }
+  $("#wuerfeln").addEventListener("click", wuerfeln);
+  $("#selber").addEventListener("click", selberZuteilen);
+  $("#nochmal").addEventListener("click", function(){ wuerfeln(); zeige(3); });
+
+  function teamsAlsListen(){
+    var namen = namenListe(), w = wieViele();
+    var listen = [], pool = [];
+    for(var i = 0; i < w; i++) listen.push([]);
+    namen.forEach(function(n){
+      var t = stand.verteilt ? stand.verteilt[n] : null;
+      if(t === null || t === undefined || t >= w) pool.push(n);
+      else listen[t].push(n);
+    });
+    return { listen: listen, pool: pool };
+  }
+
+  function tafelnZeichnen(){
+    var d = teamsAlsListen();
+    var h = "";
+    d.listen.forEach(function(mitglieder, i){
+      h += '<div class="tafel t' + i + '">' +
+             '<h3>' + (TEAMS[i] || ("Team " + (i+1))) +
+               '<span class="wieviele">' + mitglieder.length + '</span></h3>' +
+             '<p class="hin">Antippen schiebt ins nächste Team</p>' +
+             '<div class="chips">' + (mitglieder.length
+               ? mitglieder.map(function(n, k){
+                   return '<button class="chip" data-name="' + n.replace(/"/g,"&quot;") + '">' +
+                          n + '<span class="rolle">' + (ROLLEN[k] || "") + '</span></button>';
+                 }).join("")
+               : '<span class="leerhin">noch niemand</span>') +
+             '</div></div>';
+    });
+    if(d.pool.length){
+      h += '<div class="tafel pool">' +
+             '<h3>Noch nicht zugeteilt<span class="wieviele">' + d.pool.length + '</span></h3>' +
+             '<p class="hin">Antippen steckt sie in ' + (TEAMS[0] || "Team 1") + '</p>' +
+             '<div class="chips">' + d.pool.map(function(n){
+               return '<button class="chip" data-name="' + n.replace(/"/g,"&quot;") + '">' + n + '</button>';
+             }).join("") + '</div></div>';
+    }
+    $("#tafeln").innerHTML = h;
+
+    document.querySelectorAll(".chip").forEach(function(c){
+      c.addEventListener("click", function(){
+        var n = c.dataset.name, w = wieViele();
+        var jetzt = stand.verteilt[n];
+        /* Pool → Team 1 → Team 2 → … → letztes Team → Pool */
+        if(jetzt === null || jetzt === undefined) stand.verteilt[n] = 0;
+        else if(jetzt + 1 >= w)                   stand.verteilt[n] = null;
+        else                                      stand.verteilt[n] = jetzt + 1;
+        sichern(); tafelnZeichnen(); bandkastenZeichnen();
+      });
+    });
+    bandkastenZeichnen();
+  }
+
+  $("#zuCodes").addEventListener("click", function(){
+    var d = teamsAlsListen();
+    if(d.pool.length){
+      alert("Es sind noch " + d.pool.length + " Kinder keinem Team zugeteilt. " +
+            "Tipp sie an, dann geht es weiter.");
+      return;
+    }
+    if(d.listen.some(function(l){ return !l.length; })){
+      alert("Ein Team ist leer. Verteil die Namen nochmal.");
+      return;
+    }
+    codeNr = 0; codeZeigen(); zeige(4);
+  });
+
+  /* ------------------------------------------------------------- Codes -- */
+  var codeNr = 0;
+  function codeZeigen(){
+    var d = teamsAlsListen();
+    if(codeNr >= d.listen.length) codeNr = d.listen.length - 1;
+    if(codeNr < 0) codeNr = 0;
+    var name = TEAMS[codeNr] || ("Team " + (codeNr+1));
+    var ziel = BASIS + "/?modus=" + stand.modus + "&team=" + codeNr;
+
+    var qr = qrcode(0, "M");
+    qr.addData(ziel);
+    qr.make();
+
+    $("#codeTeamName").textContent = name;
+    $("#codekarte").innerHTML =
+      '<p class="wer">Code ' + (codeNr+1) + ' von ' + d.listen.length + '</p>' +
+      '<h3>' + name + '</h3>' +
+      '<p class="namen">' + d.listen[codeNr].join(" · ") + '</p>' +
+      '<div class="codebild">' + qr.createSvgTag({ scalable:true, margin:0 }) + '</div>' +
+      '<p class="anweisung">Nur ' + name + ' scannt diesen Code</p>' +
+      '<p class="adresse">' + ziel.replace(/^https?:\/\//, "") + '</p>';
+
+    var letzter = codeNr >= d.listen.length - 1;
+    $("#codeWeiter").textContent = letzter
+      ? "Alle haben gescannt — die Jagd läuft"
+      : "Haben gescannt — weiter zu " + (TEAMS[codeNr+1] || ("Team " + (codeNr+2)));
+    $("#codeZurueck").hidden = codeNr === 0;
+    $("#codeHilfe").textContent = letzter
+      ? "Der letzte Code. Danach kannst du die Seite zumachen — am Schluss kommst du für die Kontrolle zurück."
+      : "Halt das Handy hoch. Nur dieses Team scannt diesen Code — mit der normalen Kamera draufhalten, auf die Einblendung tippen, fertig.";
+  }
+  $("#codeWeiter").addEventListener("click", function(){
+    var d = teamsAlsListen();
+    if(codeNr >= d.listen.length - 1){ zeige(5); return; }
+    codeNr++; codeZeigen(); window.scrollTo(0,0);
+  });
+  $("#codeZurueck").addEventListener("click", function(){
+    if(codeNr > 0){ codeNr--; codeZeigen(); window.scrollTo(0,0); }
+  });
+
+  /* -------------------------------------------------- Bändchen-Kontrolle -- */
+  function bandkastenZeichnen(){
+    var d = teamsAlsListen();
+    var h = "";
+    d.listen.forEach(function(mitglieder, i){
+      mitglieder.forEach(function(n){
+        var k = "band_" + n;
+        h += '<div class="bandreihe">' +
+               '<input type="checkbox" data-schluessel="' + k + '"' +
+                 (stand[k] ? " checked" : "") + '>' +
+               '<span class="bandname">' + n +
+                 ' <span class="rolle" style="font-size:.7rem;color:var(--schrift-3)">' +
+                 (TEAMS[i] || "") + '</span></span>' +
+             '</div>';
+      });
+    });
+    if(!h) h = '<p class="leerhin">Noch keine Namen eingetragen — das kommt in Schritt 1.</p>';
+    $("#bandkasten").innerHTML = h;
+    verdrahteFelder($("#bandkasten"));
+  }
+
+  /* ------------------------------------------------- Haken, Zahlen, Bonus -- */
+  function verdrahteFelder(wo){
+    (wo || document).querySelectorAll("[data-schluessel]").forEach(function(f){
+      if(f.dataset.fertig) return;
+      f.dataset.fertig = "1";
+      var k = f.dataset.schluessel;
+      if(stand[k] !== undefined){
+        if(f.type === "checkbox") f.checked = !!stand[k]; else f.value = stand[k];
+      }
+      f.addEventListener("change", function(){
+        stand[k] = (f.type === "checkbox") ? f.checked : f.value;
+        sichern(); rechnen();
+      });
+      if(f.type === "number" || f.type === "text"){
+        f.addEventListener("input", function(){ stand[k] = f.value; sichern(); rechnen(); });
+      }
+    });
+  }
+  verdrahteFelder(document);
+
   document.querySelectorAll("[data-bonus]").forEach(function(k){
     var id = "bonus_" + k.dataset.bonus + "_" + k.dataset.team;
     if(stand[id]) k.classList.add("an");
@@ -547,26 +883,30 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       return p;
     });
     var hoechste = Math.max.apply(null, summen);
-    var gleichstand = hoechste > 0 && summen.filter(function(s){ return s === hoechste; }).length > 1;
-    var kasten = document.getElementById("ergebnis");
-    kasten.innerHTML = TEAMS.map(function(t, i){
-      var sieger = hoechste > 0 && summen[i] === hoechste && !gleichstand;
+    var gleich = hoechste > 0 && summen.filter(function(s){ return s === hoechste; }).length > 1;
+    $("#ergebnis").innerHTML = TEAMS.map(function(t, i){
+      var sieger = hoechste > 0 && summen[i] === hoechste && !gleich;
       return '<div class="zeile' + (sieger ? " sieger" : "") + '">' +
              '<span class="name">' + t + '</span>' +
              '<span class="summe">' + summen[i] + '</span></div>';
     }).join("") + (
       hoechste === 0 ? '<p class="spruch">Noch nichts eingetragen.</p>' :
-      gleichstand    ? '<p class="spruch"><b>Gleichstand.</b> Beide Teams kommen zusammen rein — ' +
-                       'oder du vergibst noch einen Bonus.</p>' : ""
+      gleich ? '<p class="spruch"><b>Gleichstand.</b> Beide Teams kommen zusammen rein — ' +
+               'oder du vergibst noch einen Bonus.</p>' : ""
     );
   }
-  rechnen();
 
-  document.getElementById("drucken").addEventListener("click", function(){ window.print(); });
-  document.getElementById("leeren").addEventListener("click", function(){
-    if(!confirm("Wirklich alle Haken und Punkte löschen?")) return;
+  $("#drucken1").addEventListener("click", function(){ window.print(); });
+  $("#drucken2").addEventListener("click", function(){ window.print(); });
+  $("#leeren").addEventListener("click", function(){
+    if(!confirm("Wirklich alles löschen — Namen, Teams, Haken und Punkte?")) return;
     stand = {}; sichern(); location.reload();
   });
+
+  /* ---------------------------------------------------------- Startpunkt -- */
+  tafelnZeichnen();
+  rechnen();
+  zeige(hatVerteilung() ? 3 : 1);
 })();
 </script>
 </body>

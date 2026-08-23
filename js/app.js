@@ -153,9 +153,17 @@ setInterval(()=>{ if(Z.team!==null && !Z.fertig) kopfZeichnen(); }, 1000);
 /* ==========================================================================
    START UND TEAMWAHL
    ========================================================================== */
+/* Wie lange die Jagd ungefähr dauert — wird ausgerechnet, nicht eingetippt.
+   Sonst stimmt die Zahl nicht mehr, sobald eine Station dazukommt. */
+const DAUER_JE_ART = { start:5, code:9, quiz:8, foto:11, duell:10, handyaus:8,
+                       spiegel:8, stoppuhr:5, sprint:6, kennwort:7, anruf:8, finale:10 };
+function geschaetzteMinuten(){
+  const roh = AKTIV.reduce((n,s)=> n + (DAUER_JE_ART[s.typ] || 8), 0);
+  return Math.round(roh / 5) * 5;
+}
+
 function zeigeStart(){
-  const wieLang = { kurz:"rund 110 Minuten", mittel:"rund 140 Minuten",
-                    lang:"rund 170 Minuten", drinnen:"rund 85 Minuten" }[MODUS];
+  const wieLang = "rund " + geschaetzteMinuten() + " Minuten";
   const festesTeam = TEAM_AUS_URL !== null ? SPIEL.teams[TEAM_AUS_URL].name : null;
   app().innerHTML = `
     <div class="start-logo">
