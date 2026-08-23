@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bastelbogen — VIP-Schnitzeljagd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-tuell:#f3e9cd; --rot:#a4402c; --rot-tuell:#f8e6e0;
+  --gruen:#34694b; --gruen-tuell:#e2f0e6; --breite:min(100% - 2.2rem, 46rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.55;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif}
+.bahn{width:var(--breite); margin-inline:auto}
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(1.6rem,5vw,2.4rem) 0 clamp(1.1rem,4vw,1.6rem)}
+.marke{font-size:.66rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .6rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7vw,2.9rem); line-height:1.02; margin:0}
+.dach{color:var(--schrift-2); margin:.7rem 0 0; font-size:.94rem}
+.zurueck{display:inline-block; margin:.9rem 0 0; font-size:.86rem; color:var(--gold);
+  text-decoration:none; border-bottom:1px solid currentColor}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.55rem; margin:2.2rem 0 .25rem}
+.warum{color:var(--schrift-2); font-size:.92rem; margin:0 0 1rem}
+
+.feld{background:var(--karte); border:1px solid var(--rand); border-radius:11px; padding:1rem 1.1rem; margin:0 0 .8rem}
+label.klein{display:block; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase;
+  font-weight:700; color:var(--schrift-3); margin:0 0 .35rem}
+input[type=text]{width:100%; padding:.7rem .8rem; font-family:inherit; font-size:1rem;
+  background:var(--grund); color:var(--schrift); border:1px solid var(--rand); border-radius:8px}
+input:focus{outline:2px solid var(--gold); outline-offset:1px}
+
+/* --- QR-Zettel --- */
+.zettel{display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.9rem; margin:1rem 0 0}
+.karteQR{border:2px dashed var(--schrift-3); border-radius:10px; padding:1rem .9rem;
+  text-align:center; background:#fff; color:#111}
+.karteQR .kopf{font-size:.6rem; letter-spacing:.24em; text-transform:uppercase;
+  font-weight:800; color:#93701a; margin:0 0 .1rem}
+.karteQR .titel{font-family:"Bodoni Moda",Didot,Georgia,serif; font-size:1.15rem;
+  font-weight:600; margin:0 0 .7rem; color:#111}
+.karteQR .bild{width:100%; max-width:9.5rem; margin:0 auto}
+.karteQR .bild svg{width:100%; height:auto; display:block}
+.karteQR .fuss{font-size:.72rem; color:#635c4c; margin:.65rem 0 0; line-height:1.4}
+.karteQR .versteck{margin:.7rem 0 0; border-top:1px dotted #bbb; padding-top:.5rem;
+  font-size:.66rem; color:#8d8474; text-align:left}
+.karteQR .versteck b{display:block; font-size:.58rem; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:.5rem}
+.karteQR .linie{border-bottom:1px solid #ccc; height:1.1rem}
+.lupe{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--schrift-3);
+  text-align:center; margin:.4rem 0 0}
+
+/* --- Eiswürfel --- */
+.eisgitter{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin:1rem 0 0; max-width:26rem}
+.eisfeld{aspect-ratio:1; border:1.5px dashed var(--schrift-3); border-radius:6px;
+  display:flex; align-items:center; justify-content:center; background:#fff; color:#111;
+  font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900; font-size:2.1rem; line-height:1}
+.eisfeld.niete{color:#a4402c; font-family:"Archivo",sans-serif; font-size:1.7rem; font-weight:700}
+.eisliste{font-family:"IBM Plex Mono",monospace; font-size:.85rem; color:var(--schrift-2); margin:.8rem 0 0}
+.eisliste b{color:var(--gold)}
+
+.hinweis{background:var(--gold-tuell); border:1px solid var(--rand); border-left:4px solid var(--gold);
+  border-radius:10px; padding:.85rem 1rem; margin:1.1rem 0 0; font-size:.9rem; color:var(--schrift-2)}
+.hinweis b{color:var(--schrift)}
+.merker{background:var(--rot-tuell); border:1px solid color-mix(in srgb,var(--rot) 40%,transparent);
+  border-left:4px solid var(--rot); border-radius:10px; padding:.85rem 1rem; margin:1.1rem 0 0; font-size:.9rem}
+.merker b{color:var(--rot)}
+ol.schritte{counter-reset:s; list-style:none; margin:.6rem 0 0; padding:0}
+ol.schritte li{counter-increment:s; position:relative; padding:.5rem 0 .5rem 2.1rem;
+  border-bottom:1px solid var(--rand); font-size:.94rem}
+ol.schritte li:last-child{border-bottom:0}
+ol.schritte li::before{content:counter(s); position:absolute; left:0; top:.5rem;
+  width:1.45rem; height:1.45rem; border-radius:50%; border:1px solid var(--gold);
+  color:var(--gold); font-size:.72rem; font-weight:800; display:flex;
+  align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace}
+.knopfzeile{display:flex; gap:.55rem; margin:1.2rem 0 0; flex-wrap:wrap}
+.knopfzeile button{font-family:inherit; font-size:.88rem; font-weight:600; cursor:pointer;
+  padding:.7rem 1rem; border-radius:9px; border:1px solid var(--rand);
+  background:var(--karte); color:var(--schrift-2)}
+footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3rem;
+  color:var(--schrift-3); font-size:.85rem}
+
+@media print{
+  body{background:#fff; font-size:11pt; color:#000}
+  header{background:#fff; border-bottom:1px solid #000}
+  .knopfzeile,.zurueck,.hinweis,.merker,.feld,ol.schritte,footer,.nichtdrucken{display:none}
+  h2{page-break-before:auto}
+  .zettel{grid-template-columns:repeat(3,1fr)}
+  .karteQR{break-inside:avoid; border-color:#666}
+  .eisgitter{max-width:none; grid-template-columns:repeat(4,4.5cm); gap:.35cm}
+  .eisfeld{border-color:#666}
+}
+</style>
+</head>
+<body>
+
+<header><div class="bahn">
+  <p class="marke">Zum Ausdrucken und Ausschneiden</p>
+  <h1>Der Bastelbogen</h1>
+  <p class="dach">Die drei QR-Zettel zum Verstecken und die zwölf Eiswürfel-Zettel.
+     Auf A4 drucken, ausschneiden, fertig.</p>
+  <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
+</div></header>
+
+<div class="bahn">
+
+<!-- ==================================================== QR-ZETTEL ======= -->
+<h2>Die drei QR-Zettel</h2>
+<p class="warum">Rund um die Lounge verstecken — an Schildern, unter Bänken, an Zäunen.
+   Jeder zeigt einen Buchstaben. Zusammen ergeben sie
+   <b style="font-family:'IBM Plex Mono',monospace">BAR</b>.</p>
+
+<div class="feld nichtdrucken">
+  <label class="klein" for="basis">Adresse der App</label>
+  <input type="text" id="basis" value="https://poolparty.robschman.at">
+  <p class="warum" style="margin:.6rem 0 0">Nur ändern, wenn die App woanders liegt.
+     Die Codes bauen sich beim Tippen neu.</p>
+</div>
+
+<div class="zettel" id="zettel"></div>
+
+<div class="hinweis">
+  <b>Warum das mit dem QR-Code funktioniert:</b> Jeder Code führt auf eine winzige
+  Seite, die nur einen riesigen Buchstaben zeigt. Die Kinder halten die normale
+  iPhone-Kamera drauf und tippen auf die Einblendung — mehr braucht es nicht.
+  Eine App zum Scannen ist nicht nötig.
+</div>
+
+<div class="merker">
+  <b>Die Reihenfolge verrät nichts.</b> Zettel 1 zeigt <b>R</b>, Zettel 2 <b>B</b>,
+  Zettel 3 <b>A</b>. Wer sie der Reihe nach findet, hat <b>RBA</b> — und muss selber
+  draufkommen, dass daraus <b>BAR</b> wird.
+</div>
+
+<ol class="schritte">
+  <li><b>Drucken</b> — am besten auf festeres Papier, sonst weicht es auf.</li>
+  <li><b>Ausschneiden</b> entlang der gestrichelten Linie.</li>
+  <li>Unten auf jeden Zettel <b>hinschreiben, wo er hängt</b> — dann weißt du am
+      Abend, ob du alle wieder eingesammelt hast.</li>
+  <li><b>In eine Klarsichthülle</b> stecken oder mit Klebeband ganz überkleben.
+      Ein Regenschauer macht sonst alles kaputt.</li>
+  <li>Rund um die Lounge <b>verstecken</b> — sichtbar genug zum Finden,
+      versteckt genug zum Suchen. Einer darf ruhig fies sein.</li>
+</ol>
+
+<!-- ==================================================== EISWÜRFEL ======= -->
+<h2>Die zwölf Eiswürfel</h2>
+<p class="warum">Sieben Buchstaben ergeben
+   <b style="font-family:'IBM Plex Mono',monospace">EISKALT</b>,
+   fünf sind Nieten. Die Kinder müssen alle zwölf aufbrechen, um sicher zu sein.</p>
+
+<div class="eisgitter">
+  <div class="eisfeld">I</div><div class="eisfeld">L</div><div class="eisfeld">K</div><div class="eisfeld niete">✗</div><div class="eisfeld">E</div><div class="eisfeld niete">✗</div><div class="eisfeld niete">✗</div><div class="eisfeld">A</div><div class="eisfeld niete">✗</div><div class="eisfeld">S</div><div class="eisfeld niete">✗</div><div class="eisfeld">T</div>
+</div>
+<p class="eisliste">Auf dem Bogen: <b>I L K ✗ E ✗ ✗ A ✗ S ✗ T</b></p>
+
+<div class="merker">
+  <b>Tinte läuft im Wasser aus.</b> Zwei Wege, die halten:<br>
+  · Mit dem <b>Laserdrucker</b> drucken — Lasertoner ist wasserfest.<br>
+  · Oder von Hand mit einem <b>wasserfesten Stift</b> (Edding) schreiben.<br>
+  Tintenstrahldrucker gehen <b>nicht</b> — nach zwei Stunden im Eis ist da nur noch
+  ein blauer Nebel.
+</div>
+
+<ol class="schritte">
+  <li><b>Drucken</b> und die zwölf Felder ausschneiden.</li>
+  <li>Jeden Zettel <b>klein zusammenfalten</b>, damit er in ein Eiswürfelfach passt.</li>
+  <li>Fach <b>halb</b> mit Wasser füllen, Zettel hinein, <b>zwei Stunden</b> anfrieren
+      lassen.</li>
+  <li>Dann <b>ganz auffüllen</b> und über Nacht durchfrieren. So schwimmt der Zettel
+      nicht oben und sitzt schön in der Mitte.</li>
+  <li>Am Partytag in einer <b>Schüssel oder Kühlbox</b> in die Lounge stellen.</li>
+</ol>
+
+<div class="hinweis">
+  <b>Denk an ein Handtuch.</b> Zwölf Eiswürfel, die von sechs Kindern aufgehackt
+  werden, geben eine Riesenpfütze. Und sag ihnen, dass sie die Würfel
+  <b>nicht in den Mund</b> nehmen sollen — es steht zwar in der App, aber
+  einmal laut gesagt schadet nicht.
+</div>
+
+<div class="knopfzeile nichtdrucken">
+  <button id="drucken">Bogen ausdrucken</button>
+</div>
+
+<footer class="nichtdrucken">
+  <p>Beim Ausdrucken fällt alles Erklärende weg — auf dem Papier stehen nur die
+  Zettel zum Ausschneiden.</p>
+  <p><a class="zurueck" href="index.html">← zurück zum Leitstand</a></p>
+</footer>
+</div>
+
+<script src="qrcode.js"></script>
+<script>
+(function(){
+  var ZETTEL = [{"nr":1,"buchstabe":"R"},{"nr":2,"buchstabe":"B"},{"nr":3,"buchstabe":"A"}];
+  var feld = document.getElementById("basis");
+
+  function bauen(){
+    var basis = (feld.value || "").trim().replace(/\/+$/, "");
+    document.getElementById("zettel").innerHTML = ZETTEL.map(function(z){
+      var ziel = basis + "/z/" + z.nr + ".html";
+      var qr = qrcode(0, "M");
+      qr.addData(ziel);
+      qr.make();
+      return '<div class="karteQR">' +
+        '<p class="kopf">VIP Club</p>' +
+        '<p class="titel">Zettel ' + z.nr + ' von 3</p>' +
+        '<div class="bild">' + qr.createSvgTag({ scalable:true, margin:0 }) + '</div>' +
+        '<p class="fuss">Haltet die Kamera drauf<br>und tippt auf die Einblendung</p>' +
+        '<div class="versteck"><b>Nur für den Türsteher</b>' +
+          'Buchstabe: ' + z.buchstabe + '<br>Versteckt bei:<div class="linie"></div></div>' +
+      '</div>';
+    }).join("");
+  }
+  feld.addEventListener("input", bauen);
+  document.getElementById("drucken").addEventListener("click", function(){ window.print(); });
+  bauen();
+})();
+</script>
+</body>
+</html>
