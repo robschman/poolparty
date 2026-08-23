@@ -316,8 +316,8 @@ const STATIONEN = [
   ablaufHinweis: "Falsch raten kostet nichts. Es gibt so oft einen neuen Versuch, wie ihr wollt.",
   streitText: "Wenn ihr euch nicht einig seid, ob geraten wurde oder nicht: <b>Der Türsteher entscheidet.</b> Er ist in der Nähe — ruft ihn laut. Sein Wort gilt.",
   teamRaetsel: [
-    "🦁 👑 🌍 🎵",          // Team 1 zeigt das — Lösung: Der König der Löwen
-    "❄️ 👸 ⛄ 🎤"           // Team 2 zeigt das — Lösung: Die Eiskönigin
+    "🥇 ✨ 🎤 👑",          // Team 1 zeigt das — Lösung: Golden (KATSEYE)
+    "❄️ 👸 ⛄ 🎤"           // Team 2 — NOCH OFFEN, Robert sucht das zweite Lied aus
   ],
   tipp: "Euer eigenes Geheimwort steht ganz unten auf dieser Seite — aber nur herausrücken, wenn die anderen wirklich richtig geraten haben."
 },
