@@ -226,6 +226,9 @@ const STATIONEN = [
   buchstabe: true,
   ort: "Bleibt stehen",
   sekunden: 120,
+  /* Sirene die ganzen zwei Minuten, die letzten 20 Sekunden doppelt so
+     schnell. Auf false setzen, wenn es zu viel wird. */
+  alarmTon: true,
   text: "ACHTUNG — SICHERHEITSWARNUNG DES VIP-SERVERS.\n\nEin fremdes Gerät versucht, sich in eure VIP-Verbindung einzuklinken.\n\nSCHALTET SOFORT ALLE HANDYS KOMPLETT AUS.\nNicht nur den Bildschirm — ganz aus.\n\nWartet zwei Minuten. Dann wieder einschalten und diese Seite neu öffnen.",
   dankeText: "Danke, dass ihr eure Handys neu gestartet habt.\n\nDie Verbindung ist wieder sicher. Wir machen weiter.\n\n(Unter uns: Es hätte auch ohne funktioniert. Aber ihr wart wirklich überzeugend.)"
 },
@@ -261,11 +264,19 @@ const STATIONEN = [
   video: "fotos/botschaft.mp4",
 
   /* videoStoerung: true = verfremdet, "stark" = kaum noch zu erkennen.
+
+     ACHTUNG bei "stark": Auf dem Schild im Video steht das Codewort. Mit der
+     starken Störung ist die Schrift kaum noch zu lesen — dann hängt alles am
+     Ton. Darum steht hier absichtlich nur true. Wer unbedingt will, tauscht
+     true gegen "stark" — aber dann vorher selbst anschauen, ob man das Wort
+     noch erkennt.
+
      videoTempo:    kleiner als 1 macht das Bild langsamer UND die Stimme
-                    tiefer. 0.82 klingt nach Bösewicht, ohne albern zu werden.
-                    Auf 1 stellen, wenn du das Video schon selbst bearbeitet hast. */
-  videoStoerung: "stark",
-  videoTempo: 0.82,
+                    tiefer. 0.85 klingt schon deutlich anders, man versteht
+                    aber jedes Wort. Bei 0.75 wird es dumpf.
+                    Auf 1 stellen, wenn du das Video selbst bearbeitet hast. */
+  videoStoerung: true,
+  videoTempo: 0.85,
   antwort: "GOLDFISCH",
   antwortAuch: ["GOLD FISCH"],
   tipp: "Er sagt es nicht nur — er hält es auch schriftlich in die Kamera. Nochmal anschauen."

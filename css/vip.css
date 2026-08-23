@@ -542,3 +542,10 @@ body.silber .geheim.auf{border-color:rgba(200,204,210,.55)}
     transparent 0 6px, rgba(0,0,0,.22) 6px 7px);
   mix-blend-mode:multiply;
 }
+
+/* ---- 29. Hochkant-Video begrenzen -------------------------------------- */
+/* Ein 9:16-Video würde sonst den halben Bildschirm füllen und die Antwort
+   nach unten schieben. */
+.videohuelle video.bild{
+  max-height:58vh; width:100%; object-fit:contain; display:block;
+}

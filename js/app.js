@@ -109,6 +109,10 @@ function laden(){
 }
 function sichern(){
   try{ localStorage.setItem(SPEICHER, JSON.stringify(Z)); }catch(e){}
+  /* Bei JEDEM Speichern mitschreiben, wo dieses Handy gerade spielt.
+     Damit findet auch ein Spiel zurück, das schon lief, bevor es diesen
+     Zeiger gab — und nicht erst, wenn jemand neu ein Team wählt. */
+  if(Z.team !== null && Z.team !== undefined) zeigerSchreiben(MODUS, Z.team);
 }
 function neuStarten(){
   try{ localStorage.removeItem(SPEICHER); }catch(e){}
@@ -136,6 +140,56 @@ function ton(art){
   }catch(e){}
 }
 function ruckeln(ms){ if(navigator.vibrate) try{navigator.vibrate(ms);}catch(e){} }
+
+/* --- Der Alarm bei Sicherheitsstufe Rot ----------------------------------
+   Zwei Töne im Wechsel, wie eine Sirene. Wird zum Schluss hin schneller —
+   das treibt mehr als ein gleichmäßiges Piepsen. Läuft, bis alarmAus()
+   gerufen wird; das passiert am Ende des Countdowns und beim Verlassen.
+   ------------------------------------------------------------------------ */
+let alarmUhr = null, alarmBis = 0;
+function alarmTon(){
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state === "suspended") AC.resume();
+    /* zwei Töne hintereinander: hoch, tief */
+    [[950, 0], [700, 0.30]].forEach(([f, ab])=>{
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = "square";
+      o.frequency.value = f;
+      const filter = AC.createBiquadFilter();
+      filter.type = "lowpass"; filter.frequency.value = 1800;
+      o.connect(filter); filter.connect(g); g.connect(AC.destination);
+      const t = AC.currentTime + ab;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.11, t + 0.03);
+      g.gain.setValueAtTime(0.11, t + 0.24);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.29);
+      o.start(t); o.stop(t + 0.31);
+    });
+  }catch(e){}
+}
+function alarmAn(sekunden){
+  alarmAus();
+  alarmBis = Date.now() + sekunden * 1000;
+  const schlag = ()=>{
+    const restMs = alarmBis - Date.now();
+    if(restMs <= 0){ alarmAus(); return; }
+    alarmTon();
+    ruckeln([90, 60, 90]);
+    /* die letzten 20 Sekunden doppelt so schnell */
+    const abstand = restMs < 20000 ? 800 : 1500;
+    alarmUhr = setTimeout(schlag, abstand);
+  };
+  schlag();
+}
+function alarmAus(){
+  if(alarmUhr){ clearTimeout(alarmUhr); alarmUhr = null; }
+  alarmBis = 0;
+}
+/* Wenn das Handy weggelegt oder die Seite gewechselt wird: Ruhe. */
+document.addEventListener("visibilitychange", function(){
+  if(document.hidden) alarmAus();
+});
 
 /* --- Hilfsfunktionen ----------------------------------------------------- */
 function saeubern(s){
@@ -259,6 +313,7 @@ function zeigeStation(){
   const st = AKTIV[i];
   window.scrollTo(0,0);
   const darf = darfZurueck();          /* vor dem Bauen fragen */
+  if(st.typ !== "handyaus") alarmAus();
   stationBauen(st, i);
   videoVerdrahten();
   /* Der Zurueck-Knopf haengt unten dran — auf allen Stationsarten gleich */
@@ -441,9 +496,15 @@ function videoBlock(link, stoerung, tempo){
             <p class="hinweis">Das Video öffnet sich in einem neuen Fenster. Danach hierher zurück.</p>`;
   return "";
 }
+/* Der Tipp kann für jedes Team ein anderer sein — dafür teamTipp verwenden.
+   Steht dort nichts, gilt der gemeinsame tipp. */
+function tippText(st){
+  return fuerTeam(st.teamTipp, st.tipp) || "";
+}
 function tippBlock(st,i){
-  if(!st.tipp) return "";
-  if(Z.tipps.indexOf(i)>-1) return `<div class="meldung tipp">💡 ${st.tipp}</div>`;
+  const t = tippText(st);
+  if(!t) return "";
+  if(Z.tipps.indexOf(i)>-1) return `<div class="meldung tipp">💡 ${t}</div>`;
   return `<button class="knopf leise" id="tippKnopf">Tipp holen (−${SPIEL.abzugTipp} Punkte)</button>`;
 }
 function tippVerdrahten(st,i){
@@ -770,6 +831,7 @@ function bauHandyAus(st,i){
       <p class="hinweis">Der Server prüft die Verbindung.</p>
     </div>`;
   ton("schlecht"); ruckeln([200,100,200,100,400]);
+  if(st.alarmTon !== false) alarmAn(dauer);
   let rest = dauer;
   const t = setInterval(()=>{
     rest--;
@@ -780,6 +842,7 @@ function bauHandyAus(st,i){
   },1000);
 }
 function handyAusDanke(st,i){
+  alarmAus();
   app().innerHTML = `
     <div class="karte">
       <div class="erfolg" style="padding-top:8px">
