@@ -79,7 +79,13 @@ const SPIEL = {
   telefonnummer:  "HIER DEINE NUMMER EINTRAGEN",
   kennwortTeil1:  "ROTER",        // findet Team 1
   kennwortTeil2:  "TEPPICH",      // findet Team 2
-  anrufCode:      "SMOKING",      // den sagst du am Telefon, wenn das Kennwort stimmt
+  anrufCode:      "MILLIONÄR",    // den sagst du am Telefon, wenn das Kennwort stimmt
+
+  /* Tippfehler, die trotzdem durchgehen sollen. Kinder tippen am Handy schnell
+     und der Umlaut geht leicht verloren — das darf die Jagd nicht aufhalten.
+     "Millionaer" muss nicht dabeistehen: Ä wird automatisch zu AE. */
+  anrufCodeAuch: ["MILLIONAR", "MILIONÄR", "MILIONAR", "MILLIONAIR",
+                  "MILLIONAIRE", "MILLIONER", "MILLIONÖR"],
 
   /* ---- PUNKTE ------------------------------------------------------------- */
   punkteProStation: 100,
@@ -94,7 +100,7 @@ const SPIEL = {
   /* ---- VERSION ------------------------------------------------------------
      Bei jeder Änderung um 1 hochzählen, sonst zeigen Handys die alte Fassung.
      ----------------------------------------------------------------------- */
-  version: "7"
+  version: "8"
 };
 
 

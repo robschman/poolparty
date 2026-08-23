@@ -780,7 +780,7 @@ function bauAnruf(st,i){
       ${tippBlock(st,i)}
     </div>`;
   tippVerdrahten(st,i);
-  eingabeVerdrahten(i, SPIEL.anrufCode);
+  eingabeVerdrahten(i, SPIEL.anrufCode, SPIEL.anrufCodeAuch);
 }
 
 /* ==========================================================================

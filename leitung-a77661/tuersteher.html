@@ -211,11 +211,46 @@ footer{border-top:1px solid var(--rand); margin:2.2rem 0 0; padding:1.3rem 0 3re
   .bonusreihe{grid-template-columns:1fr auto; row-gap:.5rem}
   .bonusreihe .wahl{grid-column:1 / -1; justify-content:flex-start}
 }
+/* ---- Der A4-Zettel ------------------------------------------------------ */
+#zettel{display:none}
+#zettel .zkopf{display:flex; justify-content:space-between; align-items:flex-start;
+  border-bottom:1.5pt solid #000; padding-bottom:2mm; margin-bottom:4mm}
+#zettel .zmarke{font-size:7pt; letter-spacing:.24em; text-transform:uppercase;
+  margin:0 0 1mm; font-weight:700}
+#zettel .ztitel{font-family:"Bodoni Moda",Didot,Georgia,serif; font-size:20pt;
+  font-weight:900; margin:0; line-height:1}
+#zettel .zdatum{font-size:8pt; text-align:right; margin:0; line-height:1.4}
+#zettel .zspalten{display:grid; grid-template-columns:1fr 1fr; gap:6mm}
+#zettel .zueber{font-size:7.5pt; letter-spacing:.16em; text-transform:uppercase;
+  font-weight:700; margin:0 0 1.5mm; padding-bottom:.8mm; border-bottom:.5pt solid #000}
+#zettel table{width:100%; border-collapse:collapse; font-size:9pt}
+#zettel td{padding:1.1mm .5mm; border-bottom:.3pt solid #bbb; vertical-align:middle}
+#zettel .zgaeste .zkasterl{width:5mm; height:5mm; border:.8pt solid #000;
+  display:inline-block; border-radius:1mm; margin-right:1.5mm; vertical-align:-1mm}
+#zettel .zgaeste .zname{font-weight:600}
+#zettel .zgaeste .zteam{font-size:7pt; letter-spacing:.1em; text-transform:uppercase; color:#555}
+#zettel .zlinie{width:26mm; border-bottom:.6pt solid #000; height:5mm}
+#zettel .zbonus td{font-size:8pt; color:#333}
+#zettel .zbonus span{font-family:"IBM Plex Mono",monospace; font-size:7.5pt}
+#zettel .zsumme td{border-bottom:0; padding-top:2.5mm; font-size:10.5pt}
+#zettel .zsumme .zlinie{border-bottom:.8pt solid #000; width:34mm}
+#zettel .zloesung .zwert{font-family:"IBM Plex Mono",monospace; font-weight:700;
+  text-align:right; white-space:nowrap}
+#zettel .ztelefon{margin:0; padding-left:5mm; font-size:8.5pt; line-height:1.45}
+#zettel .ztelefon li{margin:0 0 1.5mm}
+#zettel .zfuss{font-size:7.5pt; color:#444; margin:1.5mm 0 0; line-height:1.35}
+
 @media print{
-  body{font-size:10.5pt; background:#fff}
-  header, .leiste, .knopfzeile, .gross, footer{display:none}
+  body{font-size:10.5pt; background:#fff; color:#000}
+  header, .leiste, .knopfzeile, .gross, footer, .hinweis, .merker{display:none}
   .schritt{display:block !important}
   .pruefung, .punktekasten, .ergebnis, .codekarte, .tafel{break-inside:avoid}
+
+  /* Nur der Zettel: alles andere weg, eine Seite A4 */
+  body.nurZettel main > .bahn > *{display:none !important}
+  body.nurZettel #zettel{display:block !important}
+  body.nurZettel .bahn{width:100%}
+  @page{size:A4 portrait; margin:11mm}
 }
 </style>
 </head>
@@ -596,8 +631,82 @@ footer{border-top:1px solid var(--rand); margin:2.2rem 0 0; padding:1.3rem 0 3re
   <p class="spruch">Sag es laut an — mit Sonnenbrille wirkt es besser.</p>
 
   <div class="knopfzeile">
-    <button id="drucken2">Seite ausdrucken</button>
+    <button id="druckZettel" class="stark">🖨 Türsteher-Zettel drucken (1 Seite A4)</button>
+    <button id="drucken2">Ganze Seite ausdrucken</button>
     <button id="leeren">Alles zurücksetzen</button>
+  </div>
+  <div class="hinweis"><b>Als PDF sichern:</b> Auf „Türsteher-Zettel drucken" tippen,
+    dann im Druckfenster links unten auf <b>PDF ▾</b> → <b>Als PDF sichern</b>.
+    Am iPhone: teilen-Symbol → <b>Drucken</b> → mit zwei Fingern auf die Vorschau
+    aufziehen, dann teilen → <b>In Dateien sichern</b>.</div>
+</section>
+
+<!-- ===================================== DER A4-ZETTEL ZUM DRUCKEN ==== -->
+<section id="zettel" aria-hidden="true">
+  <div class="zkopf">
+    <div>
+      <p class="zmarke">VIP CLUB · Türsteher</p>
+      <h2 class="ztitel">Gästeliste</h2>
+    </div>
+    <p class="zdatum">Freitag, 28. August 2026<br><span id="zfassung"></span></p>
+  </div>
+
+  <div class="zspalten">
+    <div class="zlinks">
+      <p class="zueber">Wer kommt rein</p>
+      <table class="zgaeste"><tbody id="zgaeste"></tbody></table>
+      <p class="zfuss">Erst wenn beim Namen ein Haken steht, geht das Tor auf.
+        <b>Band = Papierband am Handgelenk.</b></p>
+
+      <p class="zueber" style="margin-top:5mm">Punkte</p>
+      <table class="zpunkte"><tbody>
+        <tr><td>Team Diamant</td><td class="zlinie"></td></tr><tr><td>Team Platin</td><td class="zlinie"></td></tr>
+        <tr class="zbonus"><td>Höherer Turm <span>+50</span></td>
+          <td class="zlinie"></td></tr><tr class="zbonus"><td>Schönere Paparazzi-Fotos <span>+50</span></td>
+          <td class="zlinie"></td></tr><tr class="zbonus"><td>Fair gespielt <span>+30</span></td>
+          <td class="zlinie"></td></tr><tr class="zbonus"><td>Bester Auftritt am Tor <span>+30</span></td>
+          <td class="zlinie"></td></tr>
+        <tr class="zsumme"><td><b>Sieger</b></td><td class="zlinie"></td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="zrechts">
+      <p class="zueber">Wenn jemand feststeckt</p>
+      <table class="zloesung"><tbody>
+        <tr><td>Türsteher</td>
+          <td class="zwert">27</td></tr><tr><td>Geheimschrift</td>
+          <td class="zwert">VIP</td></tr><tr><td>Suchbild</td>
+          <td class="zwert">VERBOTEN</td></tr><tr><td>Spiegelschrift</td>
+          <td class="zwert">V</td></tr><tr><td>geheime Botschaft</td>
+          <td class="zwert">GOLDFISCH</td></tr><tr><td>Eisfach</td>
+          <td class="zwert">EISKALT</td></tr><tr><td>Emoji-Duell</td>
+          <td class="zwert">KAVIAR / LIMOUSINE</td></tr><tr><td>versteckten Zettel</td>
+          <td class="zwert">BAR</td></tr><tr><td>Zählaufgabe</td>
+          <td class="zwert">52</td></tr><tr><td>Rechnung des Concierge</td>
+          <td class="zwert">ZOE</td></tr><tr><td>halbe Wahrheit</td>
+          <td class="zwert">ROTER + TEPPICH</td></tr><tr><td>Anruf</td>
+          <td class="zwert">MILLIONÄR</td></tr><tr><td>VIP-Lounge</td>
+          <td class="zwert">VIPPARTY</td></tr>
+      </tbody></table>
+      <p class="zfuss">Notfall in der App: Krone oben links <b>3× antippen</b>,
+        Code <b>9999</b>.</p>
+
+      <p class="zueber" style="margin-top:5mm">Am Telefon</p>
+      <ol class="ztelefon">
+        <li>„VIP Club, Aufnahme-Abteilung. Ihr Kennwort, bitte."</li>
+        <li>Sie sagen <b>ROTER TEPPICH</b>
+            → kurz warten, Papier rascheln.</li>
+        <li>„Das Kennwort stimmt. Euer Zutrittscode:
+            <b>MILLIONÄR</b>. Ich wiederhole: <b>MILLIONÄR</b>."</li>
+        <li>„Eine Sache noch: ohne Ausweis kommt ihr nicht rein. Geht zum
+            <b>Elefanten-Spielplatz</b>, jeder holt sich ein <b>Einlassband</b>
+            und zieht es an. Und beeilt euch."</li>
+        <li><b>Auflegen.</b> Kein Tschüss. Ab jetzt läuft deine Zeit —
+            13 bis 15 Minuten zum Umziehen.</li>
+      </ol>
+      <p class="zfuss">Falsches Kennwort: „Das ist es nicht. Ihr habt noch einen
+        Versuch." — auflegen.</p>
+    </div>
   </div>
 </section>
 
@@ -766,6 +875,7 @@ footer{border-top:1px solid var(--rand); margin:2.2rem 0 0; padding:1.3rem 0 3re
       });
     });
     bandkastenZeichnen();
+    if(document.getElementById("zgaeste")) zettelFuellen();
   }
 
   $("#zuCodes").addEventListener("click", function(){
@@ -895,6 +1005,39 @@ footer{border-top:1px solid var(--rand); margin:2.2rem 0 0; padding:1.3rem 0 3re
                'oder du vergibst noch einen Bonus.</p>' : ""
     );
   }
+
+  /* --- Der A4-Zettel ---------------------------------------------------- */
+  var NAMEN = { kurz:"Klein", mittel:"Mittel", lang:"Groß", drinnen:"Schlechtwetter" };
+  function zettelFuellen(){
+    var d = teamsAlsListen();
+    var zeilen = "";
+    d.listen.forEach(function(mitglieder, i){
+      mitglieder.forEach(function(n){
+        zeilen += '<tr><td><span class="zkasterl"></span>' +
+                  '<span class="zname">' + n + '</span></td>' +
+                  '<td class="zteam">' + (TEAMS[i] || "") + '</td></tr>';
+      });
+    });
+    if(!zeilen){
+      /* Noch keine Namen — dann leere Zeilen zum Handschriftlichen */
+      for(var k = 0; k < 8; k++){
+        zeilen += '<tr><td><span class="zkasterl"></span>' +
+                  '<span style="display:inline-block;width:38mm;' +
+                  'border-bottom:.5pt solid #999">&nbsp;</span></td>' +
+                  '<td class="zteam">&nbsp;</td></tr>';
+      }
+    }
+    document.getElementById("zgaeste").innerHTML = zeilen;
+    document.getElementById("zfassung").textContent =
+      "Fassung: " + (NAMEN[stand.modus] || stand.modus);
+  }
+
+  document.getElementById("druckZettel").addEventListener("click", function(){
+    zettelFuellen();
+    document.body.classList.add("nurZettel");
+    window.print();
+    setTimeout(function(){ document.body.classList.remove("nurZettel"); }, 800);
+  });
 
   $("#drucken1").addEventListener("click", function(){ window.print(); });
   $("#drucken2").addEventListener("click", function(){ window.print(); });
