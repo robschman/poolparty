@@ -313,6 +313,35 @@ function kopfBlock(st,i){
     : (st.typ==="start" ? "Willkommen" : "Station " + Z.station + " von " + (AKTIV.length-1));
   return `<p class="klein-label">${zaehler}</p><h2 class="mittel">${st.titel}</h2>`;
 }
+/* --- Text der Station in saubere Bloecke zerlegen ------------------------
+   Alles wird zentriert — nur nummerierte Schritte nicht, die brauchen einen
+   linken Rand, sonst franst die Wegbeschreibung aus und man verliert die
+   Zeile. Aus "1. … 2. … 3. …" wird darum eine echte Liste.
+   ------------------------------------------------------------------------ */
+function textBlock(text){
+  if(!text) return "";
+  const zeilen = String(text).split("\n");
+  let html = "", absatz = [], schritte = [];
+  const absatzRaus = ()=>{
+    if(absatz.length){ html += "<p>" + absatz.join("\n") + "</p>"; absatz = []; }
+  };
+  const schritteRaus = ()=>{
+    if(schritte.length){
+      html += '<ol class="schritte">' + schritte.map(z=>"<li>"+z+"</li>").join("") + "</ol>";
+      schritte = [];
+    }
+  };
+  zeilen.forEach(z=>{
+    const t = z.trim();
+    const m = t.match(/^(\d+)\.\s+(.*)$/);
+    if(m){ absatzRaus(); schritte.push(m[2]); }
+    else if(!t){ schritteRaus(); absatzRaus(); }
+    else { schritteRaus(); absatz.push(t); }
+  });
+  schritteRaus(); absatzRaus();
+  return html;
+}
+
 function ortBlock(st){
   const weg = st.weg || "";
   if(!st.ort && !weg) return "";
@@ -400,7 +429,7 @@ function bauStart(st,i){
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
       ${medienBlock(st)}
-      <p>${st.text||""}</p>
+      ${textBlock(st.text)}
       ${(st.auftraege||[]).length ? `<ul class="liste">${st.auftraege.map((a,n)=>
         `<li data-n="${n}"><span class="box">✓</span>${a}</li>`).join("")}</ul>` : ""}
       ${st.merkkasten ? `<div class="merkkasten">${st.merkkasten}</div>` : ""}
@@ -420,7 +449,7 @@ function bauCode(st,i){
       ${ortBlock(st)}
       ${gemeinsamBlock(st)}
       ${medienBlock(st)}
-      <p>${fuerTeam(st.teamText, st.text)}</p>
+      ${textBlock(fuerTeam(st.teamText, st.text))}
       ${fehlerMeldung(i)}
       ${eingabeBlock(st)}
       ${tippBlock(st,i)}
@@ -435,7 +464,7 @@ function bauSpiegel(st,i){
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
-      <p>${fuerTeam(st.teamText, st.text)}</p>
+      ${textBlock(fuerTeam(st.teamText, st.text))}
       <div class="spiegelfeld">${st.spiegelText||""}</div>
       <p>${st.frage||"Was steht da?"}</p>
       ${fehlerMeldung(i)}
@@ -453,7 +482,7 @@ function bauStoppuhr(st,i){
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
-      <p>${st.text||""}</p>
+      ${textBlock(st.text)}
       <div class="countdown" id="uhr" style="color:var(--akzent)">0,0</div>
       <button class="knopf" id="startstop">Start</button>
       <p class="hinweis">Nicht auf die Uhr schauen — die zeigt sowieso nichts an.</p>
@@ -492,7 +521,7 @@ function bauSprint(st,i){
       <div class="karte">
         ${kopfBlock(st,i)}
         ${ortBlock(st)}
-        <p>${st.text||""}</p>
+        ${textBlock(st.text)}
         <button class="knopf" id="losrennen">Countdown starten</button>
         <p class="hinweis">Erst tippen, wenn wirklich alle bereit sind.</p>
       </div>`;
@@ -543,7 +572,7 @@ function bauQuiz(st,i){
   app().innerHTML = `
     <div class="karte">
       ${kopfBlock(st,i)}
-      ${stand.nr===0 ? ortBlock(st)+`<p>${st.text||""}</p>` : ""}
+      ${stand.nr===0 ? ortBlock(st)+`${textBlock(st.text)}` : ""}
       <p class="quizzaehler">Frage ${stand.nr+1} von ${st.fragen.length} · ${stand.richtig} richtig</p>
       <p class="frage">${f.frage}</p>
       ${f.optionen.map((o,n)=>`<button class="antwortknopf" data-n="${n}">${o}</button>`).join("")}
@@ -573,7 +602,7 @@ function bauFoto(st,i){
       ${ortBlock(st)}
       ${gemeinsamBlock(st)}
       ${medienBlock(st)}
-      <p>${fuerTeam(st.teamText, st.text)}</p>
+      ${textBlock(fuerTeam(st.teamText, st.text))}
       <ul class="liste">${(st.auftraege||[]).map((a,n)=>
         `<li class="${(Z.haken[i]||[]).indexOf(n)>-1?'an':''}" data-n="${n}"><span class="box">✓</span>${a}</li>`
         ).join("")}</ul>
@@ -611,7 +640,7 @@ function bauDuell(st,i){
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
       ${gemeinsamBlock(st)}
-      <p>${(fuerTeam(st.teamText, st.text)||"").replace("DAS RÄTSEL STEHT UNTEN", "")}</p>
+      ${textBlock((fuerTeam(st.teamText, st.text)||"").replace("DAS RÄTSEL STEHT UNTEN", ""))}
       ${(st.ablauf||[]).length ? `<ol class="schritte">${
         st.ablauf.map(a=>`<li>${a}</li>`).join("")}</ol>
         ${st.ablaufHinweis ? `<p class="hinweis">${st.ablaufHinweis}</p>` : ""}` : ""}
@@ -678,7 +707,7 @@ function bauHandyAus(st,i){
       <div class="alarmzeichen">⚠️</div>
       <p class="klein-label" style="color:#ff6b62;text-align:center">VIP-Server · Systemmeldung</p>
       <h2 class="mittel zentriert" style="color:#ff6b62">${st.titel}</h2>
-      <p>${st.text||""}</p>
+      ${textBlock(st.text)}
       <div class="countdown" id="uhr">${dauer}</div>
       <p class="hinweis">Der Server prüft die Verbindung.</p>
     </div>`;
@@ -708,15 +737,13 @@ function handyAusDanke(st,i){
 
 /* --- Typ: KENNWORT (zwei Verstecke, je eine Hälfte) ---------------------- */
 function bauKennwort(st,i){
-  const meine = Z.team===0 ? SPIEL.kennwortTeil1 : SPIEL.kennwortTeil2;
+  /* Die eigene Hälfte steht bewusst NICHT auf dem Bildschirm — sonst müsste
+     man sie draußen gar nicht suchen. Sie steht nur auf dem Holzstecken. */
   app().innerHTML = `
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
-      <p>${fuerTeam(st.teamText, st.text)}</p>
-      <div class="geheim"><b>Eure Hälfte lautet</b><span>${meine}</span></div>
-      <p class="hinweis">Erst wenn ihr sie am Versteck gefunden habt, steht sie auch hier.
-      Die andere Hälfte hat das andere Team.</p>
+      ${textBlock(fuerTeam(st.teamText, st.text))}
       <div class="strich"></div>
       <p>${st.frage||"Tippt das ganze Kennwort ein."}</p>
       ${fehlerMeldung(i)}
@@ -737,7 +764,7 @@ function bauAnruf(st,i){
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
       ${gemeinsamBlock(st)}
-      <p>${fuerTeam(st.teamText, st.text)}</p>
+      ${textBlock(fuerTeam(st.teamText, st.text))}
       <div class="telefon">
         <b>Der Empfang</b>
         ${waehlbar
@@ -822,7 +849,7 @@ function zeigeFinale(){
       <p class="klein-label">Letzte Hürde</p>
       <h2 class="mittel">${st.titel||"Die VIP-Lounge"}</h2>
       ${ortBlock(st)}
-      <p>${st.text||""}</p>
+      ${textBlock(st.text)}
 
       <div class="legezeile" id="zeile">
         ${Array.from({length: wort.length}, (_,k)=>{

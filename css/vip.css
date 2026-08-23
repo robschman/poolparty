@@ -131,8 +131,19 @@ body.silber::before{
   animation:auf .45s cubic-bezier(.2,.8,.2,1) both;
 }
 @keyframes auf{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.karte p{margin:0 0 12px; white-space:pre-line}
+.karte p{margin:0 0 12px; white-space:pre-line; text-align:center}
 .karte p:last-child{margin-bottom:0}
+.karte p b, .karte p strong{color:var(--akzent)}
+body.silber .karte p b, body.silber .karte p strong{color:var(--weiss)}
+
+/* Aufzählungen bleiben linksbündig — zentriert kann man sie nicht lesen */
+.karte .schritte,
+.karte .liste,
+.karte .regeln,
+.karte .meldung,
+.karte .ort,
+.karte .gemeinsam{text-align:left}
+.karte .meldung.schiri{text-align:left}
 
 .ort{
   display:flex; align-items:flex-start; gap:10px;
@@ -499,3 +510,18 @@ body.silber .merkkasten{
   border-color:rgba(212,175,55,.55);
 }
 body.silber .geheim.auf{border-color:rgba(200,204,210,.55)}
+
+/* ---- 27. Feinschliff der Textblöcke ------------------------------------ */
+/* Erste Zeile eines Absatzes darf etwas größer sein — das gibt der Station
+   einen Anfang, statt dass alles gleich laut ist. */
+.karte > p:first-of-type{
+  font-size:17.5px; line-height:1.62;
+}
+/* Ein Absatz, der nur aus einer kurzen Zeile besteht, wirkt zentriert am besten
+   mit etwas Luft darum. */
+.karte p + .schritte{margin-top:2px}
+.karte .schritte + p{margin-top:16px}
+/* GROSSGESCHRIEBENE Signalwörter im Fließtext ruhiger setzen */
+.karte p{hyphens:auto; -webkit-hyphens:auto}
+/* Zeilen nicht zu lang werden lassen — zentrierter Text liest sich schmal besser */
+.karte > p{max-width:34em; margin-inline:auto}

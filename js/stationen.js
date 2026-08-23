@@ -31,28 +31,37 @@ const SPIEL = {
   /* ---- DER DAUER-SCHALTER -------------------------------------------------
      Hier stellst du am Partytag ein, wie lang die Jagd wird:
 
-        "kurz"     rund 100 Minuten — wenn die Sonne scheint und der Pool ruft
-        "lang"     rund 160 Minuten — alle Stationen, für einen Regennachmittag
-        "drinnen"  rund 50 Minuten  — nur was ohne Weg geht
+        "kurz"     15 Stationen, rund 130 Minuten — wenn der Pool ruft
+        "mittel"   18 Stationen, rund 150 Minuten — der Mittelweg
+        "lang"     22 Stationen, rund 195 Minuten — alles, was drin ist
+        "drinnen"  11 Stationen, rund  95 Minuten — ohne Wege, alles unter Dach
 
-     Du kannst es auch OHNE Datei-Änderung umstellen: Es gibt drei QR-Codes,
-     einen pro Einstellung. Der gescannte Code gewinnt immer.
+     Normalerweise stellst du das gar nicht hier ein, sondern in der
+     TÜRSTEHER-APP (leitung-a77661/tuersteher.html) — dort wählst du die
+     Fassung aus und bekommst gleich die passenden QR-Codes je Team.
+     Der gescannte Code gewinnt immer über diese Zeile.
      ----------------------------------------------------------------------- */
   modus: "lang",
 
   /* ---- DIE TEAMS ----------------------------------------------------------
-     Eingestellt auf ZWEI Teams (passt für 5 bis 7 Kinder).
-     Kommen mehr: bei den unteren Zeilen die zwei Schrägstriche wegnehmen.
-     Wichtig: beim vorletzten Eintrag ein Komma, beim letzten keines.
+     GENAU ZWEI Teams — mehr geht nicht, und zwar aus gutem Grund:
+     Beim Türsteher und bei der Spiegelschrift laufen die Teams gegengleich,
+     damit sie sich nicht über den Weg laufen. Das Kennwort hat genau zwei
+     Hälften (ROTER + TEPPICH). Und beim Emoji-Duell rätselt jedes Team gegen
+     das andere. Ein drittes Team hätte keinen eigenen Weg — es würde
+     denselben gehen wie Team 1.
+
+     Bei mehr Kindern werden die Teams größer, nicht mehr.
 
      Die Reihenfolge zählt: Team 1 wird überall zuerst nach links geschickt,
      Team 2 zuerst nach rechts.
+
+     Die Geheimwörter brauchen die Kinder beim Emoji-Duell: jedes Team
+     verrät seines dem anderen, wenn es das Lied erraten hat.
      ----------------------------------------------------------------------- */
   teams: [
     { name: "Team Diamant", geheimwort: "KAVIAR"     },
     { name: "Team Platin",  geheimwort: "LIMOUSINE"  }
- // ,{ name: "Team Onyx",    geheimwort: "SMOKING"    }
- // ,{ name: "Team Gold",    geheimwort: "CHAMPAGNER" }
   ],
 
   /* ---- DAS LOSUNGSWORT ----------------------------------------------------
@@ -85,7 +94,7 @@ const SPIEL = {
   /* ---- VERSION ------------------------------------------------------------
      Bei jeder Änderung um 1 hochzählen, sonst zeigen Handys die alte Fassung.
      ----------------------------------------------------------------------- */
-  version: "5"
+  version: "7"
 };
 
 
@@ -342,8 +351,8 @@ const STATIONEN = [
   titel: "Die Zählaufgabe",
   modi: ["lang"],
   ort: "Auf der kleinen Brücke",
-  weg: "Von der Lounge Richtung grüner Zaun, weiter zum orangen Container, ein Stück an der Straße entlang, dann links zur kleinen Brücke.",
-  text: "Kein Rateglück, nur genaues Schauen.\n\nIhr steht auf der kleinen Brücke. Sie hat ein grünes Geländer.\n\nZÄHLT: die DICKEN Steher am Geländer — auf BEIDEN Seiten der Brücke.\nDie dünnen Sprossen dazwischen zählen NICHT.\n\nWie viele sind es zusammen?",
+  weg: "Von der Lounge Richtung grüner Zaun und weiter zum orangen Container.",
+  text: "Kein Rateglück, nur genaues Schauen.\n\nSo kommt ihr hin:\n\n1. Von der Lounge Richtung GRÜNER ZAUN und weiter zum ORANGEN CONTAINER.\n2. Beim Container die Straße NACH RECHTS entlang.\n3. Geht sie ganz aus, bis sie ENDET.\n4. Dort schaut ihr NACH LINKS HINAUF — da ist die BRÜCKE.\n5. Geht hinauf. Sie hat ein grünes Geländer.\n\nZÄHLT: die DICKEN Steher am Geländer — auf BEIDEN Seiten der Brücke.\nDie dünnen Sprossen dazwischen zählen NICHT.\n\nWie viele sind es zusammen?",
   antwort: "52",
   tipp: "Zählt eine Seite in Ruhe und verdoppelt. Beide Seiten sind gleich.",
   eingabeArt: "zahl"
@@ -367,8 +376,8 @@ const STATIONEN = [
   titel: "Das Zeitreise-Foto",
   modi: ["lang"],
   ort: "Der Baum im kleinen Kreisverkehr",
-  weg: "Über die Brücke und dann immer geradeaus, die lange Straße entlang. Beim gelben Haus mit dem Parkplatz gegenüber ist ein kleiner Kreisverkehr unter den Bäumen.",
-  text: "Dieses Bild wurde vor eurer Ankunft aufgenommen. Findet die Stelle — und stellt das Foto exakt nach, mit euch darauf.\n\nGleicher Winkel, gleicher Ausschnitt. Schaut euch an, wie tief die Kamera war — das ist der Trick.\n\nWenn ihr fertig seid, hakt ab.",
+  weg: "Von der Brücke wieder HERUNTER — nicht drüber. Dann die lange Straße immer geradeaus.",
+  text: "So kommt ihr hin:\n\n1. Geht von der Brücke WIEDER HERUNTER — nicht über die Brücke drüber.\n2. Dann die lange Straße IMMER GERADEAUS.\n3. Bis zum GELBEN HAUS, gegenüber ist ein Parkplatz.\n4. Dort ist ein kleiner KREISVERKEHR unter den Bäumen.\n\nDieses Bild wurde vor eurer Ankunft aufgenommen. Findet die Stelle — und stellt das Foto exakt nach, mit euch darauf.\n\nGleicher Winkel, gleicher Ausschnitt. Schaut euch an, wie tief die Kamera war — das ist der Trick.\n\nWenn ihr fertig seid, hakt ab.",
   foto: "fotos/zeitreise.jpg",
   auftraege: [
     "Wir haben die Stelle gefunden",
@@ -419,8 +428,8 @@ const STATIONEN = [
   ort: "Die roten Stecken oberhalb vom orangen Container",
   weg: "Zurück zum orangen Container, dort links den kleinen Weg hinauf bis ganz oben.",
   teamText: [
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts.",
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts."
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts.",
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts."
   ],
   frage: "Habt ihr beide Hälften? Dann tippt das ganze Kennwort ein.",
   tipp: "Beide Wörter hintereinander, in der richtigen Reihenfolge. Eines davon ist eine Farbe — und Farben stehen meistens vorne."
@@ -435,9 +444,9 @@ const STATIONEN = [
   weg: "Geht gemeinsam von den Stecken hinunter zum orangen Container. Von dort wird telefoniert.",
   gemeinsam: true,
   gemeinsamText: "EIN Team ruft an — aber auf LAUTSPRECHER. Alle müssen mithören, auch das andere Team.",
-  text: "Letzte Hürde vor dem Club.\n\n☎️ EIN TEAM RUFT AN. HANDY AUF LAUTSPRECHER.\nAlle stehen zusammen und hören mit — auch das andere Team.\n\nWer sich meldet, will nur eines hören: euer Kennwort.\n\nStimmt es, bekommt ihr den Zutrittscode UND einen letzten Auftrag.\n\nHÖRT GENAU ZU. Der Auftrag wird nur einmal gesagt.\n\nDanach tragt ihr den Code hier ein — beide Teams, jedes auf seinem eigenen Handy.",
+  text: "Letzte Hürde vor dem Club.\n\n☎️ EIN TEAM RUFT AN. HANDY AUF LAUTSPRECHER.\nAlle stehen zusammen und hören mit — auch das andere Team.\n\nWas der Empfang von euch will, sagt er euch selbst. Also: anrufen, MUND HALTEN, ZUHÖREN.\n\nSagt ihr das Falsche, wird aufgelegt. Dann ruft ihr eben nochmal an.\n\nAm Ende bekommt ihr den ZUTRITTSCODE und einen letzten Auftrag. Der wird nur EINMAL gesagt.\n\nDanach tragt ihr den Code hier ein — beide Teams, jedes auf seinem eigenen Handy.",
   frage: "Wie lautet der Zutrittscode?",
-  tipp: "Deutlich sprechen und beide Wörter sagen. Wer nuschelt, fliegt raus."
+  tipp: "Ihr habt heute schon etwas zusammengesetzt, das er hören will. Sagt es deutlich — wer nuschelt, fliegt raus."
 },
 
 /* ------------------------------------------------------- 17 · Abholung -- */
