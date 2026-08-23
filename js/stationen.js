@@ -155,6 +155,7 @@ const STATIONEN = [
   auftraege: [
     "Stellt euch in eure beste VIP-Pose und macht ein Teamfoto",
     "Einigt euch, wer das Handy trägt",
+    "Dreht den Ton auf — das Handy darf NICHT auf lautlos stehen",
     "Ruft euren Teamnamen so laut, dass man es bis zum Pool hört"
   ],
   regeln: [
@@ -242,8 +243,8 @@ const STATIONEN = [
   ort: "Ab dem orangen Container — jedes Team in eine andere Richtung",
   weg: "Zurück zum Spielplatz, dann zum orangen Container. Dort trennt ihr euch.",
   teamText: [
-    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr den ORANGEN CONTAINER seht.\n5. Dort geht ihr NACH LINKS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)",
-    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr den ORANGEN CONTAINER seht.\n5. Dort geht ihr NACH RECHTS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)"
+    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr den ORANGEN CONTAINER seht.\n5. Dort geht ihr NACH LINKS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nErst wenn ihr bei den Autos steht, tippt unten auf SPIEGELSCHRIFT ANZEIGEN.\n\nDie Nachricht steht dann verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)",
+    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr den ORANGEN CONTAINER seht.\n5. Dort geht ihr NACH RECHTS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nErst wenn ihr bei den Autos steht, tippt unten auf SPIEGELSCHRIFT ANZEIGEN.\n\nDie Nachricht steht dann verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)"
   ],
   spiegelText: "DAS LOSUNGSWORT BEGINNT MIT EINEM V",
   frage: "Und jetzt tippt ein: Womit beginnt das Losungswort?",

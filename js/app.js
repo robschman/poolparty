@@ -142,50 +142,230 @@ function ton(art){
 function ruckeln(ms){ if(navigator.vibrate) try{navigator.vibrate(ms);}catch(e){} }
 
 /* --- Der Alarm bei Sicherheitsstufe Rot ----------------------------------
-   Zwei Töne im Wechsel, wie eine Sirene. Wird zum Schluss hin schneller —
-   das treibt mehr als ein gleichmäßiges Piepsen. Läuft, bis alarmAus()
-   gerufen wird; das passiert am Ende des Countdowns und beim Verlassen.
+   Kein Piepsen, sondern ein tiefes SCHIFFSHORN: vier leicht gegeneinander
+   verstimmte Hörner übereinander, angeblasen und wieder abfallend, kräftig
+   übersteuert. Der Stoß dauert gut eine halbe Sekunde, dann kommt eine
+   knappe halbe Sekunde Pause — und wieder von vorn.
+
+   Der Ton wird EINMAL als kurze Tonschleife ausgerechnet und danach als ganz
+   normale Audiodatei abgespielt. Das ist am iPhone deutlich lauter als Töne
+   aus dem Browser-Tongenerator (Handy-Lautstärke statt Klingelton-Regler)
+   und läuft ohne Stottern durch.
    ------------------------------------------------------------------------ */
-let alarmUhr = null, alarmBis = 0;
-function alarmTon(){
-  try{
-    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
-    if(AC.state === "suspended") AC.resume();
-    /* zwei Töne hintereinander: hoch, tief */
-    [[950, 0], [700, 0.30]].forEach(([f, ab])=>{
-      const o = AC.createOscillator(), g = AC.createGain();
-      o.type = "square";
-      o.frequency.value = f;
-      const filter = AC.createBiquadFilter();
-      filter.type = "lowpass"; filter.frequency.value = 1800;
-      o.connect(filter); filter.connect(g); g.connect(AC.destination);
-      const t = AC.currentTime + ab;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.11, t + 0.03);
-      g.gain.setValueAtTime(0.11, t + 0.24);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.29);
-      o.start(t); o.stop(t + 0.31);
-    });
-  }catch(e){}
+const ALARM_RATE = 22050;
+
+/* Tabelle mit einer bandbegrenzten Sägezahnwelle. Sägezahn deshalb, weil er
+   viele Obertöne hat — die braucht es, damit ein 98-Hz-Horn auch aus einem
+   winzigen Handylautsprecher noch heraus kommt. */
+let SAEGE = null;
+function saegeTabelle(){
+  if(SAEGE) return SAEGE;
+  const n = 2048, t = new Float32Array(n);
+  for(let i=0;i<n;i++){
+    let s = 0;
+    for(let k=1;k<=24;k++) s += Math.sin(2*Math.PI*k*i/n)/k;
+    t[i] = s * 0.55;
+  }
+  SAEGE = t; return t;
 }
+function saege(phase){
+  const t = saegeTabelle(), n = t.length;
+  const x = (phase - Math.floor(phase)) * n;
+  const a = x|0, b = (a+1) % n, f = x - a;
+  return t[a] + (t[b]-t[a])*f;
+}
+
+/* Baut eine Schleife: ein Hornstoß, danach Stille bis zum Zyklusende. */
+function hornSchleife(zyklus, stoss){
+  const R = ALARM_RATE, n = Math.round(R*zyklus), d = new Float32Array(n);
+  const grund = 98;                       /* tief, aber noch tragend */
+  /* [Verhältnis zur Grundfrequenz, Lautstärke] — die krummen Werte machen
+     das typische Wummern und den schiefen Zweiklang eines Schiffshorns. */
+  const stimmen = [[1.000,1.00],[1.006,0.90],[1.335,0.60],[1.347,0.50]];
+  const ph = [0,0,0,0];
+  const anblasen = 0.055, ausklingen = 0.20;
+  for(let i=0;i<n;i++){
+    const t = i/R;
+    let a;                                              /* Lautstärke */
+    if(t >= stoss) a = 0;
+    else if(t < anblasen) a = t/anblasen;
+    else if(t > stoss-ausklingen) a = (stoss-t)/ausklingen;
+    else a = 1;
+    let zieh = 1;                                       /* Tonhöhe */
+    if(t < 0.12) zieh = 0.90 + 0.10*(t/0.12);           /* zieht beim Anblasen hoch */
+    else if(t > stoss-ausklingen && t < stoss)          /* und sackt am Ende ab */
+      zieh = 1 - 0.06*((t-(stoss-ausklingen))/ausklingen);
+    let s = 0;
+    for(let v=0; v<4; v++){
+      ph[v] += grund*stimmen[v][0]*zieh/R;
+      if(a>0) s += saege(ph[v]) * stimmen[v][1];
+    }
+    if(t < 0.09) s += (Math.random()*2-1) * 0.5 * (1 - t/0.09) * a;  /* Luftstoß */
+    d[i] = Math.tanh(s * 2.4) * a;   /* weich übersteuern: laut und rau */
+  }
+  /* Ein Handylautsprecher kann unter 150 Hz fast nichts. Würden wir den Ton
+     so lassen, ginge die halbe Kraft ins Leere. Darum heben wir alles über
+     ~420 Hz um 9 dB an — die Obertöne des Horns. Tief klingt es trotzdem,
+     weil das Ohr den Grundton aus der Obertonreihe selbst ergänzt. */
+  hochAnheben(d, 420, 9);
+  /* Nach dem Anheben ragen ein paar einzelne Spitzen heraus. Würden wir die
+     stehen lassen, müsste die ganze Schleife leiser gedreht werden. Also
+     kappen wir sie weich — so wird der Alarm spürbar lauter. */
+  weichKappen(d, 2.6);
+  return d;
+}
+
+/* Erst auf volle Aussteuerung ziehen, dann die Spitzen weich abrunden,
+   dann wieder auf volle Aussteuerung ziehen. Das ist der Trick, mit dem
+   auch im Radio alles lauter klingt, als es eigentlich ist. */
+function weichKappen(d, stärke){
+  const n = d.length;
+  let spitze = 0;
+  for(let i=0;i<n;i++) if(Math.abs(d[i]) > spitze) spitze = Math.abs(d[i]);
+  if(spitze <= 0) return;
+  const teiler = Math.tanh(stärke);
+  for(let i=0;i<n;i++) d[i] = Math.tanh(d[i]/spitze * stärke) / teiler;
+  spitze = 0;
+  for(let i=0;i<n;i++) if(Math.abs(d[i]) > spitze) spitze = Math.abs(d[i]);
+  const f = 0.94/spitze;
+  for(let i=0;i<n;i++) d[i] *= f;
+}
+
+/* Kuhschwanz-Filter (high shelf), Standardrezept — hebt alles oberhalb von
+   f0 um dB an und lässt darunter alles so, wie es ist. */
+function hochAnheben(d, f0, dB){
+  const A = Math.pow(10, dB/40), w = 2*Math.PI*f0/ALARM_RATE;
+  const cw = Math.cos(w), al = Math.sin(w)/2*Math.SQRT2, wa = 2*Math.sqrt(A)*al;
+  const b0 =   A*((A+1) + (A-1)*cw + wa),
+        b1 = -2*A*((A-1) + (A+1)*cw),
+        b2 =   A*((A+1) + (A-1)*cw - wa),
+        a0 =     (A+1) - (A-1)*cw + wa,
+        a1 =   2*((A-1) - (A+1)*cw),
+        a2 =     (A+1) - (A-1)*cw - wa;
+  let x1=0,x2=0,y1=0,y2=0;
+  for(let i=0;i<d.length;i++){
+    const x = d[i];
+    const y = (b0*x + b1*x1 + b2*x2 - a1*y1 - a2*y2)/a0;
+    x2=x1; x1=x; y2=y1; y1=y;
+    d[i] = y;
+  }
+}
+
+/* Aus den Zahlen eine echte WAV-Datei machen und als Adresse zurückgeben. */
+function wavDatei(daten){
+  const n = daten.length, p = new ArrayBuffer(44+n*2), s = new DataView(p);
+  const txt = (pos,x)=>{ for(let i=0;i<x.length;i++) s.setUint8(pos+i, x.charCodeAt(i)); };
+  txt(0,"RIFF");  s.setUint32(4, 36+n*2, true);
+  txt(8,"WAVE");  txt(12,"fmt ");
+  s.setUint32(16,16,true); s.setUint16(20,1,true); s.setUint16(22,1,true);
+  s.setUint32(24,ALARM_RATE,true); s.setUint32(28,ALARM_RATE*2,true);
+  s.setUint16(32,2,true); s.setUint16(34,16,true);
+  txt(36,"data"); s.setUint32(40,n*2,true);
+  for(let i=0;i<n;i++){
+    const v = Math.max(-1, Math.min(1, daten[i]));
+    s.setInt16(44+i*2, Math.round(v*32767), true);
+  }
+  return URL.createObjectURL(new Blob([p], {type:"audio/wav"}));
+}
+
+const ALARM_QUELLE = {};
+function alarmQuelle(schnell){
+  const k = schnell ? "schnell" : "ruhig";
+  /* ruhig: 0,60 s Horn + 0,30 s Pause    schnell: 0,36 s Horn + 0,16 s Pause */
+  if(!ALARM_QUELLE[k]) ALARM_QUELLE[k] =
+    wavDatei(schnell ? hornSchleife(0.52,0.36) : hornSchleife(0.90,0.60));
+  return ALARM_QUELLE[k];
+}
+
+let alarmUhr = null, alarmBis = 0, alarmEl = null,
+    alarmSchnell = false, alarmNotfall = false;
+
 function alarmAn(sekunden){
   alarmAus();
   alarmBis = Date.now() + sekunden * 1000;
-  const schlag = ()=>{
-    const restMs = alarmBis - Date.now();
-    if(restMs <= 0){ alarmAus(); return; }
-    alarmTon();
-    ruckeln([90, 60, 90]);
-    /* die letzten 20 Sekunden doppelt so schnell */
-    const abstand = restMs < 20000 ? 800 : 1500;
-    alarmUhr = setTimeout(schlag, abstand);
+  alarmSchnell = false; alarmNotfall = false;
+  try{
+    if(!alarmEl){
+      alarmEl = document.createElement("audio");
+      alarmEl.loop = true;
+      alarmEl.setAttribute("playsinline","");
+      alarmEl.style.display = "none";
+      document.body.appendChild(alarmEl);
+    }
+    alarmEl.src = alarmQuelle(false);
+    alarmEl.volume = 1;
+    const p = alarmEl.play();
+    if(p && p.catch) p.catch(()=>{ alarmNotfall = true; });
+    /* die schnelle Schleife gleich im Hintergrund vorbereiten, damit es
+       beim Umschalten später nicht hakt */
+    setTimeout(()=>{ try{ alarmQuelle(true); }catch(e){} }, 400);
+    /* Sicherheitsnetz: Manche Browser sagen „spielt“ und geben trotzdem
+       keinen Ton aus. Steht die Abspielposition nach 1,2 Sekunden immer noch
+       auf null, schalten wir auf den eingebauten Tongenerator um. */
+    setTimeout(()=>{
+      if(!alarmBis) return;
+      if(alarmEl && alarmEl.currentTime < 0.05){
+        alarmNotfall = true;
+        try{ alarmEl.pause(); }catch(e){}   /* nicht zweimal gleichzeitig */
+      }
+    }, 1200);
+  }catch(e){ alarmNotfall = true; }
+
+  const takt = ()=>{
+    const rest = alarmBis - Date.now();
+    if(rest <= 0){ alarmAus(); return; }
+    /* die letzten 20 Sekunden hämmert es fast doppelt so schnell */
+    if(rest < 20000 && !alarmSchnell){
+      alarmSchnell = true;
+      if(alarmEl && !alarmNotfall){
+        try{ alarmEl.src = alarmQuelle(true); alarmEl.play(); }catch(e){}
+      }
+    }
+    if(alarmNotfall) hornNotfall();
+    ruckeln([160,90,160]);
+    alarmUhr = setTimeout(takt, alarmSchnell ? 520 : 900);
   };
-  schlag();
+  takt();
 }
+
 function alarmAus(){
   if(alarmUhr){ clearTimeout(alarmUhr); alarmUhr = null; }
-  alarmBis = 0;
+  alarmBis = 0; alarmSchnell = false;
+  if(alarmEl){ try{ alarmEl.pause(); alarmEl.currentTime = 0; }catch(e){} }
 }
+
+/* Notfall: falls ein Browser die Tonschleife nicht abspielt, bauen wir das
+   Horn direkt im Browser zusammen. Klingt etwas dünner, ist aber da. */
+function hornNotfall(){
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state === "suspended") AC.resume();
+    const t = AC.currentTime, laenge = alarmSchnell ? 0.36 : 0.60;
+    const summe = AC.createGain(); summe.gain.value = 0.9;
+    const form = AC.createWaveShaper();
+    const kv = new Float32Array(1024);
+    for(let i=0;i<1024;i++){ const x = i*2/1024 - 1; kv[i] = Math.tanh(x*3); }
+    form.curve = kv; form.oversample = "2x";
+    const tp = AC.createBiquadFilter(); tp.type = "lowpass"; tp.frequency.value = 1600;
+    summe.connect(form); form.connect(tp); tp.connect(AC.destination);
+    [[98,0.9],[98.6,0.8],[131,0.55],[132,0.45]].forEach(function(paar){
+      const f = paar[0], l = paar[1];
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = "sawtooth";
+      o.frequency.setValueAtTime(f*0.90, t);
+      o.frequency.linearRampToValueAtTime(f, t+0.12);
+      o.frequency.setValueAtTime(f, t+laenge-0.20);
+      o.frequency.linearRampToValueAtTime(f*0.94, t+laenge);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(l, t+0.055);
+      g.gain.setValueAtTime(l, t+laenge-0.20);
+      g.gain.linearRampToValueAtTime(0.0001, t+laenge);
+      o.connect(g); g.connect(summe);
+      o.start(t); o.stop(t+laenge+0.02);
+    });
+  }catch(e){}
+}
+
 /* Wenn das Handy weggelegt oder die Seite gewechselt wird: Ruhe. */
 document.addEventListener("visibilitychange", function(){
   if(document.hidden) alarmAus();
@@ -584,18 +764,37 @@ function bauCode(st,i){
 }
 
 /* --- Typ: SPIEGEL -------------------------------------------------------- */
+/* Merkt sich, an welcher Station die Schrift schon aufgedeckt wurde. Sonst
+   wäre sie nach einer falschen Antwort wieder weg — die Station baut sich
+   dabei nämlich neu auf, und das würde wie ein Fehler aussehen.
+   Beim Neuladen der Seite fängt es wieder von vorne an, das ist gewollt. */
+let spiegelGezeigt = null;
+
 function bauSpiegel(st,i){
+  const offen = (spiegelGezeigt === i);
   app().innerHTML = `
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
       ${textBlock(fuerTeam(st.teamText, st.text))}
-      <div class="spiegelfeld">${st.spiegelText||""}</div>
+      <div class="spiegelhuelle">
+        <div class="spiegelfeld" id="spiegelfeld" ${offen?"":"hidden"}>${st.spiegelText||""}</div>
+        ${offen?"":`<button class="knopf leise klein" id="spiegelAuf">\u{1FA9E} Spiegelschrift anzeigen</button>`}
+      </div>
       <p>${st.frage||"Was steht da?"}</p>
       ${fehlerMeldung(i)}
       ${eingabeBlock(st)}
       ${tippBlock(st,i)}
     </div>`;
+  /* Die Schrift bleibt weg, bis jemand absichtlich darauf tippt. Sie soll
+     erst beim Auto auftauchen — nicht schon unterwegs auf dem Weg dorthin. */
+  const auf = $("#spiegelAuf");
+  if(auf) auf.onclick = ()=>{
+    spiegelGezeigt = i;
+    $("#spiegelfeld").hidden = false;
+    auf.remove();
+    ton();
+  };
   tippVerdrahten(st,i);
   eingabeVerdrahten(i, st.antwort, st.antwortAuch);
 }
