@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wege — Gegencheck</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-tuell:#f3e9cd; --rot:#a4402c; --rot-tuell:#f8e6e0;
+  --gruen:#34694b; --gruen-tuell:#e2f0e6; --breite:min(100% - 2.2rem, 48rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.6;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  -webkit-text-size-adjust:100%}
+.bahn{width:var(--breite); margin-inline:auto}
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(1.7rem,5vw,2.6rem) 0 clamp(1.1rem,4vw,1.7rem)}
+.marke{font-size:.68rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .7rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7.4vw,3rem); line-height:1.02; margin:0}
+.dach{color:var(--schrift-2); margin:.7rem 0 0; font-size:.95rem}
+.zurueck{display:inline-block; margin:.9rem 0 0; font-size:.88rem; color:var(--gold);
+  text-decoration:none; border-bottom:1px solid currentColor}
+
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.6rem; margin:2.4rem 0 .4rem}
+.warum{color:var(--schrift-2); font-size:.93rem; margin:0 0 1.1rem}
+
+.station{background:var(--karte); border:1px solid var(--rand); border-radius:13px;
+  padding:1.15rem 1.2rem; margin:0 0 .9rem}
+.station > h3{font-size:1.12rem; margin:0 0 .1rem; display:flex; align-items:center; gap:.65rem}
+.station .nr{flex:none; width:1.75rem; height:1.75rem; border-radius:50%; background:var(--gold-tuell);
+  color:var(--gold); border:1px solid var(--rand); display:flex; align-items:center;
+  justify-content:center; font-size:.8rem; font-weight:700; font-family:"IBM Plex Mono",monospace}
+.station .wo{font-size:.8rem; color:var(--schrift-3); margin:0 0 .9rem; padding-left:2.4rem}
+.station .wo b{color:var(--gold)}
+
+.block{margin:.9rem 0 0}
+.block > .titel{font-size:.66rem; letter-spacing:.15em; text-transform:uppercase;
+  font-weight:700; color:var(--schrift-3); margin:0 0 .35rem}
+.verstanden{background:var(--grund-2); border-left:3px solid var(--rand); border-radius:0 8px 8px 0;
+  padding:.7rem .9rem; font-size:.93rem; color:var(--schrift-2)}
+.verstanden ol{margin:.2rem 0 0; padding-left:1.2rem}
+.verstanden li{margin:.28rem 0}
+.inapp{background:#111; color:#f2ede1; border-radius:9px; padding:.85rem 1rem;
+  font-size:.92rem; line-height:1.62; white-space:pre-wrap;
+  border:1px solid #2a2a2a}
+:root:not([data-theme="dark"]) .inapp{background:#16130f}
+.inapp b{color:#dcb455}
+
+.frage{background:var(--rot-tuell); border:1px solid color-mix(in srgb,var(--rot) 40%,transparent);
+  border-left:4px solid var(--rot); border-radius:9px; padding:.75rem .9rem; margin:.8rem 0 0; font-size:.9rem}
+.frage b{color:var(--rot)}
+.passt{background:var(--gruen-tuell); border:1px solid color-mix(in srgb,var(--gruen) 35%,transparent);
+  border-left:4px solid var(--gruen); border-radius:9px; padding:.75rem .9rem; margin:.8rem 0 0; font-size:.9rem}
+.passt b{color:var(--gruen)}
+.gold{background:var(--gold-tuell); border:1px solid var(--rand); border-left:4px solid var(--gold);
+  border-radius:10px; padding:.9rem 1.05rem; margin:1.2rem 0; font-size:.93rem; color:var(--schrift-2)}
+.gold b{color:var(--schrift)}
+
+code{font-family:"IBM Plex Mono",monospace; font-size:.86em; background:var(--gold-tuell);
+  color:var(--gold); padding:.12em .4em; border-radius:4px}
+.zahl{font-family:"IBM Plex Mono",monospace; font-weight:700; color:var(--gold); font-size:1.05em}
+
+ol.schritte{counter-reset:s; list-style:none; margin:.6rem 0 0; padding:0}
+ol.schritte li{counter-increment:s; position:relative; padding:.5rem 0 .5rem 2.1rem;
+  border-bottom:1px solid var(--rand); font-size:.94rem}
+ol.schritte li:last-child{border-bottom:0}
+ol.schritte li::before{content:counter(s); position:absolute; left:0; top:.5rem;
+  width:1.45rem; height:1.45rem; border-radius:50%; border:1px solid var(--gold);
+  color:var(--gold); font-size:.72rem; font-weight:800; display:flex;
+  align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace}
+
+table{width:100%; border-collapse:collapse; font-size:.92rem; margin:.6rem 0 0}
+th{font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--schrift-3);
+  font-weight:700; text-align:left; padding:0 .45rem .45rem; border-bottom:1px solid var(--rand)}
+td{padding:.55rem .45rem; border-bottom:1px solid var(--rand); vertical-align:top}
+tr:last-child td{border-bottom:0}
+.rollrahmen{overflow-x:auto}
+
+footer{border-top:1px solid var(--rand); margin:2.6rem 0 0; padding:1.5rem 0 3rem;
+  color:var(--schrift-3); font-size:.86rem}
+@media print{ body{background:#fff; font-size:10.5pt} header{background:#fff}
+  .station{break-inside:avoid} .zurueck{display:none} }
+</style>
+</head>
+<body>
+
+<header><div class="bahn">
+  <p class="marke">Gegencheck · 23. August 2026</p>
+  <h1>Deine Wege — so habe ich sie verstanden</h1>
+  <p class="dach">Lies das durch, bevor ich es in die App einbaue. Grün = passt.
+     Rot = da brauche ich noch etwas von dir.</p>
+  <a class="zurueck" href="index.html">← zurück zum Leitstand</a>
+</div></header>
+
+<div class="bahn">
+
+<div class="gold">
+  <b>📷 Die zwei Fotos kann ich nicht selbst holen.</b><br>
+  Ich laufe nicht auf deinem Mac, sondern auf einem Rechner in der Cloud. Deinen
+  Download-Ordner sehe ich nicht — ich sehe die Bilder nur hier im Chat.
+  Die zwei Dateien musst du selbst hochladen, das geht im Browser mit ein paar Klicks
+  (Anleitung ganz unten). Die Namen müssen <b>genau</b> so lauten:
+  <code>suchbild.jpg</code> und <code>zeitreise.jpg</code>.
+</div>
+
+<h2>Was ich auf den Fotos sehe</h2>
+<div class="station">
+  <h3><span class="nr">1</span>Das Schild</h3>
+  <p class="wo">Naher Ausschnitt, schräg fotografiert · gehört zu <b>Das Suchbild</b></p>
+  <div class="block"><p class="titel">Lesbar sind</p>
+  <div class="verstanden">…<b>ballspielen</b> · …<b>anzen Anlage</b> · …<b>nten!</b><br>
+  Ergibt: „Fußballspielen und Tanzen in der ganzen Anlage <b>verboten!</b>"</div></div>
+  <div class="passt"><b>Gut gewählt.</b> Der Ausschnitt ist so nah, dass man nicht erkennt,
+  wo das Schild steht — genau richtig für ein Suchbild. Die Kinder müssen wirklich suchen.</div>
+</div>
+
+<div class="station">
+  <h3><span class="nr">2</span>Der Baum</h3>
+  <p class="wo">Vom Boden aus nach oben fotografiert · gehört zu <b>Das Zeitreise-Foto</b></p>
+  <div class="block"><p class="titel">Was drauf ist</p>
+  <div class="verstanden">Großer Baum in der Mitte, das Pflaster läuft sternförmig auf ihn zu.
+  Links ein Holzhaus mit Biertisch, rechts ein weißes Haus mit rotem Dach, ringsum eine Hecke.</div></div>
+  <div class="passt"><b>Sehr gute Wahl.</b> Die Kamera lag praktisch am Boden — diesen Winkel
+  trifft man nicht zufällig. Die Kinder müssen sich wirklich hinlegen.
+  Dasselbe Bild verwende ich auch auf deiner Türsteher-Seite zum Vergleichen —
+  eine dritte Datei brauchst du also nicht.</div>
+</div>
+
+<h2>Die Wege, Station für Station</h2>
+<p class="warum">Links steht, wie ich deine Sprachnachricht verstanden habe.
+   Darunter der Text, so wie ihn die Kinder am Handy sehen würden.</p>
+
+<!-- ---------------------------------------------------------- Türsteher -->
+<div class="station">
+  <h3><span class="nr">2</span>Der Türsteher — Weg A</h3>
+  <p class="wo">Team Diamant zuerst · Ziel: <b>Hausnummer beim grünen Haus</b></p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Vom Gartentürl raus, <b>rechts</b> den Gehsteig entlang</li>
+    <li>immer am Zaun entlang, bis zum <b>grünen Netz</b> beim Garten</li>
+    <li><b>links</b> die Straße entlang bis zu den Schildern Kramergasse 15 / Gartengasse 17</li>
+    <li>Richtung <b>orangener Container</b>, dann <b>rechts</b> in die Straße hinein</li>
+    <li>am kleinen Spielplatz vorbei bis zum Ende der Straße</li>
+    <li><b>rechts</b> in die lange Straße, immer weiter</li>
+    <li>bis <b>links oben die Kirche</b> zu sehen ist</li>
+    <li>dann kommt das <b>grüne Haus</b> — die Zahl steht genau über dem grünen Busch</li>
+    <li>Zahl merken und <b>zurück zum Gartentürl</b></li>
+  </ol></div></div>
+  <div class="block"><p class="titel">So stünde es in der App (Team Diamant)</p>
+  <div class="inapp">Der Türsteher lässt nur rein, wer den Zahlencode kennt.
+
+Geht ZUERST diesen Weg:
+
+<b>1.</b> Vom Gartentürl raus und rechts am Gehsteig entlang.
+<b>2.</b> Immer am Zaun entlang bis zum grünen Netz.
+<b>3.</b> Links in die Straße, bis ihr die Schilder Kramergasse 15 und Gartengasse 17 seht.
+<b>4.</b> Weiter Richtung orangener Container, dann rechts in die Straße.
+<b>5.</b> Am kleinen Spielplatz vorbei bis zum Ende.
+<b>6.</b> Rechts in die lange Straße und immer weiter, bis ihr links oben die Kirche seht.
+<b>7.</b> Dort steht ein grünes Haus. Über dem grünen Busch steht eine Zahl.
+
+Merkt sie euch. <b>DANACH kommt Weg B</b> — und dann zählt ihr beide Zahlen zusammen.</div></div>
+  <div class="frage"><b>Das fehlt mir noch:</b> Du hast beschrieben, <i>wo</i> die Zahl steht —
+  aber nicht, <i>welche</i> es ist. Ich brauche die Hausnummer beim grünen Haus.
+  <br>Und: heißt die Straße wirklich <b>Kramergasse</b>? Die Sprachnachricht war da undeutlich.</div>
+</div>
+
+<div class="station">
+  <h3><span class="nr">2</span>Der Türsteher — Weg B</h3>
+  <p class="wo">Team Platin zuerst · Ziel: <b>Hausnummer beim gelben Haus</b></p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Vom Gartentürl raus, <b>links</b> den schmalen Weg entlang</li>
+    <li>die <b>Stufen hinunter</b>, danach links, dann gleich wieder rechts</li>
+    <li>die Straße entlang, an den Parkplätzen vorbei</li>
+    <li><b>rechts vor den Mülltonnen</b> ein kleiner Weg hinein — dort steht
+        <b>Schwarzer Weg 22A</b> und <b>22B</b></li>
+    <li>hinein, dann links; es kommt nochmal ein Parkplatz</li>
+    <li>am Parkplatz entlang ganz nach vorne bis zur Straße</li>
+    <li>dort ist <b>links oben die Kirche</b> und <b>rechts das gelbe Haus</b></li>
+    <li>auf dem gelben Haus steht die Zahl (du meinst sogar zweimal) — eine reicht</li>
+    <li>Zahl merken und <b>zurück zum Gartentürl</b></li>
+  </ol></div></div>
+  <div class="passt"><b>Das passt sehr gut zusammen.</b> Beide Wege enden bei der Kirche,
+  aber bei verschiedenen Häusern — und sie führen von zwei Seiten dorthin.
+  Die Teams kommen sich also nicht in die Quere, treffen sich aber fast.
+  Genau so war es gedacht.</div>
+  <div class="frage"><b>Das fehlt mir noch:</b> die Hausnummer beim gelben Haus.
+  Sobald ich beide habe, rechne ich die Summe aus — die ist dann die Antwort in der App.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Suchbild -->
+<div class="station">
+  <h3><span class="nr">4</span>Das Suchbild</h3>
+  <p class="wo">Hinterer Spielplatz · das Schild vom Foto</p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden">Beim hinteren Spielplatz steht eine Tafel. Darauf ein Hinweisschild:
+  „Fußballspielen … in der ganzen Anlage verboten!" Davon nimmst du den Ausschnitt,
+  den du mir geschickt hast.</div></div>
+  <div class="frage"><b>Da brauche ich eine Entscheidung von dir.</b> Die Kinder finden das
+  Schild — aber was sollen sie <b>eintippen</b>? Drei Vorschläge:
+  <ol class="schritte">
+    <li><b>Das letzte Wort auf dem Schild.</b> Antwort: <span class="zahl">VERBOTEN</span> —
+        einfach, funktioniert sicher.</li>
+    <li><b>Wie viele Dinge sind verboten?</b> Antwort wäre eine Zahl. Nur wenn die
+        Verbote gut zählbar untereinander stehen.</li>
+    <li><b>Was ist laut Schild in der ganzen Anlage verboten?</b> Antwort:
+        <span class="zahl">FUSSBALLSPIELEN</span> — braucht genaues Lesen, ist aber
+        länger zu tippen.</li>
+  </ol>
+  Ich würde <b>Nummer 1</b> nehmen: kurz, eindeutig, kein Vertippen.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Spiegelschrift -->
+<div class="station">
+  <h3><span class="nr">7</span>Die Spiegelschrift</h3>
+  <p class="wo">Ab dem orangen Container · <b>Teams gehen auseinander</b></p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Vom Schild zurück zum Spielplatz, zur <b>Schaukel</b></li>
+    <li>genau <b>zwischen den zwei Häusern links von der Schaukel</b> durchgehen</li>
+    <li>man kommt auf eine Straße — diese <b>nach rechts hinunter</b></li>
+    <li>bis zum <b>orangen Container</b></li>
+    <li>dort: <b>Team Diamant nach links</b>, <b>Team Platin nach rechts</b>, jeweils bis zum
+        Ende der Straße</li>
+    <li>dort stehen Autos — jedes Team spiegelt sich in einer <b>Seitenscheibe</b></li>
+  </ol></div></div>
+  <div class="passt"><b>Funktioniert.</b> Der orange Container ist der Punkt, an dem sich
+  die Teams trennen — beide gehen gleich weit, nur in die Gegenrichtung.</div>
+  <div class="gold"><b>Vorschlag:</b> Der orange Container kommt in deinen Wegen
+  <b>viermal</b> vor. Ich würde ihn in der App zum festen Merkpunkt machen — schon in der
+  Akkreditierung am Anfang: <i>„Merkt euch den orangen Container. Ihr werdet ihn heute
+  noch oft brauchen."</i> Dann müssen die Kinder ihn nicht jedes Mal neu suchen.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Lounge -->
+<div class="station">
+  <h3><span class="nr">9</span>Die Lounge</h3>
+  <p class="wo">Draußen beim Gartentürl · <b>beide Teams treffen sich</b></p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden">Die kleine Fläche draußen vor dem Gartentürl. Du stellst Tisch und
+  Sessel raus. Beide Teams kommen von der Spiegelschrift dorthin zurück.</div></div>
+  <div class="passt"><b>Das geht sich schön aus.</b> Weg A und Weg B enden beim Gartentürl,
+  die Spiegelschrift führt auch wieder dorthin zurück. Die Lounge liegt also genau
+  auf dem Weg — und du hast Strom, Kühlschrank und Klo in der Nähe.
+  Dort laufen dann auch <b>Becherturm</b>, <b>Eisfach</b> und <b>Emoji-Duell</b>.</div>
+  <div class="frage"><b>Das fehlt mir noch:</b> das <b>Buffet-Wort</b>. In der Lounge liegt eine
+  Aufgabe, bei der die Kinder etwas am Tisch entdecken müssen — z. B. Buchstaben auf
+  Bechern, ein Wort auf der Unterseite der Teller, Zettel an den Flaschen.
+  Sag mir, was du hinlegst, dann schreibe ich die Aufgabe dazu.</div>
+</div>
+
+<!-- ---------------------------------------------------------- QR-Zettel -->
+<div class="station">
+  <h3><span class="nr">13</span>Die versteckten Zettel</h3>
+  <p class="wo">Das große Gebiet rund um die Lounge</p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden">Die drei QR-Zettel versteckst du im großen Gebiet rund um den
+  Essplatz. Groß genug, dass drei Verstecke Platz haben.</div></div>
+  <div class="passt"><b>Genau richtig platziert.</b> Weil die Station <b>nach</b> der Lounge kommt
+  und beide Teams dort zusammen sind, kann kein Team allein alle drei Zettel abräumen.
+  Das war der Punkt, den du damals kritisiert hast — er ist erledigt.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Zählaufgabe -->
+<div class="station">
+  <h3><span class="nr">14</span>Die Zählaufgabe</h3>
+  <p class="wo">Die kleine Brücke · Antwort steht fest</p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Von der Lounge wieder Richtung <b>grüner Zaun</b></li>
+    <li>weiter Richtung <b>oranger Container</b></li>
+    <li>beim Container ein Stück an der Straße entlang</li>
+    <li>dann <b>links zur kleinen Brücke</b></li>
+    <li>auf der Brücke: am <b>grünen Geländer</b> die <b>dicken Steher</b> zählen —
+        nicht die dünnen Sprossen</li>
+  </ol></div></div>
+  <div class="block"><p class="titel">So stünde es in der App</p>
+  <div class="inapp">Kein Rateglück, nur genaues Schauen.
+
+Geht von der Lounge Richtung grüner Zaun, weiter zum orangen Container, ein Stück
+an der Straße entlang und dann links zur kleinen Brücke.
+
+<b>ZÄHLT:</b> die <b>dicken</b> Steher am grünen Geländer — auf <b>beiden</b> Seiten der Brücke.
+Die dünnen Sprossen dazwischen zählen NICHT.
+
+Wie viele sind es zusammen?</div></div>
+  <div class="passt"><b>Antwort: <span class="zahl">52</span></b> (26 pro Seite).
+  Das ist die einzige Zahl, die du mir schon fertig gegeben hast. Als Tipp würde ich
+  hinterlegen: <i>„Zählt eine Seite und verdoppelt."</i></div>
+</div>
+
+<!-- ---------------------------------------------------------- Zeitreise -->
+<div class="station">
+  <h3><span class="nr">16</span>Das Zeitreise-Foto</h3>
+  <p class="wo">Der Baum im kleinen Kreisverkehr</p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Über die Brücke und dann <b>immer geradeaus</b>, eine lange Straße</li>
+    <li>bis zum <b>gelben Haus</b>, gegenüber ein Parkplatz</li>
+    <li>dort ist ein <b>kleiner Kreisverkehr unter den Bäumen</b></li>
+    <li>dort das Foto nachstellen</li>
+  </ol></div></div>
+  <div class="passt"><b>Das ist genau der Baum vom Foto.</b> Passt zusammen.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Feuerwehr -->
+<div class="station">
+  <h3><span class="nr">18</span>Elefanten-Spielplatz und Feuerwehr</h3>
+  <p class="wo">Der Ort, bei dem ich nicht sicher bin, wohin er gehört</p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Vom Kreisverkehr zur Straße, dann <b>nicht</b> Richtung Brücke und
+        <b>nicht</b> Richtung oranger Container, sondern in die dritte Richtung</li>
+    <li>hinauf bis zum <b>Elefanten-Spielplatz</b></li>
+    <li>hinter dem Elefanten steht eine <b>schwarze Tonne</b> (Restmüll)</li>
+    <li>dahinter eine kleine <b>Bank</b>, genau gegenüber der <b>Feuerwehr</b></li>
+    <li>auf die Bank setzen und die Feuerwehr fotografieren — oder sich davorstellen
+        und ein Selfie machen</li>
+  </ol></div></div>
+  <div class="frage"><b>Hier muss ich fragen.</b> In der App gibt es an dieser Stelle
+  <b>zwei</b> Stationen hintereinander:
+  <ol class="schritte">
+    <li><b>Die Paparazzi-Mission</b> — sechs freie Fotoaufträge, überall lösbar,
+        zehn Minuten Zeit. Braucht keinen festen Ort.</li>
+    <li><b>Der Sprint</b> — ein Zielpunkt, den sie in <b>drei Minuten</b> erreichen
+        müssen, dort ein Foto, dafür Bonuspunkte.</li>
+  </ol>
+  Die Feuerwehr-Bank passt zum <b>Sprint</b>: fester Zielpunkt, Foto als Beweis.
+  <br><b>Meine Frage:</b> Schafft man den Weg vom Kreisverkehr bis zur Feuerwehr-Bank
+  in drei Minuten, wenn man läuft? Wenn nicht, stelle ich die Zeit hoch —
+  sag mir einfach, wie lang du dafür brauchst.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Kennwort -->
+<div class="station">
+  <h3><span class="nr">19</span>Die halbe Wahrheit</h3>
+  <p class="wo">Die roten Stecken · <b>Teams gehen auseinander</b></p>
+  <div class="block"><p class="titel">So habe ich dich verstanden</p>
+  <div class="verstanden"><ol>
+    <li>Beide Teams zurück zum <b>orangen Container</b></li>
+    <li>dort <b>links den kleinen Weg hinauf</b> bis ganz oben</li>
+    <li>oben: <b>Team Diamant links</b>, <b>Team Platin rechts</b></li>
+    <li>gehen, bis in der Wiese neben der Straße ein <b>rot markierter Holzstecken</b> steht</li>
+    <li>auf dem Stecken steht ein <b>Wort</b> — das ist die eigene Hälfte</li>
+  </ol></div></div>
+  <div class="passt"><b>Das ist besser als geplant.</b> Ursprünglich wollte ich zwei
+  versteckte Zettel. Ein rot markierter Stecken in der Wiese ist robuster:
+  er weht nicht weg, wird nicht nass und niemand nimmt ihn versehentlich mit.</div>
+  <div class="gold"><b>Die zwei Wörter sind derzeit <span class="zahl">ROTER</span> und
+  <span class="zahl">TEPPICH</span></b> — zusammen „roter Teppich". Passt zum VIP-Motto.
+  Wenn du lieber andere Wörter auf die Stecken schreibst, sag Bescheid, dann ändere ich sie.
+  Schreib das Wort mit <b>wasserfestem Stift</b> drauf.</div>
+</div>
+
+<!-- ---------------------------------------------------------- Anruf -->
+<div class="station">
+  <h3><span class="nr">20</span>Der Anruf</h3>
+  <p class="wo">Diesen Ort hast du noch nicht genannt</p>
+  <div class="frage"><b>Hier klafft die einzige echte Lücke.</b><br><br>
+  Nach den Steckenwörtern schickst du die Kinder zurück zum orangen Container und von
+  dort zum Gartentürl. Aber dazwischen liegt <b>der Anruf</b> — der Moment, in dem sie
+  dich anrufen und den Code bekommen. Und der muss <b>weit genug weg</b> sein, damit du
+  Zeit hast, dich als Türsteher umzuziehen.
+  <br><br>Du hast selbst gesagt: <i>„Der orange Container ist vom Gartentürl nicht mehr
+  weit entfernt."</i> Wenn sie erst dort anrufen, stehst du noch in der Küche, wenn sie
+  schon läuten.</div>
+  <div class="block"><p class="titel">Mein Vorschlag</p>
+  <div class="verstanden"><b>Sie rufen direkt bei den roten Stecken an</b> — dem
+  entferntesten Punkt der ganzen Jagd.
+  <ol>
+    <li>Jedes Team findet seinen Stecken und sein Wort</li>
+    <li>Die Teams treffen sich wieder oben am Weg und setzen die zwei Wörter zusammen</li>
+    <li><b>Von dort rufen sie dich an</b> und sagen das Kennwort — du gibst den Code durch</li>
+    <li>Dann der ganze Rückweg: hinunter zum orangen Container, weiter zum Gartentürl</li>
+    <li><b>Diese Zeit gehört dir</b> — Jacke, Sonnenbrille, Ohrkabel, Klemmbrett</li>
+  </ol></div></div>
+  <div class="frage"><b>Meine Frage:</b> Wie lange gehst du von den roten Stecken
+  zurück zum Gartentürl? Wenn das <b>zehn Minuten oder mehr</b> sind, passt es.
+  Wenn es weniger ist, müssen wir die Stecken weiter hinaufsetzen.</div>
+</div>
+
+<h2>Was ich noch von dir brauche</h2>
+<p class="warum">Alles andere ist fertig. Ohne diese Punkte kann ich die Stationen
+   nicht scharf schalten.</p>
+<div class="rollrahmen"><table>
+  <thead><tr><th>Was</th><th>Wofür</th><th>Wie dringend</th></tr></thead>
+  <tbody>
+    <tr><td><b>Hausnummer grünes Haus</b> (Weg A)</td><td>Türsteher — Summe</td><td>muss</td></tr>
+    <tr><td><b>Hausnummer gelbes Haus</b> (Weg B)</td><td>Türsteher — Summe</td><td>muss</td></tr>
+    <tr><td>Heißt es wirklich <b>Kramergasse</b>?</td><td>Weg A, Schilder</td><td>muss</td></tr>
+    <tr><td><b>Antwort beim Suchbild</b> — mein Vorschlag: VERBOTEN</td><td>Das Suchbild</td><td>muss</td></tr>
+    <tr><td><b>Buffet-Wort</b> — was legst du in der Lounge aus?</td><td>Die Lounge</td><td>muss</td></tr>
+    <tr><td><b>Feuerwehr-Bank</b>: Sprint oder eigener Ort?</td><td>Der Sprint</td><td>muss</td></tr>
+    <tr><td><b>Gehzeit</b> rote Stecken → Gartentürl</td><td>Der Anruf</td><td>muss</td></tr>
+    <tr><td><b>Deine Telefonnummer</b></td><td>Der Anruf</td><td>muss</td></tr>
+    <tr><td><b>Das Video</b> (25 Sekunden)</td><td>Die geheime Botschaft</td><td>muss</td></tr>
+    <tr><td>Die zwei <b>Emoji-Lieder</b></td><td>Emoji-Duell</td><td>muss</td></tr>
+    <tr><td><b>suchbild.jpg</b> und <b>zeitreise.jpg</b> hochladen</td><td>zwei Stationen</td><td>muss</td></tr>
+    <tr><td>Der <b>Schatz</b> am Ende</td><td>Schlussbildschirm</td><td>muss</td></tr>
+    <tr><td>Foto vom <b>Sprintziel</b></td><td>Türsteher-Seite</td><td>schön zu haben</td></tr>
+  </tbody>
+</table></div>
+
+<h2>Und noch etwas ist mir aufgefallen</h2>
+<div class="gold">
+  <b>Deine Wege führen dreimal am orangen Container vorbei und zweimal zum Gartentürl
+  zurück.</b> Das ist kein Fehler — im Gegenteil, es macht die Jagd übersichtlich:
+  die Kinder verlaufen sich nicht, weil sie immer wieder an bekannten Punkten landen.
+  Ich würde diese beiden Punkte in der App durchgehend beim selben Namen nennen
+  (<b>„oranger Container"</b> und <b>„Gartentürl"</b>), damit nie Verwirrung entsteht.
+</div>
+<div class="gold">
+  <b>Die Kirche taucht in beiden Türsteher-Wegen auf.</b> Das ist praktisch: Wer sich
+  verirrt, muss nur die Kirche suchen und ist wieder im Spiel. Ich baue sie deshalb
+  in beide Wege als <i>„Wenn ihr die Kirche seht, seid ihr richtig"</i> ein.
+</div>
+
+<h2>So lädst du die zwei Fotos hoch</h2>
+<p class="warum">Geht komplett im Browser, kein Terminal nötig. Dauert zwei Minuten.</p>
+<ol class="schritte">
+  <li>Benenne die zwei Bilder auf deinem Mac um: das Schild in <code>suchbild.jpg</code>,
+      den Baum in <code>zeitreise.jpg</code>. (Wenn dein iPhone <code>.HEIC</code> gemacht hat:
+      in der Vorschau öffnen → Ablage → Exportieren → Format <b>JPEG</b>.)</li>
+  <li>Öffne <code>github.com/robschman/poolparty</code> im Browser.</li>
+  <li>Klick auf den Ordner <b>fotos</b>.</li>
+  <li>Rechts oben auf <b>Add file</b> → <b>Upload files</b>.</li>
+  <li>Beide Bilder ins Fenster ziehen.</li>
+  <li>Unten auf den grünen Knopf <b>Commit changes</b>.</li>
+  <li>Fertig. Nach ein bis zwei Minuten sind sie in der App zu sehen.</li>
+</ol>
+<div class="frage"><b>Wichtig:</b> Die Namen müssen genau <code>suchbild.jpg</code> und
+<code>zeitreise.jpg</code> heißen — klein geschrieben, ohne Leerzeichen.
+Ein <code>Suchbild.JPG</code> findet die App nicht.</div>
+
+<footer>
+  <p>Wenn du das alles durchgeschaut hast und sagst, es passt, baue ich die Wege in
+  die App ein — dann sind die Stationen scharf. Bis dahin ändere ich nichts.</p>
+  <p><a class="zurueck" href="index.html">← zurück zum Leitstand</a></p>
+</footer>
+</div>
+</body>
+</html>

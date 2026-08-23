@@ -179,7 +179,7 @@ const STATIONEN = [
   ort: "In Gehweite",
   weg: "Sucht diesen Ort. Er ist keine fünf Minuten entfernt.",
   text: "Auf dem Bild seht ihr nur einen Ausschnitt. Findet die Stelle in echt.\n\nWas steht dort drauf?",
-  foto: "fotos/station3.jpg",
+  foto: "fotos/suchbild.jpg",
   antwort: "HIER ANTWORT EINTRAGEN",
   tipp: "HIER TIPP EINTRAGEN — z. B. „Schaut nach oben, nicht nach unten.“"
 },
