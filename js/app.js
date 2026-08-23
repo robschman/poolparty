@@ -10,22 +10,40 @@
 const $   = (s)=>document.querySelector(s);
 const app = ()=>$("#app");
 
-/* --- Modus bestimmen: QR-Code schlägt Datei ------------------------------ */
+/* --- Wo war ich stehengeblieben? -----------------------------------------
+   Sobald ein Team losspielt, merkt sich das Handy Fassung und Team in einem
+   eigenen kleinen Zeiger. Wer die Seite später ohne den QR-Code aufmacht —
+   über das Lesezeichen, das Symbol am Startbildschirm oder die blanke
+   Adresse — landet damit trotzdem wieder in seinem laufenden Spiel.
+   Ohne diesen Zeiger wäre der Spielstand nach so einem Aufruf scheinbar weg.
+   ------------------------------------------------------------------------ */
+const ZEIGER = "vip_letztes_spiel";
+function zeigerLesen(){
+  try{ return JSON.parse(localStorage.getItem(ZEIGER) || "null"); }catch(e){ return null; }
+}
+function zeigerSchreiben(modus, team){
+  try{ localStorage.setItem(ZEIGER, JSON.stringify({ modus: modus, team: team })); }catch(e){}
+}
+
 const FASSUNGEN = ["kurz","mittel","lang","drinnen"];
+const ZULETZT = zeigerLesen();
+
+/* --- Fassung bestimmen: QR-Code schlägt Zeiger schlägt Datei ------------- */
 const MODUS = (function(){
   try{
     const ausUrl = new URLSearchParams(location.search).get("modus");
     if(ausUrl && FASSUNGEN.indexOf(ausUrl) > -1) return ausUrl;
   }catch(e){}
+  if(ZULETZT && FASSUNGEN.indexOf(ZULETZT.modus) > -1) return ZULETZT.modus;
   return (SPIEL.modus && FASSUNGEN.indexOf(SPIEL.modus) > -1)
          ? SPIEL.modus : "lang";
 })();
 
-/* --- Team aus dem QR-Code ------------------------------------------------
-   Steht  ?team=0  oder  ?team=1  in der Adresse, ist das Team schon gesetzt
-   und die Teamwahl entfällt. Jedes Team scannt seinen eigenen Code.
+/* --- Team bestimmen ------------------------------------------------------
+   Steht  ?team=0  oder  ?team=1  in der Adresse, gilt das — jedes Team
+   scannt seinen eigenen Code. Sonst gilt, was zuletzt gespielt wurde.
    ------------------------------------------------------------------------ */
-const TEAM_AUS_URL = (function(){
+function teamAusUrl(){
   try{
     const t = new URLSearchParams(location.search).get("team");
     if(t !== null && /^\d+$/.test(t)){
@@ -34,17 +52,29 @@ const TEAM_AUS_URL = (function(){
     }
   }catch(e){}
   return null;
+}
+const TEAM_VORGABE = (function(){
+  const ausUrl = teamAusUrl();
+  if(ausUrl !== null) return ausUrl;
+  if(ZULETZT && typeof ZULETZT.team === "number"
+     && ZULETZT.team >= 0 && ZULETZT.team < (SPIEL.teams||[]).length) return ZULETZT.team;
+  return null;
 })();
 
 /* Nur die Stationen, die in diesem Modus laufen */
 const AKTIV = STATIONEN.filter(s => !s.modi || s.modi.indexOf(MODUS) > -1);
 
-/* Kommt das Team aus dem QR-Code, bekommt jedes Team seinen eigenen
-   Speicherplatz. So kann dasselbe Handy beide Teams testen, ohne dass sich
-   die Spielstände in die Quere kommen — und ein zweites Scannen des Codes
-   holt den richtigen Stand zurück, statt ihn zu überschreiben. */
+/* Jedes Team bekommt seinen eigenen Speicherplatz. So kann dasselbe Handy
+   beide Teams testen, ohne dass sich die Spielstände in die Quere kommen.
+
+   ACHTUNG bei SPIEL.version: Die Zahl steckt im Speicherplatz. Wird sie
+   hochgezählt, fangen ALLE laufenden Spiele wieder von vorne an. Das ist
+   nur gewollt, wenn sich die Stationen so stark geändert haben, dass ein
+   alter Spielstand nicht mehr passt. Für „das Handy soll die neuen Dateien
+   laden" ist die Zahl NICHT zuständig — dafür ist das ?v= in der
+   index.html da. */
 const SPEICHER = "vip_jagd_v" + (SPIEL.version || "1") + "_" + MODUS
-               + (TEAM_AUS_URL !== null ? "_t" + TEAM_AUS_URL : "");
+               + (TEAM_VORGABE !== null ? "_t" + TEAM_VORGABE : "");
 
 /* --- Buchstaben auf die aktiven Stationen verteilen ----------------------
    Das Losungswort wird durcheinandergewürfelt vergeben. Sind weniger
@@ -82,7 +112,9 @@ function sichern(){
 }
 function neuStarten(){
   try{ localStorage.removeItem(SPEICHER); }catch(e){}
-  location.reload();
+  try{ localStorage.removeItem(ZEIGER); }catch(e){}
+  /* Ohne die Adresse zurückzusetzen käme man über ?team= sofort wieder rein */
+  try{ location.replace(location.pathname); }catch(e){ location.reload(); }
 }
 
 /* --- Töne (ohne Datei) ---------------------------------------------------- */
@@ -164,7 +196,7 @@ function geschaetzteMinuten(){
 
 function zeigeStart(){
   const wieLang = "rund " + geschaetzteMinuten() + " Minuten";
-  const festesTeam = TEAM_AUS_URL !== null ? SPIEL.teams[TEAM_AUS_URL].name : null;
+  const festesTeam = TEAM_VORGABE !== null ? SPIEL.teams[TEAM_VORGABE].name : null;
   app().innerHTML = `
     <div class="start-logo">
       <div class="klein-label">Very Important People</div>
@@ -188,9 +220,10 @@ function zeigeStart(){
     auch wenn das Handy zwischendurch ausgeht.</p>`;
   $("#los").onclick = ()=>{
     ton("klick");
-    if(TEAM_AUS_URL !== null){
-      Z.team  = TEAM_AUS_URL;
+    if(TEAM_VORGABE !== null){
+      Z.team  = TEAM_VORGABE;
       Z.start = Z.start || Date.now();
+      zeigerSchreiben(MODUS, Z.team);
       ruckeln(30); sichern(); zeigeStation();
     }else{
       zeigeTeamwahl();
@@ -209,6 +242,7 @@ function zeigeTeamwahl(){
     b.onclick = ()=>{
       Z.team = +b.dataset.i;
       Z.start = Z.start || Date.now();
+      zeigerSchreiben(MODUS, Z.team);
       ton("gut"); ruckeln(30); sichern(); zeigeStation();
     };
   });
@@ -226,6 +260,7 @@ function zeigeStation(){
   window.scrollTo(0,0);
   const darf = darfZurueck();          /* vor dem Bauen fragen */
   stationBauen(st, i);
+  videoVerdrahten();
   /* Der Zurueck-Knopf haengt unten dran — auf allen Stationsarten gleich */
   if(darf && !$("#einsZurueck")){
     const halter = document.createElement("div");
@@ -233,6 +268,26 @@ function zeigeStation(){
     if(halter.firstElementChild) app().appendChild(halter.firstElementChild);
   }
 }
+/* Langsamer abspielen UND die Tonhöhe mitgehen lassen — das ergibt die tiefe,
+   verzerrte Stimme, ohne dass Robert das Video schneiden muss.
+   Ohne "preservesPitch = false" würde der Browser die Stimme künstlich auf der
+   ursprünglichen Höhe halten, dann bringt das Verlangsamen nichts. */
+function videoVerdrahten(){
+  document.querySelectorAll("video[data-tempo]").forEach(v=>{
+    const t = parseFloat(v.dataset.tempo);
+    if(!t || t <= 0) return;
+    try{
+      v.preservesPitch = false;
+      v.mozPreservesPitch = false;
+      v.webkitPreservesPitch = false;
+      v.playbackRate = t;
+      /* Manche Browser setzen playbackRate beim Laden zurück */
+      v.addEventListener("loadedmetadata", ()=>{ v.playbackRate = t; });
+      v.addEventListener("play", ()=>{ v.playbackRate = t; });
+    }catch(e){}
+  });
+}
+
 function stationBauen(st, i){
   switch(st.typ){
     case "start":     return bauStart(st,i);
@@ -359,11 +414,14 @@ function gemeinsamBlock(st){
 function medienBlock(st){
   let h = "";
   if(st.foto)  h += `<img class="bild" src="${st.foto}" alt="Hinweisbild" onerror="this.style.display='none'">`;
-  if(st.video) h += videoBlock(st.video, st.videoStoerung);
+  if(st.video) h += videoBlock(st.video, st.videoStoerung, st.videoTempo);
   return h;
 }
-function videoBlock(link, stoerung){
-  const kl = stoerung ? " gestoert" : "";
+function videoBlock(link, stoerung, tempo){
+  /* stoerung:  true = normal, "stark" = kaum noch erkennbar
+     tempo:     kleiner als 1 = langsamer und tiefere Stimme */
+  const kl = stoerung ? (stoerung === "stark" ? " gestoert stark" : " gestoert") : "";
+  const langsam = (tempo && tempo !== 1) ? ` data-tempo="${tempo}"` : "";
   const huelle = (inhalt)=> stoerung
     ? `<div class="videohuelle">${inhalt}<div class="scanlinien"></div>
        <div class="stoerband"></div>
@@ -371,7 +429,7 @@ function videoBlock(link, stoerung){
     : inhalt;
 
   if(/\.(mp4|m4v|mov|webm)(\?|$)/i.test(link))
-    return huelle(`<video class="bild${kl}" controls playsinline preload="metadata"
+    return huelle(`<video class="bild${kl}" controls playsinline preload="metadata"${langsam}
               style="background:#000"><source src="${link}">
               Dein Browser kann dieses Video nicht abspielen.</video>`);
   const yt = String(link).match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/);

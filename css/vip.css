@@ -525,3 +525,20 @@ body.silber .geheim.auf{border-color:rgba(200,204,210,.55)}
 .karte p{hyphens:auto; -webkit-hyphens:auto}
 /* Zeilen nicht zu lang werden lassen — zentrierter Text liest sich schmal besser */
 .karte > p{max-width:34em; margin-inline:auto}
+
+/* ---- 28. Video: starke Störung ----------------------------------------- */
+/* Die normale Stufe verfremdet, die starke macht wirklich unkenntlich:
+   mehr Unschärfe, verschobene Farben, weniger Kontrastumfang im Gesicht. */
+.gestoert.stark{
+  filter:blur(2.6px) contrast(1.75) saturate(.35) hue-rotate(115deg)
+         brightness(.82) grayscale(.25);
+}
+.videohuelle:has(.stark) .scanlinien{opacity:.85}
+.videohuelle:has(.stark) .stoerband{height:22%; animation-duration:3.2s}
+/* Zweites, gegenläufiges Störband — nimmt dem Bild die letzte Ruhe */
+.videohuelle:has(.stark)::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(to bottom,
+    transparent 0 6px, rgba(0,0,0,.22) 6px 7px);
+  mix-blend-mode:multiply;
+}

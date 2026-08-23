@@ -98,9 +98,17 @@ const SPIEL = {
   leiterCode: "9999",
 
   /* ---- VERSION ------------------------------------------------------------
-     Bei jeder Änderung um 1 hochzählen, sonst zeigen Handys die alte Fassung.
+     ACHTUNG — diese Zahl NICHT einfach hochzählen.
+
+     Sie steckt im Speicherplatz des Spielstands. Zählt man sie hoch, fangen
+     alle laufenden Spiele wieder bei null an: Punkte weg, Buchstaben weg,
+     Teamwahl von vorne. Das ist nur gewollt, wenn sich die Stationen so stark
+     geändert haben, dass ein alter Spielstand nicht mehr passt.
+
+     Damit ein Handy neue Dateien lädt, ist etwas anderes zuständig:
+     das ?v= hinter den Dateinamen in der index.html.
      ----------------------------------------------------------------------- */
-  version: "8"
+  version: "10"
 };
 
 
@@ -167,10 +175,10 @@ const STATIONEN = [
   weg: "Ihr geht beide Wege — nur in verschiedener Reihenfolge. So kommt ihr euch nicht in die Quere.",
   // Die Teams starten gegengleich, damit keiner abschreiben kann:
   teamText: [
-    "Der Türsteher lässt nur rein, wer den Zahlencode kennt. Der Code sind ZWEI Hausnummern, zusammengezählt.\n\n▸ ZUERST WEG A — das grüne Haus:\n\n1. Vom Gartentürl raus und rechts am Gehsteig entlang.\n2. Immer am Zaun entlang, bis zum grünen Netz beim Garten.\n3. Links in die Straße, bis ihr die Schilder Grabengasse 15 und Gartengasse 17 seht.\n4. Weiter Richtung orangen Container, dann rechts in die Straße hinein.\n5. Am kleinen Spielplatz vorbei bis ganz zum Ende der Straße.\n6. Rechts in die lange Straße und immer weiter.\n7. Irgendwann seht ihr LINKS OBEN AM BERG DIE KIRCHE — dann seid ihr richtig.\n8. Geht weiter, bis wieder LINKS UND RECHTS HÄUSER stehen. Dann seid ihr weit genug.\n9. Dort stehen ein GRAUES und ein GRÜNES HAUS. Beim GRÜNEN steht die Zahl DAVOR, HINTER DEM BUSCH. Sie ist EINSTELLIG.\n\n▸ DANACH WEG B — das gelbe Haus:\n\n1. Zurück zum Gartentürl, dann links den schmalen Weg entlang.\n2. Die Stufen HINAUF, danach links, dann gleich wieder rechts.\n3. Die Straße entlang, an den Parkplätzen vorbei.\n4. Rechts VOR den Mülltonnen geht ein kleiner Weg hinein — dort steht Schwarzer Weg 22A und 22B.\n5. Hinein, dann links. Es kommt noch ein Parkplatz.\n6. Am Parkplatz entlang ganz nach vorne bis zur Straße.\n7. LINKS oben am Berg seht ihr wieder die Kirche. RECHTS steht ein GELBES HAUS — die Zahl ist DIREKT AN DER ECKE.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?",
-    "Der Türsteher lässt nur rein, wer den Zahlencode kennt. Der Code sind ZWEI Hausnummern, zusammengezählt.\n\n▸ ZUERST WEG B — das gelbe Haus:\n\n1. Vom Gartentürl raus und links den schmalen Weg entlang.\n2. Die Stufen HINAUF, danach links, dann gleich wieder rechts.\n3. Die Straße entlang, an den Parkplätzen vorbei.\n4. Rechts VOR den Mülltonnen geht ein kleiner Weg hinein — dort steht Schwarzer Weg 22A und 22B.\n5. Hinein, dann links. Es kommt noch ein Parkplatz.\n6. Am Parkplatz entlang ganz nach vorne bis zur Straße.\n7. LINKS oben am Berg seht ihr die Kirche. RECHTS steht ein GELBES HAUS — die Zahl ist DIREKT AN DER ECKE.\n\n▸ DANACH WEG A — das grüne Haus:\n\n1. Zurück zum Gartentürl, dann rechts am Gehsteig entlang.\n2. Immer am Zaun entlang, bis zum grünen Netz beim Garten.\n3. Links in die Straße, bis ihr die Schilder Grabengasse 15 und Gartengasse 17 seht.\n4. Weiter Richtung orangen Container, dann rechts in die Straße hinein.\n5. Am kleinen Spielplatz vorbei bis ganz zum Ende der Straße.\n6. Rechts in die lange Straße und immer weiter, bis ihr LINKS OBEN AM BERG DIE KIRCHE seht.\n7. Weiter, bis wieder LINKS UND RECHTS HÄUSER stehen — dann seid ihr weit genug.\n8. Dort stehen ein GRAUES und ein GRÜNES HAUS. Beim GRÜNEN steht die Zahl DAVOR, HINTER DEM BUSCH. Sie ist EINSTELLIG.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?"
+    "Der Türsteher lässt nur rein, wer den Zahlencode kennt. Der Code sind ZWEI Hausnummern, zusammengezählt.\n\n▸ ZUERST WEG A — das grüne Haus:\n\n1. Vom Gartentürl raus und rechts am Gehsteig entlang.\n2. Immer am Zaun entlang, bis zum grünen Netz beim Garten.\n3. Links in die Straße, bis ihr die Schilder Grabengasse 15 und Gartengasse 17 seht.\n4. Weiter Richtung orangen Container, dann rechts in die Straße hinein.\n5. Am kleinen Spielplatz vorbei bis ganz zum Ende der Straße.\n6. Rechts in die lange Straße und immer weiter.\n7. Irgendwann seht ihr LINKS OBEN AM BERG DIE KIRCHE — dann seid ihr richtig.\n8. Geht weiter, bis wieder LINKS UND RECHTS HÄUSER stehen. Dann seid ihr weit genug.\n9. Dort stehen ein GRAUES und ein GRÜNES HAUS — direkt aneinander.\n10. Beim GRAUEN HAUS steht die Zahl AN DER WAND, hinter dem grünen Busch. Sie ist EINSTELLIG.\n\n▸ DANACH WEG B — das gelbe Haus:\n\n1. Zurück zum Gartentürl, dann links den schmalen Weg entlang.\n2. Die Stufen HINAUF, danach links, dann gleich wieder rechts.\n3. Die Straße entlang, an den Parkplätzen vorbei.\n4. Rechts VOR den Mülltonnen geht ein kleiner Weg hinein — dort steht Schwarzer Weg 22A und 22B.\n5. Hinein, dann links. Es kommt noch ein Parkplatz.\n6. Am Parkplatz entlang ganz nach vorne bis zur Straße.\n7. LINKS oben am Berg seht ihr wieder die Kirche. RECHTS steht ein GELBES HAUS — und zwar genau das, das DIREKT AN DER ECKE steht. Dort ist die Zahl.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?",
+    "Der Türsteher lässt nur rein, wer den Zahlencode kennt. Der Code sind ZWEI Hausnummern, zusammengezählt.\n\n▸ ZUERST WEG B — das gelbe Haus:\n\n1. Vom Gartentürl raus und links den schmalen Weg entlang.\n2. Die Stufen HINAUF, danach links, dann gleich wieder rechts.\n3. Die Straße entlang, an den Parkplätzen vorbei.\n4. Rechts VOR den Mülltonnen geht ein kleiner Weg hinein — dort steht Schwarzer Weg 22A und 22B.\n5. Hinein, dann links. Es kommt noch ein Parkplatz.\n6. Am Parkplatz entlang ganz nach vorne bis zur Straße.\n7. LINKS oben am Berg seht ihr die Kirche. RECHTS steht ein GELBES HAUS — und zwar genau das, das DIREKT AN DER ECKE steht. Dort ist die Zahl.\n\n▸ DANACH WEG A — das grüne Haus:\n\n1. Zurück zum Gartentürl, dann rechts am Gehsteig entlang.\n2. Immer am Zaun entlang, bis zum grünen Netz beim Garten.\n3. Links in die Straße, bis ihr die Schilder Grabengasse 15 und Gartengasse 17 seht.\n4. Weiter Richtung orangen Container, dann rechts in die Straße hinein.\n5. Am kleinen Spielplatz vorbei bis ganz zum Ende der Straße.\n6. Rechts in die lange Straße und immer weiter, bis ihr LINKS OBEN AM BERG DIE KIRCHE seht.\n7. Weiter, bis wieder LINKS UND RECHTS HÄUSER stehen — dann seid ihr weit genug.\n8. Dort stehen ein GRAUES und ein GRÜNES HAUS — direkt aneinander.\n9. Beim GRAUEN HAUS steht die Zahl AN DER WAND, hinter dem grünen Busch. Sie ist EINSTELLIG.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?"
   ],
-  antwort: "27",
+  antwort: "29",
   tipp: "Eine der beiden Zahlen ist einstellig, die andere zweistellig. Zusammen sind es weniger als dreißig.",
   eingabeArt: "zahl"
 },
@@ -250,8 +258,14 @@ const STATIONEN = [
   text: "Der VIP-Club hat eine Videobotschaft hinterlassen. Die Übertragung ist gestört — schaut trotzdem genau hin und hört genau zu.\n\nIrgendwo darin fällt ein Codewort. Wie lautet es?",
   // Entweder eine Datei auf dem Server:   video: "fotos/botschaft.mp4",
   // oder ein YouTube-Link:                video: "https://youtu.be/XXXXXXXXXXX",
-  video: "HIER VIDEO-LINK EINTRAGEN",
-  videoStoerung: true,          // legt den Störbild-Filter darüber
+  video: "fotos/botschaft.mp4",
+
+  /* videoStoerung: true = verfremdet, "stark" = kaum noch zu erkennen.
+     videoTempo:    kleiner als 1 macht das Bild langsamer UND die Stimme
+                    tiefer. 0.82 klingt nach Bösewicht, ohne albern zu werden.
+                    Auf 1 stellen, wenn du das Video schon selbst bearbeitet hast. */
+  videoStoerung: "stark",
+  videoTempo: 0.82,
   antwort: "GOLDFISCH",
   antwortAuch: ["GOLD FISCH"],
   tipp: "Er sagt es nicht nur — er hält es auch schriftlich in die Kamera. Nochmal anschauen."
