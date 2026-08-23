@@ -473,3 +473,13 @@ body.silber .meldung.schiri{
   background:rgba(200,204,210,.09); border-color:rgba(200,204,210,.34);
 }
 body.silber .meldung.schiri b{color:var(--weiss)}
+
+/* ---- 25. Merkkasten (die zwei festen Orte) ----------------------------- */
+.merkkasten{
+  background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.36);
+  border-radius:12px; padding:14px 16px; margin:18px 0 0;
+  font-size:14.5px; line-height:1.65; white-space:pre-line; color:var(--weiss);
+}
+body.silber .merkkasten{
+  background:rgba(200,204,210,.08); border-color:rgba(200,204,210,.36);
+}

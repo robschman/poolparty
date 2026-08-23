@@ -96,6 +96,13 @@ input[type=number]{width:6.5rem; padding:.6rem .7rem; font-size:1.1rem; font-wei
   background:var(--grund); color:var(--schrift); border:1px solid var(--rand); border-radius:8px}
 input[type=number]:focus{outline:2px solid var(--gold); outline-offset:1px}
 
+.bandreihe{display:grid; grid-template-columns:auto 1fr; gap:.8rem; align-items:center;
+  padding:.5rem 0; border-bottom:1px solid var(--rand)}
+.bandreihe:last-of-type{border-bottom:0}
+.bandreihe input[type=text]{width:100%; padding:.55rem .7rem; font-family:inherit;
+  font-size:1rem; background:var(--grund); color:var(--schrift);
+  border:1px solid var(--rand); border-radius:8px}
+.bandreihe input[type=text]:focus{outline:2px solid var(--gold); outline-offset:1px}
 .bonusreihe{display:grid; grid-template-columns:1fr auto auto; gap:.6rem; align-items:center;
   padding:.6rem 0; border-bottom:1px solid var(--rand)}
 .bonusreihe:last-child{border-bottom:0}
@@ -182,7 +189,36 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
     </table></div>
   </section>
   <section class="pruefung">
-    <h3><span class="nr">2</span>Der Turm von Ternitz</h3>
+    <h3><span class="nr">2</span>Die Lounge</h3>
+    <p class="wo">Draußen beim Gartentürl · <span class="fassung">in jeder Fassung</span></p>
+    
+    <div class="rollrahmen"><table class="haken">
+      <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
+      <tbody>
+        
+          <tr>
+            <td>Wir sitzen und haben etwas getrunken</td>
+            <td class="team">
+              <input type="checkbox" data-schluessel="p2_0_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p2_0_1"></td>
+          </tr>
+          <tr>
+            <td>Das andere Team ist auch da</td>
+            <td class="team">
+              <input type="checkbox" data-schluessel="p2_1_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p2_1_1"></td>
+          </tr>
+          <tr>
+            <td>Wir haben uns gegenseitig erzählt, was bisher passiert ist</td>
+            <td class="team">
+              <input type="checkbox" data-schluessel="p2_2_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p2_2_1"></td>
+          </tr>
+      </tbody>
+    </table></div>
+  </section>
+  <section class="pruefung">
+    <h3><span class="nr">3</span>Der Turm von Ternitz</h3>
     <p class="wo">In der Lounge · <span class="fassung">nur bei: groß</span></p>
     
     <div class="rollrahmen"><table class="haken">
@@ -192,27 +228,27 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
           <tr>
             <td>Unser Turm steht zehn Sekunden ohne Hilfe</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p2_0_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p2_0_1"></td>
+              <input type="checkbox" data-schluessel="p3_0_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p3_0_1"></td>
           </tr>
           <tr>
             <td>Wir haben ein Foto von ihm gemacht</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p2_1_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p2_1_1"></td>
+              <input type="checkbox" data-schluessel="p3_1_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p3_1_1"></td>
           </tr>
           <tr>
             <td>Auf dem Foto ist zu sehen, wie hoch er wirklich ist</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p2_2_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p2_2_1"></td>
+              <input type="checkbox" data-schluessel="p3_2_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p3_2_1"></td>
           </tr>
       </tbody>
     </table></div>
   </section>
   <section class="pruefung">
-    <h3><span class="nr">3</span>Das Zeitreise-Foto</h3>
-    <p class="wo">HIER ORT EINTRAGEN · <span class="fassung">nur bei: groß</span></p>
+    <h3><span class="nr">4</span>Das Zeitreise-Foto</h3>
+    <p class="wo">Der Baum im kleinen Kreisverkehr · <span class="fassung">nur bei: groß</span></p>
     <figure class="vergleich">
         <img src="../fotos/zeitreise.jpg" alt="Dein Vergleichsfoto" onerror="this.closest('figure').classList.add('fehlt')">
         <figcaption><b>Dein Vergleichsfoto</b><br>Genau das Bild haben die Kinder in der App gesehen. Vergleiche Winkel und Bildausschnitt — stehen sie wirklich dort, oder nur ungefähr in der Gegend?
@@ -227,26 +263,26 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
           <tr>
             <td>Wir haben die Stelle gefunden</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p3_0_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p3_0_1"></td>
+              <input type="checkbox" data-schluessel="p4_0_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p4_0_1"></td>
           </tr>
           <tr>
             <td>Wir haben das Foto im gleichen Winkel nachgestellt</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p3_1_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p3_1_1"></td>
+              <input type="checkbox" data-schluessel="p4_1_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p4_1_1"></td>
           </tr>
           <tr>
             <td>Alle aus dem Team sind mit drauf</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p3_2_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p3_2_1"></td>
+              <input type="checkbox" data-schluessel="p4_2_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p4_2_1"></td>
           </tr>
       </tbody>
     </table></div>
   </section>
   <section class="pruefung">
-    <h3><span class="nr">4</span>Die Paparazzi-Mission</h3>
+    <h3><span class="nr">5</span>Die Paparazzi-Mission</h3>
     <p class="wo">Überall · <span class="fassung">nur bei: groß, Schlechtwetter</span></p>
     
     <div class="rollrahmen"><table class="haken">
@@ -256,45 +292,45 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
           <tr>
             <td>Ein Foto, auf dem euer ganzes Team gleichzeitig in der Luft ist</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p4_0_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p4_0_1"></td>
+              <input type="checkbox" data-schluessel="p5_0_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p5_0_1"></td>
           </tr>
           <tr>
             <td>Ein Foto mit einem Tier (Schnecke zählt auch)</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p4_1_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p4_1_1"></td>
+              <input type="checkbox" data-schluessel="p5_1_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p5_1_1"></td>
           </tr>
           <tr>
             <td>Ein Foto, auf dem einer von euch etwas Riesiges zu halten scheint</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p4_2_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p4_2_1"></td>
+              <input type="checkbox" data-schluessel="p5_2_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p5_2_1"></td>
           </tr>
           <tr>
             <td>Etwas, das aussieht wie ein Gesicht, aber keines ist</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p4_3_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p4_3_1"></td>
+              <input type="checkbox" data-schluessel="p5_3_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p5_3_1"></td>
           </tr>
           <tr>
             <td>Ein Foto von etwas Goldenem</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p4_4_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p4_4_1"></td>
+              <input type="checkbox" data-schluessel="p5_4_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p5_4_1"></td>
           </tr>
           <tr>
             <td>Ein 5-Sekunden-Video, in dem alle gleichzeitig dieselbe Pose machen</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p4_5_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p4_5_1"></td>
+              <input type="checkbox" data-schluessel="p5_5_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p5_5_1"></td>
           </tr>
       </tbody>
     </table></div>
   </section>
   <section class="pruefung">
-    <h3><span class="nr">5</span>Der Sprint</h3>
-    <p class="wo">HIER ZIELPUNKT EINTRAGEN · <span class="fassung">nur bei: mittel, groß</span></p>
+    <h3><span class="nr">6</span>Der Sprint</h3>
+    <p class="wo">Die Bank gegenüber dem Feuerwehrtor · <span class="fassung">nur bei: mittel, groß</span></p>
     <figure class="vergleich">
         <img src="../fotos/vergleich-sprintziel.jpg" alt="Dein Vergleichsfoto" onerror="this.closest('figure').classList.add('fehlt')">
         <figcaption><b>Dein Vergleichsfoto</b><br>Der Zielpunkt. Wichtiger als das Motiv ist hier die <b>Uhrzeit</b>: in der Fotos-App nach oben wischen, dort steht sie auf die Minute genau.
@@ -309,8 +345,37 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
           <tr>
             <td>Wir waren rechtzeitig dort und haben das Foto gemacht</td>
             <td class="team">
-              <input type="checkbox" data-schluessel="p5_0_0"></td><td class="team">
-              <input type="checkbox" data-schluessel="p5_0_1"></td>
+              <input type="checkbox" data-schluessel="p6_0_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p6_0_1"></td>
+          </tr>
+      </tbody>
+    </table></div>
+  </section>
+  <section class="pruefung">
+    <h3><span class="nr">7</span>Die Abholung</h3>
+    <p class="wo">Elefanten-Spielplatz · <span class="fassung">nur bei: klein, mittel, groß</span></p>
+    
+    <div class="rollrahmen"><table class="haken">
+      <thead><tr><th>Auftrag</th><th class="team">Team Diamant</th><th class="team">Team Platin</th></tr></thead>
+      <tbody>
+        
+          <tr>
+            <td>Jeder von uns trägt ein Band am Handgelenk</td>
+            <td class="team">
+              <input type="checkbox" data-schluessel="p7_0_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p7_0_1"></td>
+          </tr>
+          <tr>
+            <td>Auch das andere Team hat Bänder</td>
+            <td class="team">
+              <input type="checkbox" data-schluessel="p7_1_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p7_1_1"></td>
+          </tr>
+          <tr>
+            <td>Wir haben ein Foto von uns allen mit Band gemacht</td>
+            <td class="team">
+              <input type="checkbox" data-schluessel="p7_2_0"></td><td class="team">
+              <input type="checkbox" data-schluessel="p7_2_1"></td>
           </tr>
       </tbody>
     </table></div>
@@ -320,6 +385,48 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
     <b>Der Trick beim Sprint:</b> In der Fotos-App auf dem iPhone das Bild öffnen
     und nach oben wischen — dort steht die <b>Uhrzeit auf die Minute genau</b>.
     So siehst du, ob sie es wirklich in den drei Minuten geschafft haben.
+  </div>
+
+  <h2><span class="schritt">Am Tor</span>Die Bändchen-Kontrolle</h2>
+  <p class="warum">Bevor du aufmachst: jedes Handgelenk einzeln anschauen.
+     Wer kein Band hat, wird nochmal losgeschickt — als Gag, zwei Schritte weit.
+     Trag die Namen ein, sobald du sie kennst.</p>
+  <div class="punktekasten">
+    
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_0">
+        <input type="text" data-schluessel="bandname_0" placeholder="Name 1">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_1">
+        <input type="text" data-schluessel="bandname_1" placeholder="Name 2">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_2">
+        <input type="text" data-schluessel="bandname_2" placeholder="Name 3">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_3">
+        <input type="text" data-schluessel="bandname_3" placeholder="Name 4">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_4">
+        <input type="text" data-schluessel="bandname_4" placeholder="Name 5">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_5">
+        <input type="text" data-schluessel="bandname_5" placeholder="Name 6">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_6">
+        <input type="text" data-schluessel="bandname_6" placeholder="Name 7">
+      </div>
+      <div class="bandreihe">
+        <input type="checkbox" data-schluessel="band_7">
+        <input type="text" data-schluessel="bandname_7" placeholder="Name 8">
+      </div>
+    <p class="warum" style="margin:.9rem 0 0">Acht Zeilen, damit auch Platz ist,
+       wenn kurzfristig noch jemand mitkommt. Leere Zeilen einfach ignorieren.</p>
   </div>
 
   <h2><span class="schritt">Schritt 2</span>Punkte aus der App</h2>
@@ -414,7 +521,7 @@ footer{border-top:1px solid var(--rand); margin:2.4rem 0 0; padding:1.4rem 0 3re
       stand[k] = (f.type === "checkbox") ? f.checked : f.value;
       sichern(); rechnen();
     });
-    if(f.type === "number") f.addEventListener("input", function(){
+    if(f.type === "number" || f.type === "text") f.addEventListener("input", function(){
       stand[k] = f.value; sichern(); rechnen();
     });
   });

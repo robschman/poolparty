@@ -395,6 +395,7 @@ function bauStart(st,i){
       <p>${st.text||""}</p>
       ${(st.auftraege||[]).length ? `<ul class="liste">${st.auftraege.map((a,n)=>
         `<li data-n="${n}"><span class="box">✓</span>${a}</li>`).join("")}</ul>` : ""}
+      ${st.merkkasten ? `<div class="merkkasten">${st.merkkasten}</div>` : ""}
       ${(st.regeln||[]).length ? `<div class="regeln"><b>Die Regeln</b>
         <ul>${st.regeln.map(r=>`<li>${r}</li>`).join("")}</ul></div>` : ""}
     </div>
@@ -710,6 +711,7 @@ function bauAnruf(st,i){
     <div class="karte">
       ${kopfBlock(st,i)}
       ${ortBlock(st)}
+      ${gemeinsamBlock(st)}
       <p>${fuerTeam(st.teamText, st.text)}</p>
       <div class="telefon">
         <b>Der Empfang</b>

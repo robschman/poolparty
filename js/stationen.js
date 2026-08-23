@@ -85,7 +85,7 @@ const SPIEL = {
   /* ---- VERSION ------------------------------------------------------------
      Bei jeder Änderung um 1 hochzählen, sonst zeigen Handys die alte Fassung.
      ----------------------------------------------------------------------- */
-  version: "3"
+  version: "4"
 };
 
 
@@ -128,6 +128,7 @@ const STATIONEN = [
   titel: "Akkreditierung",
   ort: "Bei Zoe am Pool",
   text: "Willkommen im VIP CLUB.\n\nAb jetzt seid ihr keine normalen Gäste mehr — ihr seid Anwärter. Wer in die Lounge will, muss sich den Zutritt verdienen.\n\nUnterwegs sammelt ihr Buchstaben. Sie kommen durcheinander — am Ende müsst ihr selbst die richtige Reihenfolge finden. Und dann steht da noch jemand am Tor.\n\nEure erste Aufgabe:",
+  merkkasten: "MERKT EUCH ZWEI ORTE — ihr kommt heute immer wieder dorthin zurück:\n\n📍 DAS GARTENTÜRL — hier fängt alles an und hier hört alles auf.\n📍 DER ORANGE CONTAINER — der große orange Container unten an der Straße. Er ist heute euer wichtigster Wegweiser.",
   auftraege: [
     "Stellt euch in eure beste VIP-Pose und macht ein Teamfoto",
     "Einigt euch, wer das Handy trägt",
@@ -148,13 +149,14 @@ const STATIONEN = [
   modi: ["kurz", "mittel", "lang"],
   buchstabe: true,
   ort: "Zwei Häuser, zwei Richtungen",
+  weg: "Ihr geht beide Wege — nur in verschiedener Reihenfolge. So kommt ihr euch nicht in die Quere.",
   // Die Teams starten gegengleich, damit keiner abschreiben kann:
   teamText: [
-    "Der Türsteher lässt nur rein, wer den Zahlencode kennt.\n\nGeht ZUERST HIER WEG A EINTRAGEN und merkt euch die Hausnummer.\nDANACH HIER WEG B EINTRAGEN und merkt euch auch die.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?",
-    "Der Türsteher lässt nur rein, wer den Zahlencode kennt.\n\nGeht ZUERST HIER WEG B EINTRAGEN und merkt euch die Hausnummer.\nDANACH HIER WEG A EINTRAGEN und merkt euch auch die.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?"
+    "Der Türsteher lässt nur rein, wer den Zahlencode kennt. Der Code sind ZWEI Hausnummern, zusammengezählt.\n\n▸ ZUERST WEG A — das grüne Haus:\n\n1. Vom Gartentürl raus und rechts am Gehsteig entlang.\n2. Immer am Zaun entlang, bis zum grünen Netz beim Garten.\n3. Links in die Straße, bis ihr die Schilder Grabengasse 15 und Gartengasse 17 seht.\n4. Weiter Richtung orangen Container, dann rechts in die Straße hinein.\n5. Am kleinen Spielplatz vorbei bis ganz zum Ende der Straße.\n6. Rechts in die lange Straße und immer weiter.\n7. Irgendwann seht ihr OBEN AM BERG DIE KIRCHE. Dann seid ihr richtig.\n8. Dort steht ein GRÜNES HAUS. Genau über dem grünen Busch steht eine Zahl.\n\n▸ DANACH WEG B — das gelbe Haus:\n\n1. Zurück zum Gartentürl, dann links den schmalen Weg entlang.\n2. Die Stufen hinunter, danach links, dann gleich wieder rechts.\n3. Die Straße entlang, an den Parkplätzen vorbei.\n4. Rechts VOR den Mülltonnen geht ein kleiner Weg hinein — dort steht Schwarzer Weg 22A und 22B.\n5. Hinein, dann links. Es kommt noch ein Parkplatz.\n6. Am Parkplatz entlang ganz nach vorne bis zur Straße.\n7. Oben am Berg seht ihr wieder die Kirche. Rechts steht ein GELBES HAUS mit einer Zahl.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?",
+    "Der Türsteher lässt nur rein, wer den Zahlencode kennt. Der Code sind ZWEI Hausnummern, zusammengezählt.\n\n▸ ZUERST WEG B — das gelbe Haus:\n\n1. Vom Gartentürl raus und links den schmalen Weg entlang.\n2. Die Stufen hinunter, danach links, dann gleich wieder rechts.\n3. Die Straße entlang, an den Parkplätzen vorbei.\n4. Rechts VOR den Mülltonnen geht ein kleiner Weg hinein — dort steht Schwarzer Weg 22A und 22B.\n5. Hinein, dann links. Es kommt noch ein Parkplatz.\n6. Am Parkplatz entlang ganz nach vorne bis zur Straße.\n7. Oben am Berg seht ihr die Kirche. Rechts steht ein GELBES HAUS mit einer Zahl.\n\n▸ DANACH WEG A — das grüne Haus:\n\n1. Zurück zum Gartentürl, dann rechts am Gehsteig entlang.\n2. Immer am Zaun entlang, bis zum grünen Netz beim Garten.\n3. Links in die Straße, bis ihr die Schilder Grabengasse 15 und Gartengasse 17 seht.\n4. Weiter Richtung orangen Container, dann rechts in die Straße hinein.\n5. Am kleinen Spielplatz vorbei bis ganz zum Ende der Straße.\n6. Rechts in die lange Straße und immer weiter, bis ihr oben am Berg die Kirche seht.\n7. Dort steht ein GRÜNES HAUS. Genau über dem grünen Busch steht eine Zahl.\n\nZählt beide Hausnummern zusammen. Wie lautet die Summe?"
   ],
-  antwort: "HIER SUMME EINTRAGEN",
-  tipp: "HIER TIPP EINTRAGEN — z. B. „Eine der beiden Nummern ist zweistellig.“",
+  antwort: "27",
+  tipp: "Eine der beiden Zahlen ist einstellig, die andere zweistellig. Zusammen sind es weniger als dreißig.",
   eingabeArt: "zahl"
 },
 
@@ -176,12 +178,12 @@ const STATIONEN = [
   titel: "Das Suchbild",
   modi: ["kurz", "mittel", "lang"],
   buchstabe: true,
-  ort: "In Gehweite",
-  weg: "Sucht diesen Ort. Er ist keine fünf Minuten entfernt.",
-  text: "Auf dem Bild seht ihr nur einen Ausschnitt. Findet die Stelle in echt.\n\nWas steht dort drauf?",
+  ort: "Beim hinteren Spielplatz",
+  weg: "Geht zum hinteren Spielplatz. Dort hängt eine Tafel — irgendwo daran ist dieser Ausschnitt.",
+  text: "Auf dem Bild seht ihr nur einen kleinen Ausschnitt. Findet das Schild in echt und lest es ganz durch.\n\nWelches Wort steht GANZ AM SCHLUSS darauf?",
   foto: "fotos/suchbild.jpg",
-  antwort: "HIER ANTWORT EINTRAGEN",
-  tipp: "HIER TIPP EINTRAGEN — z. B. „Schaut nach oben, nicht nach unten.“"
+  antwort: "VERBOTEN",
+  tipp: "Das allerletzte Wort auf dem Schild. Es steht ein Rufzeichen dahinter."
 },
 
 /* -------------------------------------------------------- 4 · Stoppuhr -- */
@@ -211,15 +213,16 @@ const STATIONEN = [
   titel: "Die Spiegelschrift",
   modi: ["kurz", "mittel", "lang"],
   buchstabe: true,
-  ort: "Zwei Orte, zwei Richtungen",
+  ort: "Ab dem orangen Container — jedes Team in eine andere Richtung",
+  weg: "Zurück zum Spielplatz, dann zum orangen Container. Dort trennt ihr euch.",
   teamText: [
-    "HIER WEG C EINTRAGEN — dort gibt es etwas Spiegelndes.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine Fensterscheibe, ein Schaufenster oder eine Autoscheibe — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.",
-    "HIER WEG D EINTRAGEN — dort gibt es etwas Spiegelndes.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine Fensterscheibe, ein Schaufenster oder eine Autoscheibe — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich."
+    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach RECHTS hinunter.\n4. Bis zum ORANGEN CONTAINER.\n5. Dort geht ihr NACH LINKS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)",
+    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach RECHTS hinunter.\n4. Bis zum ORANGEN CONTAINER.\n5. Dort geht ihr NACH RECHTS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nDie Nachricht unten steht verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)"
   ],
   spiegelText: "DAS LOSUNGSWORT BEGINNT MIT EINEM V",
   frage: "Und jetzt tippt ein: Womit beginnt das Losungswort?",
   antwort: "V",
-  tipp: "Notfalls: Blatt Papier draufhalten und die Buchstaben von hinten durchpausen."
+  tipp: "Notfalls: Blatt Papier draufhalten und die Buchstaben von hinten durchpausen. Oder das Handy einfach auf den Kopf stellen und schielen."
 },
 
 /* -------------------------------------------------- 7 · geheime Botschaft */
@@ -244,17 +247,22 @@ const STATIONEN = [
    eine Weile und haben in der Zeit drei Aufgaben. Ungefähr die Mitte der Jagd.
    ======================================================================== */
 
-/* ------------------------------------------------ 9 · Buffet-Rätsel ----- */
+/* ------------------------------------------------ 9 · Ankunft Lounge ---- */
 {
-  typ: "code",
+  typ: "foto",
   titel: "Die Lounge",
   modi: ["kurz", "mittel", "lang", "drinnen"],
   gemeinsam: true,
-  ort: "HIER PAUSENORT EINTRAGEN",
-  weg: "Hier ist für euch gedeckt. Setzt euch, esst, trinkt — und schaut genau hin.",
-  text: "Willkommen in der Lounge. Der Club sorgt für seine Mitglieder.\n\nAber nichts ist umsonst: An den Bechern und Tellern kleben kleine Zettel. Auf jedem steht ein Buchstabe und eine Zahl.\n\nDie Zahl sagt euch, an welche Stelle der Buchstabe gehört. Sammelt alle ein und setzt das Wort zusammen.\n\n(Ja, ihr müsst dafür alles anfassen. Genau das ist der Plan.)",
-  antwort: "HIER BUFFET-WORT EINTRAGEN",
-  tipp: "Zettel kleben auch dort, wo man nicht sofort hinschaut — unter dem Becher zum Beispiel."
+  gemeinsamText: "Ab hier geht es nur noch gemeinsam weiter. Wartet aufeinander — auch wenn es dauert.",
+  ort: "Draußen beim Gartentürl",
+  weg: "Geht zurück zum Gartentürl. Draußen davor ist für euch gedeckt.",
+  text: "Willkommen in der Lounge. Der Club sorgt für seine Mitglieder.\n\nSetzt euch. Esst etwas, trinkt etwas, schnauft durch.\n\nDas war die erste Hälfte — und ab jetzt geht es nur noch zusammen weiter.",
+  auftraege: [
+    "Wir sitzen und haben etwas getrunken",
+    "Das andere Team ist auch da",
+    "Wir haben uns gegenseitig erzählt, was bisher passiert ist"
+  ],
+  mindestens: 3
 },
 
 /* -------------------------------------------------- 10 · Becherturm ----- */
@@ -317,14 +325,14 @@ const STATIONEN = [
 /* ------------------------------------------------- 12 · QR-Zettel ------ */
 {
   typ: "code",
-  titel: "Die verstecken Zettel",
+  titel: "Die versteckten Zettel",
   modi: ["mittel", "lang"],
   gemeinsam: true,
-  ort: "HIER SUCHGEBIET EINTRAGEN",
-  weg: "HIER WEG EINTRAGEN.",
+  ort: "Rund um die Lounge",
+  weg: "Bleibt in der Nähe. Alle drei Zettel sind in Sichtweite vom Tisch.",
   text: "Irgendwo hier sind drei kleine Zettel versteckt — an Schildern, unter Bänken, an Zäunen. Auf jedem klebt ein QR-Code.\n\nScannt alle drei mit der Kamera. Jeder zeigt euch einen Buchstaben.\n\nSetzt die drei Buchstaben zusammen und tippt sie ein.",
-  antwort: "HIER ANTWORT EINTRAGEN",
-  tipp: "HIER TIPP EINTRAGEN — z. B. „Einer hängt tiefer, als ihr denkt.“",
+  antwort: "BAR",
+  tipp: "Einer hängt tiefer, als ihr denkt. Und einer ist dort, wo ihr gerade sitzt.",
   gemeinsamText: "Sucht ZUSAMMEN mit dem anderen Team. Es gibt nur drei Zettel — wer sie zuerst findet, nimmt sie nicht weg, sondern zeigt sie her."
 },
 
@@ -333,11 +341,11 @@ const STATIONEN = [
   typ: "code",
   titel: "Die Zählaufgabe",
   modi: ["lang"],
-  ort: "HIER ORT EINTRAGEN",
-  weg: "HIER WEG EINTRAGEN.",
-  text: "Kein Rateglück, nur genaues Schauen.\n\nZÄHLT: HIER EINTRAGEN, WAS GEZÄHLT WERDEN SOLL\n(zum Beispiel: die Stufen der Treppe, die Fenster an der Vorderseite, die Latten im Zaun)\n\nWie viele sind es?",
-  antwort: "HIER ZAHL EINTRAGEN",
-  tipp: "Zählt zu zweit und vergleicht — einer verzählt sich immer.",
+  ort: "Auf der kleinen Brücke",
+  weg: "Von der Lounge Richtung grüner Zaun, weiter zum orangen Container, ein Stück an der Straße entlang, dann links zur kleinen Brücke.",
+  text: "Kein Rateglück, nur genaues Schauen.\n\nIhr steht auf der kleinen Brücke. Sie hat ein grünes Geländer.\n\nZÄHLT: die DICKEN Steher am Geländer — auf BEIDEN Seiten der Brücke.\nDie dünnen Sprossen dazwischen zählen NICHT.\n\nWie viele sind es zusammen?",
+  antwort: "52",
+  tipp: "Zählt eine Seite in Ruhe und verdoppelt. Beide Seiten sind gleich.",
   eingabeArt: "zahl"
 },
 
@@ -358,9 +366,9 @@ const STATIONEN = [
   typ: "foto",
   titel: "Das Zeitreise-Foto",
   modi: ["lang"],
-  ort: "HIER ORT EINTRAGEN",
-  weg: "HIER WEG EINTRAGEN.",
-  text: "Dieses Bild wurde vor eurer Ankunft aufgenommen. Findet die Stelle — und stellt das Foto exakt nach, mit euch darauf.\n\nGleicher Winkel, gleicher Ausschnitt. Wenn ihr fertig seid, hakt ab.",
+  ort: "Der Baum im kleinen Kreisverkehr",
+  weg: "Über die Brücke und dann immer geradeaus, die lange Straße entlang. Beim gelben Haus mit dem Parkplatz gegenüber ist ein kleiner Kreisverkehr unter den Bäumen.",
+  text: "Dieses Bild wurde vor eurer Ankunft aufgenommen. Findet die Stelle — und stellt das Foto exakt nach, mit euch darauf.\n\nGleicher Winkel, gleicher Ausschnitt. Schaut euch an, wie tief die Kamera war — das ist der Trick.\n\nWenn ihr fertig seid, hakt ab.",
   foto: "fotos/zeitreise.jpg",
   auftraege: [
     "Wir haben die Stelle gefunden",
@@ -394,9 +402,10 @@ const STATIONEN = [
   typ: "sprint",
   titel: "Der Sprint",
   modi: ["mittel", "lang"],
-  ort: "HIER ZIELPUNKT EINTRAGEN",
+  ort: "Die Bank gegenüber dem Feuerwehrtor",
+  weg: "Vom Kreisverkehr zur Straße — nicht Richtung Brücke und nicht Richtung orangen Container, sondern in die dritte Richtung hinauf.",
   sekunden: 180,
-  text: "Jetzt zählt Tempo.\n\nIhr habt DREI MINUTEN, um HIER ZIELPUNKT EINTRAGEN zu erreichen und dort ein Foto von euch zu machen.\n\nSchafft ihr es, gibt es Bonuspunkte. Schafft ihr es nicht, geht es trotzdem weiter — aber ohne Bonus.\n\nBereit?",
+  text: "Jetzt zählt Tempo.\n\nIhr habt DREI MINUTEN, um zum ELEFANTEN-SPIELPLATZ zu laufen.\n\nHinter dem Elefanten steht eine schwarze Tonne. Dahinter ist eine kleine Bank — genau gegenüber dem Feuerwehrtor.\n\nSetzt euch auf die Bank und macht ein Foto von der Feuerwehr. Oder stellt euch davor und macht ein Selfie. Beides zählt.\n\nSchafft ihr es, gibt es Bonuspunkte. Schafft ihr es nicht, geht es trotzdem weiter — aber ohne Bonus.\n\nBereit?",
   auftraege: [
     "Wir waren rechtzeitig dort und haben das Foto gemacht"
   ]
@@ -407,13 +416,14 @@ const STATIONEN = [
   typ: "kennwort",
   titel: "Die halbe Wahrheit",
   modi: ["kurz", "mittel", "lang"],
-  ort: "Zwei Verstecke",
+  ort: "Die roten Stecken oberhalb vom orangen Container",
+  weg: "Zurück zum orangen Container, dort links den kleinen Weg hinauf bis ganz oben.",
   teamText: [
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 1 BESCHREIBEN\n\nDort liegt EUER Zettel — das andere Team hat ein eigenes Versteck woanders, ihr kommt euch also nicht in die Quere.\n\nMerkt euch, was darauf steht, und sucht dann das andere Team. Ohne dessen Hälfte geht gar nichts.",
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nHIER VERSTECK 2 BESCHREIBEN\n\nDort liegt EUER Zettel — das andere Team hat ein eigenes Versteck woanders, ihr kommt euch also nicht in die Quere.\n\nMerkt euch, was darauf steht, und sucht dann das andere Team. Ohne dessen Hälfte geht gar nichts."
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts.",
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts."
   ],
   frage: "Habt ihr beide Hälften? Dann tippt das ganze Kennwort ein.",
-  tipp: "Beide Wörter hintereinander, in der richtigen Reihenfolge. Ihr merkt selbst, was zuerst kommt."
+  tipp: "Beide Wörter hintereinander, in der richtigen Reihenfolge. Eines davon ist eine Farbe — und Farben stehen meistens vorne."
 },
 
 /* ----------------------------------------------------------- 16 · Anruf -- */
@@ -421,11 +431,31 @@ const STATIONEN = [
   typ: "anruf",
   titel: "Der Anruf",
   modi: ["kurz", "mittel", "lang"],
-  ort: "HIER ORT EINTRAGEN — weit weg vom Garten",
-  weg: "Von hier ist es ein ordentliches Stück zurück. Das ist Absicht.",
-  text: "Letzte Hürde vor dem Club.\n\nRuft den Empfang an. Wer sich meldet, will nur eines hören: euer Kennwort.\n\nStimmt es, bekommt ihr den Zutrittscode. Stimmt es nicht, wird aufgelegt.",
+  ort: "Beim orangen Container",
+  weg: "Geht gemeinsam von den Stecken hinunter zum orangen Container. Von dort wird telefoniert.",
+  gemeinsam: true,
+  gemeinsamText: "EIN Team ruft an — aber auf LAUTSPRECHER. Alle müssen mithören, auch das andere Team.",
+  text: "Letzte Hürde vor dem Club.\n\n☎️ EIN TEAM RUFT AN. HANDY AUF LAUTSPRECHER.\nAlle stehen zusammen und hören mit — auch das andere Team.\n\nWer sich meldet, will nur eines hören: euer Kennwort.\n\nStimmt es, bekommt ihr den Zutrittscode UND einen letzten Auftrag.\n\nHÖRT GENAU ZU. Der Auftrag wird nur einmal gesagt.\n\nDanach tragt ihr den Code hier ein — beide Teams, jedes auf seinem eigenen Handy.",
   frage: "Wie lautet der Zutrittscode?",
   tipp: "Deutlich sprechen und beide Wörter sagen. Wer nuschelt, fliegt raus."
+},
+
+/* ------------------------------------------------------- 17 · Abholung -- */
+{
+  typ: "foto",
+  titel: "Die Abholung",
+  modi: ["kurz", "mittel", "lang"],
+  gemeinsam: true,
+  gemeinsamText: "Beide Teams gehen zusammen. Jeder braucht ein Band — auch die aus dem anderen Team.",
+  ort: "Elefanten-Spielplatz",
+  weg: "Ihr wart heute schon dort. Ihr kennt den Weg.",
+  text: "Der Club schickt euch noch einmal los.\n\nGeht zum ELEFANTEN-SPIELPLATZ. Hinter dem Elefanten wartet etwas auf euch.\n\nJEDER nimmt sich ein EINLASSBAND und zieht es an. Ohne Band kommt niemand in den VIP-Garten — das ist die Regel des Clubs.\n\nWas sonst noch dabeiliegt, gehört auch euch.\n\nDann so schnell ihr könnt zurück zum Gartentürl. Er wartet schon.",
+  auftraege: [
+    "Jeder von uns trägt ein Band am Handgelenk",
+    "Auch das andere Team hat Bänder",
+    "Wir haben ein Foto von uns allen mit Band gemacht"
+  ],
+  mindestens: 2
 },
 
 /* ---------------------------------------------------------- FINALE ------ */
@@ -433,9 +463,9 @@ const STATIONEN = [
   typ: "finale",
   titel: "Die VIP-Lounge",
   ort: "Zurück zum Garten",
-  weg: "Lauft zurück. Am Tor wartet jemand.",
+  weg: "Lauft zurück zum Gartentürl. Am Tor wartet jemand — und der will das Band sehen.",
   text: "Ihr habt alle Buchstaben. Jetzt legt sie in die richtige Reihenfolge.\n\nTippt die Buchstaben der Reihe nach an — dann auf CODE PRÜFEN.",
-  danachText: "Zutritt gewährt.\n\nJetzt aber schnell zurück zum Garten. Am Tor steht der Türsteher — sagt ihm das Losungswort ins Gesicht, laut und deutlich.\n\nErst dann geht das Tor auf."
+  danachText: "Zutritt gewährt.\n\nJetzt aber schnell zurück zum Gartentürl. Am Tor steht der Türsteher.\n\n1. Sagt ihm das Losungswort ins Gesicht — laut und deutlich.\n2. Haltet ihm euer EINLASSBAND hin. Er schaut sich jedes Handgelenk einzeln an.\n\nErst dann geht das Tor auf."
 }
 
 ];
