@@ -933,8 +933,10 @@ function bauFoto(st,i){
       <button class="knopf" id="weiter" ${an<noetig?"disabled":""}>
         ${an<noetig ? (noetig-an===1 ? "Noch 1 Auftrag fehlt" : "Noch "+(noetig-an)+" Aufträge fehlen") : "Fertig — weiter"}</button>
       <p class="hinweis">Mindestens ${noetig} von ${(st.auftraege||[]).length} müssen erledigt sein.</p>
+      ${tippBlock(st,i)}
     </div>`;
   hakenVerdrahten(i);
+  tippVerdrahten(st,i);
   const w = $("#weiter");
   if(w && !w.disabled) w.onclick = ()=>{
     const voll = (Z.haken[i]||[]).length === (st.auftraege||[]).length;

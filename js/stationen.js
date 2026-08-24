@@ -489,9 +489,10 @@ const STATIONEN = [
   modi: ["kurz", "mittel", "lang"],
   gemeinsam: true,
   gemeinsamText: "Beide Teams gehen zusammen. Jeder braucht ein Band — auch die aus dem anderen Team.",
-  ort: "Elefanten-Spielplatz",
-  weg: "Ihr wart heute schon dort. Ihr kennt den Weg.",
-  text: "Der Club schickt euch noch einmal los.\n\nGeht zum ELEFANTEN-SPIELPLATZ. Hinter dem Elefanten wartet etwas auf euch.\n\nJEDER nimmt sich ein EINLASSBAND und zieht es an. Ohne Band kommt niemand in den VIP-Garten — das ist die Regel des Clubs.\n\nWas sonst noch dabeiliegt, gehört auch euch.\n\nDann so schnell ihr könnt zurück zum Gartentürl. Er wartet schon.",
+  ort: "Dort, wo der Osterhase wohnt",
+  weg: "Zoe weiß, wo das ist. Wenn ihr gar nicht draufkommt, holt euch den Tipp.",
+  text: "Der Club schickt euch noch einmal los.\n\nGeht dorthin, WO DER OSTERHASE WOHNT.\n\nZoe weiß, wo das ist — fragt sie. Dort steht eine BOX.\n\nJEDER nimmt sich ein EINLASSBAND und zieht es an. Ohne Band kommt niemand in den VIP-Garten — das ist die Regel des Clubs.\n\nWas sonst noch dabeiliegt, gehört auch euch.\n\nDann so schnell ihr könnt zurück zum Gartentürl. Er wartet schon.",
+  tipp: "So kommt ihr hin:\n\n1. Wieder zurück ÜBER DIE BRÜCKE.\n2. Gleich nach der Brücke RECHTS in den Weg hinein, der in den WALD führt.\n3. Nach ein paar Metern steht ihr bei den ROTEN STECKEN im Wald.\n4. Dort steht die Box.\n\n(Das sind andere Stecken als die in der Wiese von vorhin.)",
   auftraege: [
     "Jeder von uns trägt ein Band am Handgelenk",
     "Auch das andere Team hat Bänder",

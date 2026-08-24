@@ -208,7 +208,9 @@ body.silber .knopf{color:#15171a; box-shadow:0 8px 26px rgba(200,204,210,.22)}
 }
 .meldung.minus{background:rgba(255,59,48,.12); border:1px solid rgba(255,59,48,.35); color:#ffb3ae}
 .meldung.plus {background:rgba(52,209,124,.12); border:1px solid rgba(52,209,124,.35); color:#a8f0c9}
-.meldung.tipp {background:rgba(212,175,55,.10); border:1px solid var(--karte-rand); color:var(--gold-hell); text-align:left}
+/* pre-line, damit ein Tipp auch eine Wegbeschreibung mit Schritten sein kann */
+.meldung.tipp {background:rgba(212,175,55,.10); border:1px solid var(--karte-rand);
+  color:var(--gold-hell); text-align:left; white-space:pre-line; line-height:1.6}
 body.silber .meldung.tipp{color:#e6e9ee}
 
 /* ---- 9. Auftrags-Liste zum Abhaken ------------------------------------- */
