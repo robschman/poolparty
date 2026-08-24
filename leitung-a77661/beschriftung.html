@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Was du beschriften musst — VIP-Schnitzeljagd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --grund:#f7f4ed; --grund-2:#efeade; --karte:#fffdf8; --rand:#ddd5c2;
+  --schrift:#1f1c15; --schrift-2:#635c4c; --schrift-3:#8d8474;
+  --gold:#93701a; --gold-tuell:#f3e9cd; --rot:#a4402c; --rot-tuell:#f8e6e0;
+  --gruen:#34694b; --gruen-tuell:#e2f0e6; --breite:min(100% - 2.2rem, 42rem);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}}
+:root[data-theme="dark"]{
+  --grund:#100e0b; --grund-2:#16130f; --karte:#1a1712; --rand:#322c22;
+  --schrift:#f2ede1; --schrift-2:#a89e8a; --schrift-3:#7d7462;
+  --gold:#dcb455; --gold-tuell:#241d0f; --rot:#e88a76; --rot-tuell:#2a1510;
+  --gruen:#7bc39a; --gruen-tuell:#122019;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--grund); color:var(--schrift); font-size:17px; line-height:1.55;
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif}
+.bahn{width:var(--breite); margin-inline:auto}
+header{background:radial-gradient(120% 130% at 50% -20%, var(--gold-tuell), transparent 62%), var(--grund-2);
+  border-bottom:1px solid var(--rand); padding:clamp(1.8rem,6vw,2.8rem) 0 clamp(1.2rem,4vw,1.8rem)}
+.marke{font-size:.68rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold);
+  font-weight:700; margin:0 0 .7rem}
+h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
+  font-size:clamp(2rem,7.4vw,3rem); line-height:1.02; margin:0}
+.dach{color:var(--schrift-2); margin:.7rem 0 0; font-size:.96rem}
+section{padding:clamp(1.4rem,4vw,2rem) 0 .2rem}
+.stueck{background:var(--karte); border:1px solid var(--rand); border-radius:14px;
+  padding:1.1rem 1.2rem 1.3rem; margin:0 0 1.1rem}
+.nr{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold); font-weight:600; margin:0 0 .35rem}
+h2{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600; font-size:1.4rem; margin:0 0 .1rem}
+.wo{color:var(--schrift-2); font-size:.9rem; margin:0 0 .9rem}
+.gitter{display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem}
+.kachel{display:flex; align-items:center; justify-content:center;
+  width:2.5rem; height:2.5rem; border-radius:8px; border:1.5px solid var(--gold);
+  background:var(--gold-tuell); color:var(--gold); font-weight:900; font-size:1.15rem;
+  font-family:"IBM Plex Mono",monospace}
+.kachel.niete{border-color:var(--rand); background:var(--grund-2);
+  color:var(--schrift-3); font-weight:600}
+.wort{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--gold);
+  letter-spacing:.14em}
+.worauf{border-left:3px solid var(--gold); padding:.1rem 0 .1rem .9rem; margin:0 0 .9rem}
+.worauf b{color:var(--gold)}
+.nicht{background:var(--rot-tuell); border:1px solid var(--rot); border-radius:10px;
+  padding:.75rem .95rem; margin:.9rem 0 0; font-size:.93rem}
+.nicht b{color:var(--rot)}
+ol{margin:.2rem 0 0; padding-left:1.3rem}
+li{margin-bottom:.42rem}
+li:last-child{margin-bottom:0}
+.fertig{background:var(--gruen-tuell); border:1px solid var(--gruen); border-radius:10px;
+  padding:.75rem .95rem; margin:.9rem 0 0; font-size:.93rem}
+.fertig b{color:var(--gruen)}
+.warnung{background:var(--rot-tuell); border:1px solid var(--rot); border-radius:10px;
+  padding:.8rem 1rem; margin:1rem 0}
+.erklaer{background:var(--grund-2); border:1px solid var(--rand); border-radius:14px;
+  padding:1.1rem 1.2rem 1.3rem; margin:0 0 1.1rem}
+.erklaer h3{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
+  font-size:1.12rem; margin:0 0 .5rem}
+.erklaer p{margin:0 0 .7rem}
+.erklaer p:last-child{margin-bottom:0}
+table{width:100%; border-collapse:collapse; margin:.6rem 0 .2rem; font-size:.92rem}
+th{text-align:left; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--schrift-3); font-weight:700; padding:0 .5rem .35rem 0; border-bottom:1px solid var(--rand)}
+td{padding:.4rem .5rem .4rem 0; border-bottom:1px solid var(--rand)}
+tr:last-child td{border-bottom:0}
+td.b{width:2.4rem; text-align:center; font-family:"IBM Plex Mono",monospace;
+  font-weight:900; color:var(--gold); font-size:1.05rem}
+.pfeil{color:var(--schrift-3); font-size:.86rem; margin:.5rem 0 0}
+footer{border-top:1px solid var(--rand); margin-top:2rem;
+  padding:1.3rem 0 3rem; color:var(--schrift-3); font-size:.86rem}
+@media print{
+  body{background:#fff; color:#000; font-size:11pt}
+  header{background:#fff; border-bottom:2px solid #000}
+  .stueck{break-inside:avoid; border:1px solid #999}
+}
+</style>
+</head>
+<body>
+
+<header><div class="bahn">
+  <p class="marke">VIP-Schnitzeljagd · Zoes Poolparty</p>
+  <h1>Was du selbst<br>beschriften musst</h1>
+  <p class="dach">Wozu die Buchstaben da sind — und welche drei Dinge du
+    selbst beschriften musst. Alles andere macht die App.</p>
+</div></header>
+
+<div class="bahn">
+
+
+<section>
+
+  <div class="erklaer">
+    <h3>Zuerst: es gibt ZWEI verschiedene Sorten Buchstaben</h3>
+    <p>Die werden leicht verwechselt — sie haben aber nichts miteinander zu tun.</p>
+
+    <p><b>1. Die acht Sammel-Buchstaben (VIPPARTY).</b>
+    Die gibt die <b>App von selbst</b>, jedes Mal wenn eine Station gelöst ist.
+    Sie erscheinen oben am Handy und kommen absichtlich durcheinander.
+    Ganz am Schluss müssen die Kinder sie in die richtige Reihenfolge legen —
+    das ist das Losungswort für den Türsteher.
+    <b>Dafür musst du gar nichts vorbereiten.</b></p>
+
+    <table>
+      <tr><th>Station</th><th style="text-align:center">gibt</th></tr>
+      <tr><td>Der Türsteher</td><td class="b">P</td></tr>
+      <tr><td>Die Geheimschrift</td><td class="b">Y</td></tr>
+      <tr><td>Das Suchbild</td><td class="b">I</td></tr>
+      <tr><td>Sicherheitsstufe Rot</td><td class="b">R</td></tr>
+      <tr><td>Die Spiegelschrift</td><td class="b">V</td></tr>
+      <tr><td>Die geheime Botschaft</td><td class="b">T</td></tr>
+      <tr><td>Das Emoji-Duell</td><td class="b">P</td></tr>
+      <tr><td>Die Rechnung des Concierge</td><td class="b">A</td></tr>
+    </table>
+    <p class="pfeil">In dieser Reihenfolge gesammelt:
+      <b>P · Y · I · R · V · T · P · A</b> → am Ende sortiert zu
+      <span class="wort">VIPPARTY</span></p>
+
+    <p style="margin-top:1rem"><b>2. Die Rätsel-Buchstaben.</b>
+    Das sind die, die du bastelst. Sie gehören <b>nicht</b> zur Sammlung —
+    sie sind die <b>Aufgabe selbst</b>. Die Kinder suchen sie, setzen sie zu einem
+    Wort zusammen und tippen dieses Wort ein. Stimmt es, gibt es Punkte:</p>
+    <table>
+      <tr><th>Station</th><th style="text-align:center">Buchstaben ergeben</th></tr>
+      <tr><td>Das Eisfach — 12 Eiswürfel</td><td class="b" style="width:auto">EISKALT</td></tr>
+      <tr><td>Die versteckten Zettel — 3 QR-Codes</td><td class="b" style="width:auto">BAR</td></tr>
+    </table>
+
+    <div class="nicht" style="margin-top:1rem">
+      <b>Das Buffet-Rätsel gibt es nicht mehr.</b> Früher war angedacht, Buchstaben
+      auf Teller und Becher zu kleben — das haben wir gestrichen. Du suchst es
+      im Spiel zu Recht vergeblich. An Teller und Becher kommt nichts.
+    </div>
+  </div>
+
+  <div class="stueck">
+    <p class="nr">Stück 1 von 3</p>
+    <h2>Die zwölf Eiswürfel-Zettel</h2>
+    <p class="wo">Station „Das Eisfach" · im Garten · beide Teams zusammen</p>
+
+    <div class="gitter"><span class="kachel">I</span><span class="kachel">L</span><span class="kachel">K</span><span class="kachel niete">✗</span><span class="kachel">E</span><span class="kachel niete">✗</span><span class="kachel niete">✗</span><span class="kachel">A</span><span class="kachel niete">✗</span><span class="kachel">S</span><span class="kachel niete">✗</span><span class="kachel">T</span></div>
+    <p style="margin:0 0 .9rem">
+      <b>7 echte Buchstaben</b> ergeben <span class="wort">EISKALT</span>,
+      dazu <b>5 Nieten</b> mit einem ✗. Zusammen zwölf Zettel.</p>
+
+    <div class="worauf">
+      <b>Worauf:</b> normales Druckerpapier reicht — aber die Schrift muss wasserfest sein.
+    </div>
+    <ol>
+      <li><b>Laserdrucker:</b> den fertigen Bastelbogen ausdrucken. Lasertoner ist wasserfest,
+          da passt alles.</li>
+      <li><b>Kein Laserdrucker?</b> Zwölf Zettel aus Papier schneiden und die Buchstaben mit
+          einem <b>wasserfesten Stift (Edding, Permanentmarker)</b> daraufschreiben.</li>
+      <li>Jeden Zettel <b>klein zusammenfalten und in Frischhaltefolie einwickeln</b>.</li>
+      <li>In die Eiswürfelform legen, Wasser drauf, ins Gefrierfach —
+          <b>am Vortag</b>, das braucht ein paar Stunden.</li>
+    </ol>
+
+    <div class="nicht">
+      <b>Tintenstrahldrucker geht nicht.</b> Die Tinte löst sich im Eis auf, nach zwei Stunden
+      ist der Zettel leer. Im Zweifel lieber von Hand mit dem Edding schreiben.
+    </div>
+  </div>
+
+  <div class="stueck">
+    <p class="nr">Stück 2 von 3</p>
+    <h2>Die drei QR-Zettel</h2>
+    <p class="wo">Station „Die versteckten Zettel" · draußen versteckt · beide Teams zusammen</p>
+
+    <div class="gitter"><span class="kachel">R</span><span class="kachel">B</span><span class="kachel">A</span></div>
+    <p style="margin:0 0 .9rem">
+      Zettel 1 = <b>R</b>, Zettel 2 = <b>B</b>,
+      Zettel 3 = <b>A</b> — zusammen <span class="wort">BAR</span>.</p>
+
+    <div class="worauf">
+      <b>Worauf:</b> normales Papier — aber es muss <b>in eine Klarsichthülle</b> oder laminiert
+      werden. Draußen reicht schon Tau, um Papier über Nacht zu ruinieren.
+    </div>
+    <ol>
+      <li>Bastelbogen ausdrucken — die QR-Codes sind schon drauf, du musst nichts schreiben.</li>
+      <li>Ausschneiden, in eine Klarsichthülle stecken oder laminieren.</li>
+      <li>Mit <b>Klebeband</b> befestigen: an Schildern, unter Bänken, an Zäunen.
+          Nichts lose hinlegen — der Wind holt es.</li>
+      <li>Alle drei müssen <b>vom Tisch aus in Sichtweite</b> sein.</li>
+    </ol>
+
+    <div class="fertig">
+      <b>Die Buchstaben stehen nicht auf dem Zettel.</b> Auf dem Zettel ist nur der QR-Code —
+      der Buchstabe erscheint erst am Handy, wenn die Kinder ihn scannen.
+    </div>
+  </div>
+
+  <div class="stueck">
+    <p class="nr">Stück 3 von 3</p>
+    <h2>Die zwei Holzstecken</h2>
+    <p class="wo">Station „Die halbe Wahrheit" · in der Wiese oberhalb vom orangen Container</p>
+
+    <div class="gitter">
+      <span class="kachel" style="width:auto; padding:0 .9rem">ROTER</span>
+      <span class="kachel" style="width:auto; padding:0 .9rem">TEPPICH</span>
+    </div>
+    <p style="margin:0 0 .9rem">
+      Ein Stecken bekommt <span class="wort">ROTER</span>, der andere
+      <span class="wort">TEPPICH</span>. Zusammen ergibt das das Kennwort.</p>
+
+    <div class="worauf">
+      <b>Worauf:</b> direkt auf das Holz, mit <b>wasserfestem Stift</b>. Kein Papier —
+      das hält draußen nicht.
+    </div>
+    <ol>
+      <li>Zwei Holzstecken, oben <b>rot markieren</b> (Farbe, rotes Klebeband oder Sprühlack) —
+          daran erkennen die Kinder sie.</li>
+      <li>Das Wort groß und leserlich auf den Stecken schreiben.</li>
+      <li>In die Wiese stecken: einen <b>links</b>, einen <b>rechts</b> vom oberen Weg.
+          Die Teams gehen in verschiedene Richtungen.</li>
+    </ol>
+
+    <div class="nicht">
+      <b>Wichtig:</b> Jedes Team darf nur SEINE Hälfte sehen. Die zwei Stecken müssen
+      weit genug auseinander stehen, sonst sieht man beide auf einmal.
+    </div>
+  </div>
+
+</section>
+
+<section>
+  <div class="stueck">
+    <h2>Und was du NICHT beschriften musst</h2>
+    <ul style="list-style:none; padding:0; margin:.6rem 0 0">
+      <li style="margin-bottom:.5rem">✗ <b>Becher, Teller, Strohhalme</b> — da kommt nichts drauf.
+        Die Becher werden nur zum Turm gestapelt (Station „Der Becherturm").
+        Das Buffet-Rätsel gibt es nicht mehr.</li>
+      <li style="margin-bottom:.5rem">✗ <b>Einlassbänder</b> — die bleiben leer, sie sind nur
+        der Nachweis am Tor.</li>
+      <li>✗ <b>Alle anderen Buchstaben</b> des Losungsworts
+        <span class="wort">VIPPARTY</span> —
+        die vergibt die App von selbst, wenn eine Station gelöst ist.</li>
+    </ul>
+  </div>
+</section>
+
+<footer><div class="bahn">
+  Gebaut aus <code>stationen.js</code> — wenn sich dort ein Wort ändert, einmal
+  <code>node beschriftung-bauen.js</code> laufen lassen, dann stimmt diese Seite wieder.
+</div></footer>
+</div>
+</body>
+</html>
