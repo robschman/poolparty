@@ -114,6 +114,19 @@ textarea:focus, input:focus{outline:2px solid var(--gold); outline-offset:1px}
 .leerhin{color:var(--schrift-3); font-size:.88rem; font-style:italic}
 
 /* Codes */
+.nummernfeld{background:var(--karte); border:1px solid var(--rand); border-radius:12px;
+  padding:.9rem 1rem; margin:0 0 1.1rem}
+.nummernfeld label{display:block; font-size:.9rem; line-height:1.5; margin:0 0 .55rem}
+.nummernfeld label b{color:var(--gold)}
+.nummernfeld input{width:100%; font:inherit; font-size:1.15rem; font-weight:600;
+  letter-spacing:.04em; padding:.6rem .8rem; border-radius:9px;
+  border:1px solid var(--rand); background:var(--grund); color:var(--schrift)}
+.nummernfeld input:focus{outline:none; border-color:var(--gold)}
+.nummernfeld .klein{font-size:.78rem; color:var(--schrift-3); margin:.5rem 0 0; line-height:1.45}
+.nummernfeld .telfehlt{background:var(--rot-tuell); border:1px solid var(--rot);
+  border-radius:9px; padding:.6rem .75rem; margin:.6rem 0 0;
+  font-size:.85rem; line-height:1.5; color:var(--schrift)}
+.nummernfeld .telfehlt b{color:var(--rot)}
 .codekarte{background:var(--karte); border:2px solid var(--gold); border-radius:16px;
   padding:1.4rem 1.2rem; text-align:center}
 .codekarte .wer{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;
@@ -397,6 +410,19 @@ body.hellDrucken #zettel .zlinie{border-bottom-color:#666}
   <h2>Der Code für <span id="codeTeamName">Team 1</span></h2>
   <p class="warum" id="codeHilfe">Halt das Handy hoch. Nur dieses Team scannt diesen Code —
      mit der normalen Kamera draufhalten, auf die Einblendung tippen, fertig.</p>
+
+  <div class="nummernfeld">
+    <label for="telNr"><b>Deine Telefonnummer</b> — kommt in den Code, damit die
+      Kinder beim Anruf direkt auf „anrufen“ tippen können.</label>
+    <input type="tel" id="telNr" inputmode="tel" placeholder="z. B. 0650 123 45 67"
+           autocomplete="off">
+    <p class="klein">Steht bewusst in keiner Datei — die Website ist öffentlich.
+      Sie wird nur hier gemerkt und in die Codes gepackt.</p>
+    <p class="telfehlt" id="telFehlt" hidden>⚠️ <b>Noch keine Nummer.</b>
+      Ohne sie steht bei der Station „Der Anruf“ kein Anruf-Knopf — dann
+      kommen die Kinder dort nicht weiter.</p>
+  </div>
+
   <div class="codekarte" id="codekarte"></div>
   <button class="gross" id="codeWeiter">Haben gescannt — weiter</button>
   <button class="gross stil2" id="codeZurueck">Einen Code zurück</button>
@@ -970,7 +996,12 @@ body.hellDrucken #zettel .zlinie{border-bottom-color:#666}
     if(codeNr >= d.listen.length) codeNr = d.listen.length - 1;
     if(codeNr < 0) codeNr = 0;
     var name = TEAMS[codeNr] || ("Team " + (codeNr+1));
-    var ziel = BASIS + "/?modus=" + stand.modus + "&team=" + codeNr;
+    var nr = ($("#telNr").value || "").trim();
+    var ziel = BASIS + "/?modus=" + stand.modus + "&team=" + codeNr
+             + (nr ? "&tel=" + encodeURIComponent(nr) : "");
+    /* Ohne Nummer können die Kinder beim Anruf nicht anrufen — das ist der
+       Punkt, an dem das ganze Spiel stehenbleibt. Also deutlich warnen. */
+    $("#telFehlt").hidden = !!nr;
 
     var qr = qrcode(0, "M");
     qr.addData(ziel);
@@ -994,6 +1025,16 @@ body.hellDrucken #zettel .zlinie{border-bottom-color:#666}
       ? "Der letzte Code. Danach kannst du die Seite zumachen — am Schluss kommst du für die Kontrolle zurück."
       : "Halt das Handy hoch. Nur dieses Team scannt diesen Code — mit der normalen Kamera draufhalten, auf die Einblendung tippen, fertig.";
   }
+  /* Die Nummer bleibt auf diesem Gerät gespeichert — einmal eintippen genügt. */
+  (function(){
+    var feld = $("#telNr");
+    try{ feld.value = localStorage.getItem("vip_tuersteher_tel") || ""; }catch(e){}
+    feld.addEventListener("input", function(){
+      try{ localStorage.setItem("vip_tuersteher_tel", feld.value.trim()); }catch(e){}
+      codeZeigen();
+    });
+  })();
+
   $("#codeWeiter").addEventListener("click", function(){
     var d = teamsAlsListen();
     if(codeNr >= d.listen.length - 1){ zeige(5); return; }

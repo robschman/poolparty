@@ -75,8 +75,15 @@ const SPIEL = {
   loesungswort: "VIPPARTY",
   buchstabenReihenfolge: [3, 7, 1, 5, 0, 6, 2, 4],
 
-  /* ---- DER ANRUF ---------------------------------------------------------- */
-  telefonnummer:  "HIER DEINE NUMMER EINTRAGEN",
+  /* ---- DER ANRUF ----------------------------------------------------------
+     Die Telefonnummer steht ABSICHTLICH nicht hier drin: Diese Datei liegt in
+     einem öffentlichen Repo und damit stünde eine private Handynummer für
+     jeden im Netz. Sie kommt stattdessen über den QR-Code — in der
+     Türsteher-App gibt es dafür ein Feld, sie hängt dann als ?tel=... an der
+     Adresse und wird am Handy gemerkt. Der Text unten erscheint nur, falls
+     doch einmal keine Nummer ankommt.
+     -------------------------------------------------------------------------- */
+  telefonnummer:  "Die Nummer steht auf eurem Zettel",
   kennwortTeil1:  "ROTER",        // findet Team 1
   kennwortTeil2:  "TEPPICH",      // findet Team 2
   anrufCode:      "MILLIONÄR",    // den sagst du am Telefon, wenn das Kennwort stimmt
@@ -243,8 +250,8 @@ const STATIONEN = [
   ort: "Ab dem orangen Container — jedes Team in eine andere Richtung",
   weg: "Zurück zum Spielplatz, dann zum orangen Container. Dort trennt ihr euch.",
   teamText: [
-    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr den ORANGEN CONTAINER seht.\n5. Dort geht ihr NACH LINKS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nErst wenn ihr bei den Autos steht, tippt unten auf SPIEGELSCHRIFT ANZEIGEN.\n\nDie Nachricht steht dann verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)",
-    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr den ORANGEN CONTAINER seht.\n5. Dort geht ihr NACH RECHTS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nErst wenn ihr bei den Autos steht, tippt unten auf SPIEGELSCHRIFT ANZEIGEN.\n\nDie Nachricht steht dann verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)"
+    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr VOR DEM ORANGEN CONTAINER steht.\n5. Dort geht ihr NACH LINKS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nErst wenn ihr bei den Autos steht, tippt unten auf SPIEGELSCHRIFT ANZEIGEN.\n\nDie Nachricht steht dann verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)",
+    "So kommt ihr hin:\n\n1. Zurück zum Spielplatz, zur SCHAUKEL.\n2. Genau zwischen den zwei Häusern LINKS von der Schaukel durchgehen.\n3. Ihr kommt auf eine Straße — die geht ihr nach LINKS entlang.\n4. Geht so weit, bis ihr VOR DEM ORANGEN CONTAINER steht.\n5. Dort geht ihr NACH RECHTS, bis zum Ende der Straße.\n6. Dort stehen Autos.\n\nErst wenn ihr bei den Autos steht, tippt unten auf SPIEGELSCHRIFT ANZEIGEN.\n\nDie Nachricht steht dann verkehrt herum. So bekommt ihr sie lesbar:\n\nHaltet das Handy vor eine AUTO-SEITENSCHEIBE — im Spiegelbild stimmt sie wieder.\n\nOder ihr nehmt die SELFIE-Kamera eines zweiten Handys und schaut die Schrift darin an. Die spiegelt nämlich.\n\n(Das andere Team ist in die Gegenrichtung unterwegs. Ihr trefft euch nicht.)"
   ],
   spiegelText: "DAS LOSUNGSWORT BEGINNT MIT EINEM V",
   frage: "Und jetzt tippt ein: Womit beginnt das Losungswort?",
@@ -447,7 +454,7 @@ const STATIONEN = [
   ort: "Die Bank gegenüber dem Feuerwehrtor",
   weg: "Vom Kreisverkehr zur Straße — nicht Richtung Brücke und nicht Richtung orangen Container, sondern in die dritte Richtung hinauf.",
   sekunden: 180,
-  text: "Jetzt zählt Tempo.\n\nIhr habt DREI MINUTEN, um zum ELEFANTEN-SPIELPLATZ zu laufen.\n\nHinter dem Elefanten steht eine schwarze Tonne. Dahinter ist eine kleine Bank — genau gegenüber dem Feuerwehrtor.\n\nSetzt euch auf die Bank und macht ein Foto von der Feuerwehr. Oder stellt euch davor und macht ein Selfie. Beides zählt.\n\nSchafft ihr es, gibt es Bonuspunkte. Schafft ihr es nicht, geht es trotzdem weiter — aber ohne Bonus.\n\nBereit?",
+  text: "Jetzt zählt Tempo.\n\nIhr habt DREI MINUTEN, um zum ELEFANTEN-SPIELPLATZ zu laufen.\n\nWenn ihr beim ELEFANTEN steht, seht ihr RECHTS eine schwarze Tonne — da steht RESTMÜLL drauf. Diesen Weg geht ihr entlang.\n\nDahinter ist eine kleine Bank, genau gegenüber dem Feuerwehrtor.\n\nSetzt euch auf die Bank und macht ein Foto von der Feuerwehr. Oder stellt euch davor und macht ein Selfie. Beides zählt.\n\nSchafft ihr es, gibt es Bonuspunkte. Schafft ihr es nicht, geht es trotzdem weiter — aber ohne Bonus.\n\nBereit?",
   auftraege: [
     "Wir waren rechtzeitig dort und haben das Foto gemacht"
   ]
@@ -461,8 +468,8 @@ const STATIONEN = [
   ort: "Die roten Stecken oberhalb vom orangen Container",
   weg: "Zurück zum orangen Container, dort links den kleinen Weg hinauf bis ganz oben.",
   teamText: [
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts.",
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n\nDas andere Team sucht in die Gegenrichtung. Wartet oben aufeinander — ohne dessen Hälfte geht gar nichts."
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n6. Wenn ihr euren Stecken habt: wieder zurück und den RADWEG entlang.\n\nDas andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.",
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n6. Wenn ihr euren Stecken habt: wieder zurück und den RADWEG entlang.\n\nDas andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts."
   ],
   frage: "Habt ihr beide Hälften? Dann tippt das ganze Kennwort ein.",
   tipp: "Beide Wörter hintereinander, in der richtigen Reihenfolge. Eines davon ist eine Farbe — und Farben stehen meistens vorne."
@@ -477,7 +484,7 @@ const STATIONEN = [
   weg: "Geht gemeinsam von den Stecken hinunter zum orangen Container. Von dort wird telefoniert.",
   gemeinsam: true,
   gemeinsamText: "EIN Team ruft an — aber auf LAUTSPRECHER. Alle müssen mithören, auch das andere Team.",
-  text: "Letzte Hürde vor dem Club.\n\n☎️ EIN TEAM RUFT AN. HANDY AUF LAUTSPRECHER.\nAlle stehen zusammen und hören mit — auch das andere Team.\n\nWas der Empfang von euch will, sagt er euch selbst. Also: anrufen, MUND HALTEN, ZUHÖREN.\n\nSagt ihr das Falsche, wird aufgelegt. Dann ruft ihr eben nochmal an.\n\nAm Ende bekommt ihr den ZUTRITTSCODE und einen letzten Auftrag. Der wird nur EINMAL gesagt.\n\nDanach tragt ihr den Code hier ein — beide Teams, jedes auf seinem eigenen Handy.",
+  text: "Letzte Hürde vor dem Club.\n\n☎️ EIN TEAM RUFT AN. HANDY AUF LAUTSPRECHER.\nAlle stehen zusammen und hören mit — auch das andere Team.\n\nWas der Empfang von euch will, sagt er euch selbst. Also: anrufen.\n\nMUND HALTEN, ZUHÖREN.\n\nSagt ihr das Falsche, wird aufgelegt. Dann ruft ihr eben nochmal an.\n\nAm Ende bekommt ihr den ZUTRITTSCODE und einen letzten Auftrag. Der wird nur EINMAL gesagt.\n\nDanach tragt ihr den Code hier ein — beide Teams, jedes auf seinem eigenen Handy.",
   frage: "Wie lautet der Zutrittscode?",
   tipp: "Ihr habt heute schon etwas zusammengesetzt, das er hören will. Sagt es deutlich — wer nuschelt, fliegt raus."
 },

@@ -22,11 +22,38 @@ function zeigerLesen(){
   try{ return JSON.parse(localStorage.getItem(ZEIGER) || "null"); }catch(e){ return null; }
 }
 function zeigerSchreiben(modus, team){
-  try{ localStorage.setItem(ZEIGER, JSON.stringify({ modus: modus, team: team })); }catch(e){}
+  try{
+    const alt = zeigerLesen() || {};
+    localStorage.setItem(ZEIGER, JSON.stringify({
+      modus: modus, team: team, tel: alt.tel || ""
+    }));
+  }catch(e){}
 }
 
 const FASSUNGEN = ["kurz","mittel","lang","drinnen"];
 const ZULETZT = zeigerLesen();
+
+/* --- Die Telefonnummer des Spielleiters ----------------------------------
+   Sie steht bewusst NICHT in stationen.js: Das Repo ist öffentlich, damit
+   stünde eine private Handynummer für jeden im Netz. Stattdessen hängt sie
+   als  ?tel=...  am QR-Code, den der Türsteher am Partytag selbst erzeugt.
+   Beim ersten Aufruf wird sie gemerkt und überlebt damit jedes Neuladen.
+   ------------------------------------------------------------------------ */
+const TELEFON = (function(){
+  let ausUrl = "";
+  try{ ausUrl = (new URLSearchParams(location.search).get("tel") || "").trim(); }catch(e){}
+  /* nur Ziffern, Leerzeichen und die üblichen Zeichen zulassen */
+  if(ausUrl && /^[\d +\/().-]{6,25}$/.test(ausUrl)){
+    try{
+      const z = zeigerLesen() || {};
+      z.tel = ausUrl;
+      localStorage.setItem(ZEIGER, JSON.stringify(z));
+    }catch(e){}
+    return ausUrl;
+  }
+  if(ZULETZT && ZULETZT.tel) return ZULETZT.tel;
+  return SPIEL.telefonnummer || "";
+})();
 
 /* --- Fassung bestimmen: QR-Code schlägt Zeiger schlägt Datei ------------- */
 const MODUS = (function(){
@@ -847,7 +874,8 @@ function bauSprint(st,i){
         ${ortBlock(st)}
         ${textBlock(st.text)}
         <button class="knopf" id="losrennen">Countdown starten</button>
-        <p class="hinweis">Erst tippen, wenn wirklich alle bereit sind.</p>
+        <p class="hinweis achtung">⚠️ ZUERST hier tippen — ERST DANN loslaufen!<br>
+        Die Zeit läuft ab dem Antippen.</p>
       </div>`;
     $("#losrennen").onclick = ()=>{
       Z.haken["sprint"+i] = Date.now(); sichern(); ton("klick"); bauSprint(st,i);
@@ -1085,7 +1113,7 @@ function bauKennwort(st,i){
 
 /* --- Typ: ANRUF ---------------------------------------------------------- */
 function bauAnruf(st,i){
-  const nr = SPIEL.telefonnummer || "";
+  const nr = TELEFON || "";
   const waehlbar = /^[\d +\/().-]+$/.test(nr);
   app().innerHTML = `
     <div class="karte">

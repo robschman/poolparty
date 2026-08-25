@@ -338,7 +338,8 @@ body.silber .regeln{background:rgba(210,215,225,.06)}
 .spiegelfeld{
   transform:scaleX(-1); direction:ltr;
   font-family:"Playfair Display",Georgia,serif; font-weight:900;
-  font-size:clamp(19px,5.6vw,26px); line-height:1.35; text-align:center;
+  /* bewusst klein — so erkennt man das Wort nicht schon im Vorbeigehen */
+  font-size:clamp(13px,3.4vw,16px); line-height:1.45; text-align:center;
   color:var(--akzent); background:rgba(0,0,0,.4);
   border:1px solid var(--karte-rand); border-radius:14px;
   padding:20px 16px; margin:0; letter-spacing:.03em;
@@ -347,6 +348,13 @@ body.silber .regeln{background:rgba(210,215,225,.06)}
 /* Die Schrift steckt hinter einem Knopf — sie soll erst beim Auto auftauchen */
 .spiegelhuelle{margin:0 0 16px}
 .spiegelhuelle .knopf.klein{width:100%; margin-top:0}
+
+/* Roter Hinweis, wo etwas schiefgehen kann (z. B. Countdown vor dem Loslaufen) */
+.hinweis.achtung{
+  color:#ff8b80; font-weight:700; font-size:13.5px; line-height:1.5;
+  background:rgba(255,59,48,.10); border:1px solid rgba(255,59,48,.38);
+  border-radius:11px; padding:10px 12px; margin-top:10px;
+}
 
 /* ---- 17. Video mit Störbild -------------------------------------------- */
 .videohuelle{position:relative; border-radius:14px; overflow:hidden; margin:0 0 16px;
