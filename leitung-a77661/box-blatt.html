@@ -11,101 +11,98 @@
 body{margin:0; background:#15130f; color:#e8e2d4; font-size:16px;
   font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif}
 
-/* ---- Bedienleiste (wird NICHT gedruckt) ------------------------------- */
+/* ---- Bedienleiste (wird nicht gedruckt) ------------------------------- */
 .leiste{max-width:1100px; margin:0 auto; padding:22px 18px 10px}
 .leiste h1{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
-  font-size:1.7rem; margin:0 0 .3rem; color:#e8e2d4}
-.leiste p{margin:0 0 1rem; color:#a89e8a; font-size:.95rem; line-height:1.55}
+  font-size:1.7rem; margin:0 0 .3rem}
+.leiste p{margin:0 0 1rem; color:#a89e8a; font-size:.95rem; line-height:1.6}
 .knoepfe{display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.2rem}
 button{font:inherit; font-weight:600; font-size:.9rem; cursor:pointer;
   background:#241f16; color:#e8e2d4; border:1px solid #4a4032;
   border-radius:9px; padding:.6rem 1rem}
 button:hover{border-color:#d4af37; color:#f3d67a}
 button.an{background:#d4af37; border-color:#d4af37; color:#15130f}
-.warnung{border-left:3px solid #c0392b; padding:.1rem 0 .1rem .8rem;
-  color:#a89e8a; font-size:.88rem; line-height:1.55; margin:0 0 1.2rem}
-.warnung b{color:#e88a76}
+.achtung{background:rgba(212,175,55,.10); border:1px solid #d4af37;
+  border-radius:11px; padding:.85rem 1rem; margin:0 0 1.3rem;
+  font-size:.93rem; line-height:1.6; color:#e8e2d4}
+.achtung b{color:#f3d67a}
 
 /* ---- Das Blatt --------------------------------------------------------- */
 #blatt{
-  width:297mm; height:210mm;                  /* A4 quer */
-  margin:0 auto 40px; position:relative; overflow:hidden;
-  background:#0b0a08; color:#f0e9d8;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 24px 60px rgba(0,0,0,.6);
+  width:297mm; height:210mm;                       /* A4 quer */
+  margin:0 auto; position:relative; overflow:hidden;
+  background:#0b0a08; box-shadow:0 24px 60px rgba(0,0,0,.6);
   transform-origin:top center;
 }
 body.hoch #blatt{width:210mm; height:297mm}
+.buehne{display:flex; justify-content:center; margin:0 0 40px}
 
-/* zarter Goldschimmer aus der Mitte */
-#blatt::before{content:""; position:absolute; inset:0;
-  background:radial-gradient(64% 74% at 50% 40%, rgba(212,175,55,.13), transparent 70%)}
+#blatt .schimmer{position:absolute; inset:0;
+  background:radial-gradient(62% 72% at 50% 42%, rgba(212,175,55,.13), transparent 72%)}
+.rahmen{position:absolute; inset:9mm; border:.9mm solid #d4af37}
+.rahmen2{position:absolute; inset:11.6mm; border:.28mm solid rgba(212,175,55,.6)}
 
-.rahmen{position:absolute; inset:9mm; border:.9mm solid #d4af37; pointer-events:none}
-.rahmen::after{content:""; position:absolute; inset:2.4mm; border:.28mm solid rgba(212,175,55,.62)}
+/* Drei feste Zonen — so kann nichts mehr überlappen */
+.inhalt{position:absolute; inset:0; padding:19mm 26mm; text-align:center;
+  display:flex; flex-direction:column; justify-content:space-between}
+.haupt{flex:1; display:flex; flex-direction:column; justify-content:center}
 
-.mitte{position:relative; text-align:center; padding:0 22mm}
+.oben{font-size:3.6mm; letter-spacing:.6em; text-transform:uppercase;
+  color:#d4af37; font-weight:700; margin:0; text-indent:.6em}
+.krone{display:block; margin:3.5mm auto 0}
 
-.oben{font-size:3.6mm; letter-spacing:.62em; text-transform:uppercase;
-  color:#d4af37; font-weight:700; margin:0 0 6mm; text-indent:.62em}
+.vip{display:block; width:168mm; height:auto; margin:0 auto}
+body.hoch .vip{width:156mm}
 
-.krone{display:block; margin:0 auto 3mm}
-
-.vip{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:900;
-  font-size:78mm; line-height:.86; letter-spacing:.045em; text-indent:.045em;
-  margin:0; color:#e8c96a;
-  background:linear-gradient(178deg,#f6e39a 6%,#d4af37 42%,#a67c12 78%,#e6cf82 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-}
-body.hoch .vip{font-size:66mm}
-
-.party{font-size:8.2mm; letter-spacing:.52em; text-transform:uppercase;
-  font-weight:700; color:#f0e9d8; margin:1mm 0 0; text-indent:.52em}
+.party{font-size:8.2mm; letter-spacing:.5em; text-transform:uppercase;
+  font-weight:700; color:#f0e9d8; margin:1mm 0 0; text-indent:.5em}
 
 .trenner{display:flex; align-items:center; justify-content:center; gap:4mm;
-  margin:9mm auto 7mm; width:75%}
-.trenner span{flex:1; height:.28mm; background:linear-gradient(to right,
+  margin:8mm auto 6.5mm; width:72%}
+.trenner span{flex:1; height:.3mm; background:linear-gradient(to right,
   transparent, #d4af37 22%, #d4af37 78%, transparent)}
 .raute{width:3.2mm; height:3.2mm; background:#d4af37; transform:rotate(45deg); flex:none}
 
-.rolle{font-size:4.4mm; letter-spacing:.42em; text-transform:uppercase;
-  color:#d4af37; font-weight:700; margin:0 0 5mm; text-indent:.42em}
-
+.rolle{font-size:4.3mm; letter-spacing:.4em; text-transform:uppercase;
+  color:#d4af37; font-weight:700; margin:0 0 4.5mm; text-indent:.4em}
 .auftrag{font-family:"Bodoni Moda",Didot,Georgia,serif; font-weight:600;
-  font-size:9mm; line-height:1.38; margin:0 auto; max-width:190mm; color:#f6f1e4}
-body.hoch .auftrag{font-size:8mm; max-width:150mm}
+  font-size:8.6mm; line-height:1.36; margin:0 auto; max-width:180mm; color:#f6f1e4}
+body.hoch .auftrag{font-size:8.2mm; max-width:152mm}
+/* Hochkant ist mehr Platz da — die Abstände dürfen großzügiger sein */
+body.hoch .party{font-size:8.8mm; margin-top:3mm}
+body.hoch .trenner{margin:13mm auto 10mm}
+body.hoch .rolle{margin-bottom:6.5mm}
+body.hoch .ohne{margin-top:8mm}
+body.hoch .krone{margin-top:5mm}
 .auftrag b{color:#e8c96a}
+.ohne{font-size:4.4mm; letter-spacing:.12em; text-transform:uppercase;
+  color:#c9bfa6; font-weight:600; margin:5.5mm 0 0}
 
-.ohne{font-size:4.6mm; letter-spacing:.13em; text-transform:uppercase;
-  color:#c9bfa6; font-weight:600; margin:6mm 0 0}
-
-.fuss{position:absolute; left:18mm; right:18mm; bottom:19mm;
-  display:flex; justify-content:space-between; align-items:baseline;
-  font-size:3.3mm; letter-spacing:.34em; text-transform:uppercase;
-  color:rgba(212,175,55,.78); font-weight:700}
+.fuss{display:flex; justify-content:space-between; align-items:baseline;
+  font-size:3.2mm; letter-spacing:.3em; text-transform:uppercase;
+  color:rgba(212,175,55,.8); font-weight:700}
 
 /* ---- helle Fassung ----------------------------------------------------- */
-body.hell #blatt{background:#fdfaf1; color:#1b1710}
-body.hell #blatt::before{background:radial-gradient(64% 74% at 50% 40%, rgba(212,175,55,.16), transparent 70%)}
+body.hell #blatt{background:#fdfaf1}
+body.hell #blatt .schimmer{background:radial-gradient(62% 72% at 50% 42%, rgba(212,175,55,.17), transparent 72%)}
 body.hell .rahmen{border-color:#8a6a10}
-body.hell .rahmen::after{border-color:rgba(138,106,16,.55)}
+body.hell .rahmen2{border-color:rgba(138,106,16,.55)}
 body.hell .oben, body.hell .rolle{color:#8a6a10}
-body.hell .vip{background:linear-gradient(178deg,#c9a33a 6%,#8a6a10 45%,#6b5209 80%,#b4912c 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent}
 body.hell .party{color:#1b1710}
 body.hell .trenner span{background:linear-gradient(to right, transparent, #8a6a10 22%, #8a6a10 78%, transparent)}
 body.hell .raute{background:#8a6a10}
 body.hell .auftrag{color:#1b1710}
 body.hell .auftrag b{color:#8a6a10}
 body.hell .ohne{color:#5b5344}
-body.hell .fuss{color:rgba(138,106,16,.9)}
-body.hell .krone path{fill:#8a6a10}
+body.hell .fuss{color:rgba(138,106,16,.92)}
+body.hell .krone path, body.hell .krone circle{fill:#8a6a10}
 
 /* ---- Druck ------------------------------------------------------------- */
 @page{size:A4 landscape; margin:0}
 @media print{
   html,body{background:#fff}
   .leiste{display:none !important}
+  .buehne{margin:0; display:block}
   #blatt{margin:0; box-shadow:none; transform:none !important;
     -webkit-print-color-adjust:exact; print-color-adjust:exact}
 }
@@ -115,84 +112,119 @@ body.hell .krone path{fill:#8a6a10}
 
 <div class="leiste">
   <h1>Das Blatt für die Box</h1>
-  <p>Kommt auf den Deckel vom schwarzen Schuhkarton — deckt das Converse-Logo zu.
-     Quer passt auf einen normalen Schuhkarton-Deckel, hochkant nimm für eine
-     schmalere Kiste.</p>
+  <p>Kommt auf den Deckel vom schwarzen Schuhkarton und deckt das Converse-Logo zu.</p>
+
+  <div class="achtung">
+    <b>Zum Drucken bitte die PDF nehmen, nicht diese Seite.</b><br>
+    Safari kann die Seitenausrichtung nicht aus der Datei übernehmen — es druckt
+    ein quer angelegtes Blatt auf ein Hochformat-Blatt und schneidet die Hälfte ab.
+    In der PDF steckt die Ausrichtung fest drin: <b>Box-Blatt.pdf</b> öffnen,
+    drucken, fertig. Diese Seite hier ist nur zum Anschauen und Ändern.
+  </div>
+
   <div class="knoepfe">
     <button id="bQuer"  class="an">Querformat</button>
     <button id="bHoch">Hochformat</button>
-    <button id="bDunkel" class="an">Schwarz drucken</button>
-    <button id="bHell">Hell drucken</button>
-    <button id="bDruck">Drucken</button>
+    <button id="bDunkel" class="an">Schwarz</button>
+    <button id="bHell">Hell</button>
   </div>
-  <p class="warnung"><b>Zum schwarzen Blatt:</b> Eine ganze Seite Schwarz braucht
-    viel Farbe. Mit dem <b>Laserdrucker</b> geht das gut. Mit einem
-    <b>Tintenstrahler</b> wellt sich das Papier und es dauert ewig — dann lieber
-    „Hell drucken“ nehmen und auf cremefarbenes oder goldenes Papier drucken.
-    Und im Druckfenster <b>„Hintergrundgrafiken drucken“</b> anhaken, sonst bleibt
-    das Blatt weiß.</p>
 </div>
 
+<div class="buehne">
 <div id="blatt">
+  <div class="schimmer"></div>
   <div class="rahmen"></div>
-  <div class="mitte">
-    <p class="oben">VIP Club · Ternitz</p>
+  <div class="rahmen2"></div>
 
-    <svg class="krone" width="86" height="52" viewBox="0 0 86 52" aria-hidden="true">
-      <path fill="#d4af37" d="M4 14 L20 34 L31 6 L43 30 L55 6 L66 34 L82 14
-        L76 46 L10 46 Z M10 49 L76 49 L76 52 L10 52 Z"/>
-      <circle cx="4" cy="11" r="3.6" fill="#d4af37"/>
-      <circle cx="43" cy="3"  r="3.6" fill="#d4af37"/>
-      <circle cx="82" cy="11" r="3.6" fill="#d4af37"/>
-    </svg>
+  <div class="inhalt">
 
-    <p class="vip">VIP</p>
-    <p class="party">Party</p>
+    <div class="kopf">
+      <p class="oben">VIP Club · Ternitz</p>
+      <svg class="krone" width="80" height="46" viewBox="0 0 86 52" aria-hidden="true">
+        <path fill="#d4af37" d="M4 14 L20 34 L31 6 L43 30 L55 6 L66 34 L82 14
+          L76 44 L10 44 Z M10 47 L76 47 L76 52 L10 52 Z"/>
+        <circle cx="4" cy="11" r="3.6" fill="#d4af37"/>
+        <circle cx="43" cy="3"  r="3.6" fill="#d4af37"/>
+        <circle cx="82" cy="11" r="3.6" fill="#d4af37"/>
+      </svg>
+    </div>
 
-    <div class="trenner"><span></span><i class="raute"></i><span></span></div>
+    <div class="haupt">
+      <!-- VIP als SVG-Text: der Goldverlauf kommt so sauber in die PDF.
+           Als HTML-Text mit background-clip blieb ein Kastenrest stehen. -->
+      <svg class="vip" viewBox="0 0 300 106" role="img" aria-label="VIP">
+        <defs>
+          <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f9ebae"/>
+            <stop offset="36%"  stop-color="#dcb748"/>
+            <stop offset="70%"  stop-color="#a87e12"/>
+            <stop offset="100%" stop-color="#efdda4"/>
+          </linearGradient>
+          <linearGradient id="goldhell" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#c9a33a"/>
+            <stop offset="42%"  stop-color="#8a6a10"/>
+            <stop offset="78%"  stop-color="#6b5209"/>
+            <stop offset="100%" stop-color="#b4912c"/>
+          </linearGradient>
+        </defs>
+        <text id="vipText" x="150" y="83" text-anchor="middle" fill="url(#gold)"
+              font-family="'Bodoni Moda',Didot,Georgia,serif" font-weight="900"
+              font-size="104" letter-spacing="5">VIP</text>
+      </svg>
+      <p class="party">Party</p>
 
-    <p class="rolle">Ausweis-Ausgabe</p>
-    <p class="auftrag">Jeder nimmt sich <b>EIN Einlassband</b><br>und zieht es an.</p>
-    <p class="ohne">Ohne Band kein Zutritt zur Lounge</p>
+      <div class="trenner"><span></span><i class="raute"></i><span></span></div>
+
+      <p class="rolle">Ausweis-Ausgabe</p>
+      <p class="auftrag">Jeder nimmt sich <b>EIN Einlassband</b><br>und zieht es an.</p>
+      <p class="ohne">Ohne Band kein Zutritt zur Lounge</p>
+    </div>
+
+    <div class="fuss"><span>Zoe · 28. August 2026</span><span>Nur für geladene Gäste</span></div>
   </div>
-  <div class="fuss"><span>Zoe · 28. August 2026</span><span>Nur für geladene Gäste</span></div>
+</div>
 </div>
 
 <script>
-/* Ausrichtung und Farbe umschalten — die Druckgröße muss dabei mitwandern,
-   sonst druckt der Browser quer, obwohl hochkant am Schirm steht. */
+/* Ausrichtung und Farbe umschalten. Die Druckgröße wandert mit — für Browser,
+   die das können. Safari kann es nicht, darum oben der Hinweis auf die PDF. */
 const stil = document.createElement("style");
 document.head.appendChild(stil);
 function seiteSetzen(){
   stil.textContent = "@page{size:A4 " +
     (document.body.classList.contains("hoch") ? "portrait" : "landscape") + "; margin:0}";
 }
-function wahl(knopfAn, knopfAus, klasse, dran){
-  knopfAn.classList.toggle("an", dran);
-  knopfAus.classList.toggle("an", !dran);
-  document.body.classList.toggle(klasse, dran);
-  seiteSetzen(); passen();
+function goldSetzen(){
+  document.getElementById("vipText").setAttribute("fill",
+    document.body.classList.contains("hell") ? "url(#goldhell)" : "url(#gold)");
 }
-const q = document.getElementById("bQuer"),  h = document.getElementById("bHoch"),
+const q = document.getElementById("bQuer"),   h = document.getElementById("bHoch"),
       d = document.getElementById("bDunkel"), e = document.getElementById("bHell");
-q.onclick = ()=> wahl(h, q, "hoch", false);
-h.onclick = ()=> wahl(h, q, "hoch", true);
-d.onclick = ()=> wahl(e, d, "hell", false);
-e.onclick = ()=> wahl(e, d, "hell", true);
-document.getElementById("bDruck").onclick = ()=> window.print();
+function wahl(klasse, dran, knopfJa, knopfNein){
+  document.body.classList.toggle(klasse, dran);
+  knopfJa.classList.add("an"); knopfNein.classList.remove("an");
+  seiteSetzen(); goldSetzen(); passen();
+}
+q.onclick = ()=> wahl("hoch", false, q, h);
+h.onclick = ()=> wahl("hoch", true,  h, q);
+d.onclick = ()=> wahl("hell", false, d, e);
+e.onclick = ()=> wahl("hell", true,  e, d);
 
-/* Am Schirm auf die Fensterbreite verkleinern — gedruckt wird trotzdem in A4 */
+/* Am Schirm verkleinern, damit das ganze Blatt ins Fenster passt.
+   Gedruckt wird trotzdem in voller Größe. */
 function passen(){
-  const b = document.getElementById("blatt");
+  const b = document.getElementById("blatt"), buehne = b.parentNode;
   b.style.transform = "";
-  const platz = document.documentElement.clientWidth - 36;
-  const breit = b.getBoundingClientRect().width;
-  const f = Math.min(1, platz / breit);
+  const breit = b.offsetWidth, hoch = b.offsetHeight;
+  const f = Math.min(1, (document.documentElement.clientWidth - 36) / breit,
+                        (window.innerHeight - 40) / hoch);
   b.style.transform = "scale(" + f + ")";
-  b.style.marginBottom = (40 - b.getBoundingClientRect().height * (1 - f)) + "px";
+  buehne.style.height = (hoch * f) + "px";
 }
 addEventListener("resize", passen);
-seiteSetzen(); passen();
+seiteSetzen(); goldSetzen();
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(passen);
+passen();
 </script>
 </body>
 </html>
