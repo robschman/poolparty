@@ -321,13 +321,14 @@ const STATIONEN = [
   modi: ["lang"],
   ort: "In der Lounge",
   weg: "Bleibt sitzen, das geht am Tisch.",
-  text: "Solange ihr esst, könnt ihr auch bauen.\n\nBaut aus dem, was hier steht — Becher, Flaschen, Strohhalme — den höchsten Turm, den ihr hinbekommt. Er muss zehn Sekunden allein stehen.\n\nMacht ein Foto davon. Der höhere Turm bekommt am Ende Bonuspunkte.",
+  text: "Solange ihr esst, könnt ihr auch bauen.\n\nBaut den höchsten Turm, den ihr hinbekommt — NUR aus BECHERN und STROHHALMEN. Sonst nichts: keine Flaschen, keine Teller, nichts vom Tisch.\n\nEr muss zehn Sekunden ganz allein stehen.\n\nMacht ein Foto davon. Der höhere Turm bekommt am Ende Bonuspunkte.",
   auftraege: [
+    "Im Turm stecken nur Becher und Strohhalme",
     "Unser Turm steht zehn Sekunden ohne Hilfe",
     "Wir haben ein Foto von ihm gemacht",
     "Auf dem Foto ist zu sehen, wie hoch er wirklich ist"
   ],
-  mindestens: 3
+  mindestens: 4
 },
 
 /* --------------------------------------------------- 10 · Das Eisfach --- */
