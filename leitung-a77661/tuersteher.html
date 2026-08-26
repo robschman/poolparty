@@ -227,29 +227,29 @@ footer{border-top:1px solid var(--rand); margin:2.2rem 0 0; padding:1.3rem 0 3re
 /* ---- Der A4-Zettel: Schwarz-Gold wie die App ---------------------------- */
 #zettel{display:none}
 #zettel .zblatt{
-  background:#0b0b0d; color:#f4f1e8; padding:8mm 9mm 6mm;
+  background:#0b0b0d; color:#f4f1e8; padding:6.5mm 8mm 5mm;
   font-family:"Archivo",sans-serif;
 }
 #zettel .zkopf{text-align:center; border-bottom:.9pt solid #d4af37;
-  padding-bottom:2.6mm; margin-bottom:3.4mm}
+  padding-bottom:2.1mm; margin-bottom:2.7mm}
 #zettel .zmarke{font-size:6.5pt; letter-spacing:.42em; text-transform:uppercase;
   color:#d4af37; font-weight:700; margin:0 0 1.3mm}
-#zettel .ztitel{font-family:"Bodoni Moda",Didot,Georgia,serif; font-size:22pt;
+#zettel .ztitel{font-family:"Bodoni Moda",Didot,Georgia,serif; font-size:19pt;
   font-weight:900; margin:0; line-height:1; color:#f4f1e8; letter-spacing:.01em}
 #zettel .zdatum{font-size:7.5pt; color:#9b9488; margin:1.4mm 0 0; letter-spacing:.06em}
 
-#zettel .zteil{margin:0 0 3.2mm; break-inside:avoid}
-#zettel .zueber{font-size:7pt; letter-spacing:.28em; text-transform:uppercase;
-  font-weight:700; color:#d4af37; margin:0 0 1.5mm;
-  padding-bottom:1mm; border-bottom:.4pt solid rgba(212,175,55,.4)}
+#zettel .zteil{margin:0 0 2.5mm; break-inside:avoid}
+#zettel .zueber{font-size:6.6pt; letter-spacing:.26em; text-transform:uppercase;
+  font-weight:700; color:#d4af37; margin:0 0 1.1mm;
+  padding-bottom:.7mm; border-bottom:.4pt solid rgba(212,175,55,.4)}
 #zettel table{width:100%; border-collapse:collapse; font-size:9pt}
-#zettel td{padding:1mm .5mm; border-bottom:.3pt solid rgba(244,241,232,.14);
+#zettel td{padding:.65mm .5mm; border-bottom:.3pt solid rgba(244,241,232,.14);
   vertical-align:middle}
 #zettel tr:last-child td{border-bottom:0}
 
-#zettel .zgaeste .zkasterl{width:4.6mm; height:4.6mm; border:.9pt solid #d4af37;
-  display:inline-block; border-radius:.8mm; margin-right:2.5mm; vertical-align:-.9mm}
-#zettel .zgaeste .zname{font-weight:700; font-size:10pt}
+#zettel .zgaeste .zkasterl{width:4.1mm; height:4.1mm; border:.9pt solid #d4af37;
+  display:inline-block; border-radius:.8mm; margin-right:2.2mm; vertical-align:-.7mm}
+#zettel .zgaeste .zname{font-weight:700; font-size:9.5pt}
 #zettel .zgaeste .zteam{font-size:6.8pt; letter-spacing:.16em; text-transform:uppercase;
   color:#8d8578; text-align:right; white-space:nowrap}
 
@@ -311,9 +311,14 @@ body.hellDrucken #zettel .zlinie{border-bottom-color:#666}
   /* Nur der Zettel: alles andere weg, genau eine Seite A4 hoch */
   body.nurZettel main > .bahn > *{display:none !important}
   body.nurZettel #zettel{display:block !important}
-  body.nurZettel .bahn{width:100%; max-width:none}
-  body.nurZettel main{padding:0}
-  body.nurZettel .zblatt{min-height:277mm}
+  /* Die Breite muss in Millimetern festgenagelt sein. Safari am iPhone baut
+     die Druckseite sonst in FENSTERbreite auf — bei 390 px sind das rund
+     100 mm, der Text bricht doppelt so oft um und das Blatt wird über 300 mm
+     hoch. Ergebnis: zwei Seiten. Mit fester Breite ist das Gerät egal.
+     190 mm statt 210, damit es auch ohne Verkleinern in den Druckrand passt. */
+  body.nurZettel .bahn{width:auto; max-width:none; margin:0; padding:0}
+  body.nurZettel main{padding:0; margin:0}
+  body.nurZettel .zblatt{width:190mm; min-height:262mm; margin:0 auto}
   @page{size:A4 portrait; margin:0}
   body.nurZettel{-webkit-print-color-adjust:exact; print-color-adjust:exact}
 }
@@ -766,8 +771,8 @@ body.hellDrucken #zettel .zlinie{border-bottom-color:#666}
             <b>wo der Osterhase wohnt</b> — Zoe weiß, wo das ist. Dort steht eine
             Box, jeder holt sich ein <b>Einlassband</b> und zieht es an.
             Und beeilt euch."</li>
-        <li><b>Auflegen.</b> Kein Tschüss. Ab jetzt läuft deine Zeit — 13 bis 15
-            Minuten zum Umziehen.</li>
+        <li><b>Auflegen.</b> Kein Tschüss. Ab jetzt läuft deine Zeit zum
+            Umziehen — bis sie am Gartentürl stehen.</li>
       </ol>
       <p class="zfuss">Falsches Kennwort: „Das ist es nicht. Ihr habt noch einen
         Versuch." — auflegen.</p>
