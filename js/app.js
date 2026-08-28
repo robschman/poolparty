@@ -125,7 +125,7 @@ const BUCHSTABEN_STATIONEN = AKTIV.map((s,i)=>({s,i})).filter(o=>o.s.buchstabe);
 /* --- Spielstand ---------------------------------------------------------- */
 let Z = {
   team:null, station:0, punkte:0, start:null,
-  gesammelt:[], tipps:[], fehler:{}, haken:{}, quiz:{},
+  gesammelt:[], tipps:[], tipps2:[], tippZeit:{}, fehler:{}, haken:{}, quiz:{},
   handyausAb:null, fertig:false, gelegt:[],
   /* zuletzt = was die eben abgeschlossene Station gebracht hat.
      Nur damit kann der Zurück-Knopf sauber rückgängig machen. */
@@ -418,7 +418,8 @@ function zeitText(){
 function punkteFuer(i){
   const voll = SPIEL.punkteProStation;
   let p = voll;
-  if(Z.tipps.indexOf(i)>-1) p -= SPIEL.abzugTipp;
+  if(Z.tipps.indexOf(i)>-1)  p -= SPIEL.abzugTipp;
+  if(Z.tipps2.indexOf(i)>-1) p -= (SPIEL.abzugTipp2 || SPIEL.abzugTipp);
   p -= (Z.fehler[i]||0) * SPIEL.abzugFehler;
   return Math.max(Math.round(voll*0.2), p);
 }
@@ -714,15 +715,62 @@ function videoBlock(link, stoerung, tempo){
 function tippText(st){
   return fuerTeam(st.teamTipp, st.tipp) || "";
 }
+function tipp2Text(st){
+  return fuerTeam(st.teamTipp2, st.tipp2) || "";
+}
+function uhrText(sek){
+  return Math.floor(sek/60) + ":" + String(sek%60).padStart(2,"0");
+}
+
+/* --- Tipps ---------------------------------------------------------------
+   Erster Tipp: kostet Punkte, hilft weiter. Findet ein Team den Ort dann
+   IMMER NOCH nicht, kommt nach ein paar Minuten ein zweiter Tipp — der
+   verrät die Lösung. Kostet mehr, aber niemand bleibt stecken.
+   Die Wartezeit soll verhindern, dass beide Tipps sofort geholt werden.
+   ------------------------------------------------------------------------ */
 function tippBlock(st,i){
   const t = tippText(st);
   if(!t) return "";
-  if(Z.tipps.indexOf(i)>-1) return `<div class="meldung tipp">💡 ${t}</div>`;
-  return `<button class="knopf leise" id="tippKnopf">Tipp holen (−${SPIEL.abzugTipp} Punkte)</button>`;
+  if(Z.tipps.indexOf(i) === -1)
+    return `<button class="knopf leise" id="tippKnopf">Tipp holen (−${SPIEL.abzugTipp} Punkte)</button>`;
+
+  let h = `<div class="meldung tipp">💡 ${t}</div>`;
+  const t2 = tipp2Text(st);
+  if(!t2) return h;
+  if(Z.tipps2.indexOf(i) > -1)
+    return h + `<div class="meldung tipp zwei">🔑 ${t2}</div>`;
+
+  const abzug = SPIEL.abzugTipp2 || SPIEL.abzugTipp;
+  const bis   = (Z.tippZeit[i] || 0) + (SPIEL.wartenTipp2 || 180) * 1000;
+  const rest  = Math.max(0, Math.round((bis - Date.now())/1000));
+  return h + (rest > 0
+    ? `<p class="hinweis tippuhr" id="tippUhr" data-bis="${bis}">Findet ihr es
+       gar nicht? In <b>${uhrText(rest)}</b> gibt es noch einen Tipp.</p>`
+    : `<button class="knopf leise" id="tipp2Knopf">Noch einen Tipp (−${abzug} Punkte)</button>`);
 }
 function tippVerdrahten(st,i){
   const k = $("#tippKnopf");
-  if(k) k.onclick = ()=>{ Z.tipps.push(i); ton("klick"); sichern(); zeigeStation(); };
+  if(k) k.onclick = ()=>{
+    Z.tipps.push(i);
+    Z.tippZeit[i] = Date.now();       /* ab jetzt läuft die Wartezeit */
+    ton("klick"); sichern(); zeigeStation();
+  };
+  const k2 = $("#tipp2Knopf");
+  if(k2) k2.onclick = ()=>{ Z.tipps2.push(i); ton("klick"); sichern(); zeigeStation(); };
+
+  /* Die Wartezeit sichtbar herunterzählen, dann von selbst den Knopf zeigen */
+  const u = $("#tippUhr");
+  if(u){
+    const bis = +u.getAttribute("data-bis");
+    const uhr = setInterval(()=>{
+      const el = $("#tippUhr");
+      if(!el){ clearInterval(uhr); return; }
+      const rest = Math.max(0, Math.round((bis - Date.now())/1000));
+      if(rest <= 0){ clearInterval(uhr); zeigeStation(); return; }
+      const b = el.querySelector("b");
+      if(b) b.textContent = uhrText(rest);
+    }, 1000);
+  }
 }
 function fehlerMeldung(i){
   const n = Z.fehler[i]||0;

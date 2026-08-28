@@ -36,8 +36,10 @@
   .knopfleiste button{padding:11px 20px;border:0;border-radius:9px;background:#1a1a1a;color:#fff;
     font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
   @media print{ body{background:#fff} .knopfleiste{display:none}
-    .blatt{margin:0;box-shadow:none;width:auto;padding:12mm}
-    @page{size:A4;margin:0} }
+    /* Feste Breite in Millimetern — Safari am iPhone druckt sonst in
+       FENSTERbreite, dann wird aus dem Zettel ein Meter Papier. */
+    .blatt{margin:0 auto;box-shadow:none;width:190mm;min-height:0;padding:0}
+    @page{size:A4 portrait;margin:10mm} }
 </style>
 </head>
 <body>

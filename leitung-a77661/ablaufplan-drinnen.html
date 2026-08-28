@@ -154,7 +154,14 @@ pre{background:var(--karte); border:1px solid var(--rand); border-radius:11px; p
   overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:pre-wrap;
   color:var(--schrift); margin:0}
 footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.84rem}
-@media print{ .aktion,.notiz{display:none} .station{break-inside:avoid} body{background:#fff} }
+@media print{
+  .aktion,.notiz{display:none} .station{break-inside:avoid} body{background:#fff}
+  /* Feste Breite in Millimetern: Safari am iPhone druckt sonst in
+     FENSTERbreite — bei 390 px wird jede Zeile halb so breit, alles bricht
+     um und aus einer Seite werden zwei. */
+  .bahn{width:180mm; max-width:none; margin:0 auto}
+  @page{size:A4 portrait; margin:12mm 10mm}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>

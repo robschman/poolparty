@@ -97,6 +97,11 @@ const SPIEL = {
   /* ---- PUNKTE ------------------------------------------------------------- */
   punkteProStation: 100,
   abzugTipp:         30,
+  /* Findet ein Team den Ort auch mit dem ersten Tipp nicht, kommt nach
+     "wartenTipp2" Sekunden ein zweiter Tipp, der die Lösung verrät.
+     Nur Stationen mit "tipp2" oder "teamTipp2" haben das. */
+  abzugTipp2:        60,
+  wartenTipp2:      180,   // 3 Minuten
   abzugFehler:       10,
 
   /* ---- SPIELLEITER --------------------------------------------------------
@@ -469,11 +474,22 @@ const STATIONEN = [
   ort: "Die roten Stecken oberhalb vom orangen Container",
   weg: "Zurück zum orangen Container, dort links den kleinen Weg hinauf bis ganz oben.",
   teamText: [
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n6. Wenn ihr euren Stecken habt: wieder zurück und den RADWEG entlang.\n\nDas andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.",
-    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS.\n4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n6. Wenn ihr euren Stecken habt: wieder zurück und den RADWEG entlang.\n\nDas andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts."
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH LINKS, den RADWEG am Damm entlang.\n4. Geht so lange, bis ihr LINKS einen HOLZSTECKEN MIT ROTER MARKIERUNG seht. Er steht im Schatten von einem kleinen Baum.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n6. Dann wieder zurück und den RADWEG entlang.\n\nDas andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.\n\n⚠️ Zu weit seid ihr, wenn ihr zu einer QUERSTRASSE kommt. Dann umdrehen.",
+    "Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.\n\nSo kommt ihr hin:\n\n1. Zurück zum ORANGEN CONTAINER.\n2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.\n3. Oben geht ihr NACH RECHTS, den RADWEG entlang.\n4. Geht so lange, bis ihr LINKS bei den BÄUMEN einen HOLZSTECKEN MIT ROTER MARKIERUNG seht. Davor liegt ein GROSSER STEIN.\n5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.\n6. Dann wieder zurück und den RADWEG entlang.\n\nDas andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.\n\n⚠️ Zu weit seid ihr, wenn ihr am SPORTPLATZ vorbei seid oder zu einer QUERSTRASSE kommt. Ihr überquert heute KEINE Straße."
   ],
   frage: "Habt ihr beide Hälften? Dann tippt das ganze Kennwort ein.",
-  tipp: "Beide Wörter hintereinander, in der richtigen Reihenfolge. Eines davon ist eine Farbe — und Farben stehen meistens vorne."
+  /* Erster Tipp: wo genau der Stecken steht — je Team ein anderer Ort. */
+  teamTipp: [
+    "Dort, wo die kleine Straße nach LINKS hinunter geht und die STIEGEN sind: gleich dort im Eck, beim kleinen Baum, steht euer Stecken.",
+    "Euer Stecken steht genau GEGENÜBER DER TRIBÜNE vom Sportplatz — links im Gras bei den Bäumen, davor der große Stein."
+  ],
+  /* Zweiter Tipp nach drei Minuten: das eigene Wort, damit niemand steckenbleibt.
+     Jedes Team bekommt NUR seine eigene Hälfte — die andere müssen sie sich
+     weiterhin vom anderen Team holen. */
+  teamTipp2: [
+    "Eure Hälfte lautet: " + "ROTER" + ". Die andere Hälfte hat das andere Team — ohne die geht es nicht weiter.",
+    "Eure Hälfte lautet: " + "TEPPICH" + ". Die andere Hälfte hat das andere Team — ohne die geht es nicht weiter."
+  ]
 },
 
 /* ----------------------------------------------------------- 16 · Anruf -- */
@@ -500,7 +516,7 @@ const STATIONEN = [
   ort: "Dort, wo der Osterhase wohnt",
   weg: "Zoe weiß, wo das ist. Wenn ihr gar nicht draufkommt, holt euch den Tipp.",
   text: "Der Club schickt euch noch einmal los.\n\nGeht dorthin, WO DER OSTERHASE WOHNT.\n\nZoe weiß, wo das ist — fragt sie. Dort steht eine BOX.\n\nJEDER nimmt sich ein EINLASSBAND und zieht es an. Ohne Band kommt niemand in den VIP-Garten — das ist die Regel des Clubs.\n\nWas sonst noch dabeiliegt, gehört auch euch.\n\nDann so schnell ihr könnt zurück zum Gartentürl. Er wartet schon.",
-  tipp: "So kommt ihr hin:\n\n1. Wieder zurück ÜBER DIE BRÜCKE.\n2. Gleich nach der Brücke RECHTS in den Weg hinein, der in den WALD führt.\n3. Nach ein paar Metern steht ihr bei den ROTEN STECKEN im Wald.\n4. Dort steht die Box.\n\n(Das sind andere Stecken als die in der Wiese von vorhin.)",
+  tipp: "So kommt ihr hin:\n\n1. Wieder zurück ÜBER DIE BRÜCKE.\n2. Gleich nach der Brücke RECHTS in den Weg hinein.\n3. Dem Weg folgen, bis ihr zu einem PLATZ kommt.\n4. Beim Platz gleich RECHTS HINUNTER — ein kleiner Weg zum Wasser.\n5. Bevor ihr beim Wasser seid: RECHTS steht ein BAUM, davor ein ROTER STECKEN.\n6. Dahinter steht die VIP-BOX.\n\n(Das ist ein anderer Stecken als die in der Wiese von vorhin.)",
   auftraege: [
     "Jeder von uns trägt ein Band am Handgelenk",
     "Auch das andere Team hat Bänder",

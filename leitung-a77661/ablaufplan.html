@@ -154,7 +154,14 @@ pre{background:var(--karte); border:1px solid var(--rand); border-radius:11px; p
   overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; white-space:pre-wrap;
   color:var(--schrift); margin:0}
 footer{padding:1.6rem 0 3rem; text-align:center; color:var(--schrift-3); font-size:.84rem}
-@media print{ .aktion,.notiz{display:none} .station{break-inside:avoid} body{background:#fff} }
+@media print{
+  .aktion,.notiz{display:none} .station{break-inside:avoid} body{background:#fff}
+  /* Feste Breite in Millimetern: Safari am iPhone druckt sonst in
+     FENSTERbreite — bei 390 px wird jede Zeile halb so breit, alles bricht
+     um und aus einer Seite werden zwei. */
+  .bahn{width:180mm; max-width:none; margin:0 auto}
+  @page{size:A4 portrait; margin:12mm 10mm}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -869,28 +876,32 @@ So kommt ihr hin:
 
 1. Zurück zum ORANGEN CONTAINER.
 2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.
-3. Oben geht ihr NACH LINKS.
-4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.
+3. Oben geht ihr NACH LINKS, den RADWEG am Damm entlang.
+4. Geht so lange, bis ihr LINKS einen HOLZSTECKEN MIT ROTER MARKIERUNG seht. Er steht im Schatten von einem kleinen Baum.
 5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.
-6. Wenn ihr euren Stecken habt: wieder zurück und den RADWEG entlang.
+6. Dann wieder zurück und den RADWEG entlang.
 
-Das andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.</p><p class="apptext"><b style="color:#dcb455">Team 2:</b> Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.
+Das andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.
+
+⚠️ Zu weit seid ihr, wenn ihr zu einer QUERSTRASSE kommt. Dann umdrehen.</p><p class="apptext"><b style="color:#dcb455">Team 2:</b> Um in den VIP-Club zu kommen, braucht ihr ein Kennwort. Aber ihr bekommt nur die HÄLFTE.
 
 So kommt ihr hin:
 
 1. Zurück zum ORANGEN CONTAINER.
 2. Dort links den kleinen Weg hinauf, bis ihr ganz oben seid.
-3. Oben geht ihr NACH RECHTS.
-4. Geht so lange, bis ihr in der Wiese neben der Straße einen HOLZSTECKEN MIT ROTER MARKIERUNG seht.
+3. Oben geht ihr NACH RECHTS, den RADWEG entlang.
+4. Geht so lange, bis ihr LINKS bei den BÄUMEN einen HOLZSTECKEN MIT ROTER MARKIERUNG seht. Davor liegt ein GROSSER STEIN.
 5. Auf dem Stecken steht ein Wort. Das ist EURE Hälfte — merkt es euch gut, es steht NIRGENDS SONST.
-6. Wenn ihr euren Stecken habt: wieder zurück und den RADWEG entlang.
+6. Dann wieder zurück und den RADWEG entlang.
 
-Das andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.</p></div>
+Das andere Team sucht in die Gegenrichtung. Am Radweg trefft ihr euch wieder — ohne dessen Hälfte geht gar nichts.
+
+⚠️ Zu weit seid ihr, wenn ihr am SPORTPLATZ vorbei seid oder zu einer QUERSTRASSE kommt. Ihr überquert heute KEINE Straße.</p></div>
       </div>
       <div class="spalte">
         <p class="spaltentitel">Das müssen sie tun</p>
         <p class="tun">Zum eigenen Versteck gehen, die Kennwort-Hälfte holen — und dann das andere Team suchen. <b>Ohne die zweite Hälfte kommt niemand weiter.</b></p>
-        <p class="tipp">💡 Tipp gegen 30 Punkte: Beide Wörter hintereinander, in der richtigen Reihenfolge. Eines davon ist eine Farbe — und Farben stehen meistens vorne.</p>
+        
         <div class="loesung"><b>Lösung</b> —</div>
         <label class="notiz">
           <span>Änderungswunsch zu dieser Station</span>
@@ -970,11 +981,13 @@ Dann so schnell ihr könnt zurück zum Gartentürl. Er wartet schon.</p><ul clas
         <p class="tipp">💡 Tipp gegen 30 Punkte: So kommt ihr hin:
 
 1. Wieder zurück ÜBER DIE BRÜCKE.
-2. Gleich nach der Brücke RECHTS in den Weg hinein, der in den WALD führt.
-3. Nach ein paar Metern steht ihr bei den ROTEN STECKEN im Wald.
-4. Dort steht die Box.
+2. Gleich nach der Brücke RECHTS in den Weg hinein.
+3. Dem Weg folgen, bis ihr zu einem PLATZ kommt.
+4. Beim Platz gleich RECHTS HINUNTER — ein kleiner Weg zum Wasser.
+5. Bevor ihr beim Wasser seid: RECHTS steht ein BAUM, davor ein ROTER STECKEN.
+6. Dahinter steht die VIP-BOX.
 
-(Das sind andere Stecken als die in der Wiese von vorhin.)</p>
+(Das ist ein anderer Stecken als die in der Wiese von vorhin.)</p>
         <div class="loesung"><b>Lösung</b> mindestens 2 von 3 abhaken</div>
         <label class="notiz">
           <span>Änderungswunsch zu dieser Station</span>

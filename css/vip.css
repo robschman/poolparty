@@ -212,6 +212,13 @@ body.silber .knopf{color:#15171a; box-shadow:0 8px 26px rgba(200,204,210,.22)}
 .meldung.tipp {background:rgba(212,175,55,.10); border:1px solid var(--karte-rand);
   color:var(--gold-hell); text-align:left; white-space:pre-line; line-height:1.6}
 body.silber .meldung.tipp{color:#e6e9ee}
+/* Der zweite Tipp verrät die Lösung — darum deutlicher abgesetzt */
+.meldung.tipp.zwei{background:rgba(212,175,55,.18); border:1.5px solid var(--gold);
+  color:var(--gold-hell); font-weight:700; margin-top:10px}
+body.silber .meldung.tipp.zwei{border-color:#c8ccd2; color:#fff}
+/* Die Wartezeit bis zum zweiten Tipp */
+.hinweis.tippuhr{margin-top:10px; font-size:13px; opacity:.85}
+.hinweis.tippuhr b{color:var(--gold-hell); font-variant-numeric:tabular-nums}
 
 /* ---- 9. Auftrags-Liste zum Abhaken ------------------------------------- */
 .liste{list-style:none; margin:0 0 16px; padding:0}
