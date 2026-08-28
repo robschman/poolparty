@@ -529,6 +529,10 @@ body.silber .merkkasten{
 .geheim.auf{
   border-color:rgba(212,175,55,.55);
 }
+/* Die Auflösung im Emoji-Duell ist ein ganzer Satz, kein einzelnes Wort —
+   die Schrift für das Geheimwort wäre dafür viel zu groß. */
+#lsgkasten span{font-size:19px; line-height:1.35; letter-spacing:.02em;
+  font-weight:700; display:block}
 body.silber .geheim.auf{border-color:rgba(200,204,210,.55)}
 
 /* ---- 27. Feinschliff der Textblöcke ------------------------------------ */

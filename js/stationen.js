@@ -363,7 +363,7 @@ const STATIONEN = [
   ablauf: [
     "Zeigt dem anderen Team eure vier Emojis (stehen unten).",
     "Sie raten <b>laut</b>, welches Lied gemeint ist.",
-    "<b>Ihr entscheidet</b>, ob es stimmt.",
+    "<b>Ihr entscheidet</b>, ob es stimmt — die AUFLÖSUNG steht verdeckt unter euren Emojis.",
     "Stimmt es, sagt ihr ihnen euer Geheimwort — sonst darf weitergeraten werden.",
     "Dasselbe umgekehrt: sie zeigen ihr Rätsel, ihr ratet.",
     "Tragt zum Schluss das Geheimwort des <b>anderen</b> Teams unten ein."
@@ -374,7 +374,15 @@ const STATIONEN = [
     "🥇 ✨ 🎤 👑",          // Team 1 zeigt das — Lösung: Golden (KATSEYE)
     "🫃 🦵 🍑"              // Team 2 zeigt das — Lösung: Bauch Beine Po
   ],
-  tipp: "Euer eigenes Geheimwort steht ganz unten auf dieser Seite — aber nur herausrücken, wenn die anderen wirklich richtig geraten haben."
+  /* Die Auflösung zum EIGENEN Rätsel. Sie steht verdeckt auf der Seite —
+     antippen zum Anzeigen. Das Team braucht sie, um überhaupt beurteilen zu
+     können, ob das andere richtig geraten hat. Verraten kann es damit
+     nichts: das Rätsel des anderen Teams ist ein anderes. */
+  teamAufloesung: [
+    "Eure Emojis stehen für das Lied „GOLDEN“.",
+    "Eure Emojis stehen für „BAUCH BEINE PO“."
+  ],
+  tipp: "Zwei verdeckte Kästen auf dieser Seite: oben die AUFLÖSUNG zu euren Emojis (damit ihr beurteilen könnt, ob richtig geraten wurde), unten EUER GEHEIMWORT (nur herausrücken, wenn sie es wirklich getroffen haben)."
 },
 
 /* ------------------------------------------------- 12 · QR-Zettel ------ */

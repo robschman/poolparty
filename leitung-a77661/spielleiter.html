@@ -134,8 +134,13 @@ td.lsg .frei{color:#a0a0a0; font-style:italic; font-size:9.5px; white-space:norm
   var links  = AKTIV.map(zeile).slice(0, haelfte).join('');
   var rechts = AKTIV.map(zeile).slice(haelfte).join('');
 
-  var teams = SPIEL.teams.map(function(t){
-    return '<b>'+t.name+'</b> → <span class="loesung">'+t.geheimwort+'</span>';
+  var duell = STATIONEN.filter(function(s){ return s.typ==='duell'; })[0] || {};
+  var teams = SPIEL.teams.map(function(t,n){
+    var lsg = (duell.teamAufloesung||[])[n] || '';
+    /* aus „Eure Emojis stehen für das Lied „GOLDEN“." nur GOLDEN herausholen */
+    var lied = (lsg.match(/„([^“]+)“/) || [])[1] || '';
+    return '<b>'+t.name+'</b> → <span class="loesung">'+t.geheimwort+'</span>'
+         + (lied ? ' <span style="color:#8a8a8a;font-size:10px">zeigt: '+lied+'</span>' : '');
   }).join('<br>');
 
   document.getElementById('blatt').innerHTML =

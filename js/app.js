@@ -1036,7 +1036,8 @@ function hakenVerdrahten(i){
 /* --- Typ: DUELL ---------------------------------------------------------- */
 function bauDuell(st,i){
   const meins = SPIEL.teams[Z.team].geheimwort;
-  const raetsel = fuerTeam(st.teamRaetsel, "");
+  const raetsel    = fuerTeam(st.teamRaetsel, "");
+  const aufloesung = fuerTeam(st.teamAufloesung, st.aufloesung);
   app().innerHTML = `
     <div class="karte">
       ${kopfBlock(st,i)}
@@ -1049,6 +1050,13 @@ function bauDuell(st,i){
       ${raetsel ? `<div class="emojis">${raetsel}</div>
         <p class="hinweis">Das ist euer Rätsel. Zeigt es dem anderen Team —
         <b>nicht</b> die Lösung verraten.</p>` : ""}
+      ${aufloesung ? `<div class="geheim zu" id="lsgkasten">
+          <b>Auflösung — nur für euch</b>
+          <span class="verdeckt" id="lsgwort">${aufloesung}</span>
+          <button class="knopf leise klein" id="lsgAuf">👁 Antippen zum Anzeigen</button>
+        </div>
+        <p class="hinweis">Damit ihr beurteilen könnt, ob das andere Team
+        richtig geraten hat. Handy dabei nicht herumzeigen.</p>` : ""}
       ${fehlerMeldung(i)}
       <input class="eingabe" id="feld" placeholder="Geheimwort" autocomplete="off"
         autocorrect="off" spellcheck="false">
@@ -1064,17 +1072,22 @@ function bauDuell(st,i){
       ${st.streitText ? `<button class="knopf leise klein" id="streit">🕴 Türsteher rufen</button>
         <div class="meldung schiri" id="schiri" hidden>${st.streitText}</div>` : ""}
     </div>`;
-  /* Das Geheimwort bleibt verdeckt, bis es jemand absichtlich aufdeckt.
-     Sonst liest das andere Team es im Vorbeigehen vom Bildschirm ab. */
-  const geheimKnopf = $("#geheimAuf");
-  if(geheimKnopf) geheimKnopf.onclick = ()=>{
-    const kasten = $("#geheimkasten"), wort = $("#geheimwort");
-    const offen = kasten.classList.toggle("auf");
-    kasten.classList.toggle("zu", !offen);
-    wort.classList.toggle("verdeckt", !offen);
-    geheimKnopf.textContent = offen ? "🙈 Wieder verstecken" : "👁 Antippen zum Anzeigen";
-    ton("klick"); ruckeln(15);
-  };
+  /* Geheimwort und Auflösung bleiben verdeckt, bis sie jemand absichtlich
+     aufdeckt. Sonst liest das andere Team sie im Vorbeigehen vom Bildschirm. */
+  function aufdeckbar(knopfId, kastenId, wortId){
+    const knopf = $(knopfId);
+    if(!knopf) return;
+    knopf.onclick = ()=>{
+      const kasten = $(kastenId), wort = $(wortId);
+      const offen = kasten.classList.toggle("auf");
+      kasten.classList.toggle("zu", !offen);
+      wort.classList.toggle("verdeckt", !offen);
+      knopf.textContent = offen ? "🙈 Wieder verstecken" : "👁 Antippen zum Anzeigen";
+      ton("klick"); ruckeln(15);
+    };
+  }
+  aufdeckbar("#geheimAuf", "#geheimkasten", "#geheimwort");
+  aufdeckbar("#lsgAuf",    "#lsgkasten",    "#lsgwort");
 
   const streitKnopf = $("#streit");
   if(streitKnopf) streitKnopf.onclick = ()=>{
