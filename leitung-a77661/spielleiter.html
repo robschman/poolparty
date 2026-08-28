@@ -2,58 +2,88 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VIP-Schnitzeljagd — Spielleiter-Zettel</title>
 <style>
-  *{box-sizing:border-box}
-  body{margin:0;background:#e8e6e1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-       color:#1a1a1a;font-size:14px;line-height:1.5}
-  .blatt{width:210mm;min-height:297mm;margin:20px auto;padding:16mm 15mm;background:#fff;
-         box-shadow:0 10px 40px rgba(0,0,0,.18)}
-  h1{font-family:Didot,Georgia,serif;font-size:30px;margin:0 0 2px}
-  .unterzeile{color:#8a8a8a;font-size:13px;margin:0 0 4px}
-  .warnung{background:#fff8e1;border:1px solid #e0c060;border-radius:8px;padding:10px 13px;
-           font-size:13px;margin:14px 0}
-  h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#8a7320;
-     border-bottom:2px solid #d4af37;padding-bottom:5px;margin:22px 0 10px}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;background:#f4f2ec;padding:7px 8px;font-size:11px;letter-spacing:.09em;
-     text-transform:uppercase;color:#6a6a6a;border-bottom:1.5px solid #ddd}
-  td{padding:8px;border-bottom:1px solid #ececec;vertical-align:top}
-  td.nr{width:26px;color:#aaa;font-weight:700}
-  td.buchst{width:32px;text-align:center;font-family:Didot,Georgia,serif;font-size:20px;
-            font-weight:900;color:#8a7320}
-  .loesung{font-weight:800;background:#fffbe8;padding:2px 7px;border-radius:5px;
-           border:1px solid #ecdca0;display:inline-block}
-  .typ{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.07em}
-  .ort{color:#666;font-size:12px}
-  .wort{font-family:Didot,Georgia,serif;font-size:40px;font-weight:900;letter-spacing:.16em;
-        text-align:center;padding:12px;background:#faf8f0;border:2px solid #d4af37;border-radius:10px;margin:8px 0}
-  .kasten{border:1px solid #ddd;border-radius:8px;padding:12px 14px;margin:10px 0;background:#fafafa}
-  .zwei{display:flex;gap:14px;flex-wrap:wrap}
-  .zwei > div{flex:1;min-width:210px}
-  .notiz{border:1px dashed #bbb;border-radius:8px;height:26mm;margin-top:6px}
-  .knopfleiste{max-width:210mm;margin:16px auto -6px;padding:0 4px}
-  .knopfleiste button{padding:11px 20px;border:0;border-radius:9px;background:#1a1a1a;color:#fff;
-    font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
-  @media print{ body{background:#fff} .knopfleiste{display:none}
-    /* Feste Breite in Millimetern — Safari am iPhone druckt sonst in
-       FENSTERbreite, dann wird aus dem Zettel ein Meter Papier. */
-    .blatt{margin:0 auto;box-shadow:none;width:190mm;min-height:0;padding:0}
-    @page{size:A4 portrait;margin:10mm} }
+*{box-sizing:border-box}
+body{margin:0; background:#e8e6e1; color:#1a1a1a; font-size:14px; line-height:1.45;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+
+/* Feste Breite in Millimetern. Safari am iPhone druckt sonst in FENSTERbreite —
+   bei 390 px wird das Blatt rund 100 mm breit und ein Meter lang. */
+.blatt{width:190mm; margin:20px auto; padding:0; background:#fff;
+  box-shadow:0 10px 40px rgba(0,0,0,.18)}
+.innen{padding:9mm 9mm 7mm}
+
+h1{font-family:Didot,Georgia,serif; font-size:23px; margin:0; line-height:1}
+.unterzeile{color:#8a8a8a; font-size:10.5px; margin:2px 0 0}
+.kopfzeile{display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid #d4af37; padding-bottom:4px; margin-bottom:7px}
+.notfall{font-size:10px; color:#6a6a6a; text-align:right; line-height:1.4}
+.notfall b{color:#8a7320}
+
+h2{font-size:9.5px; letter-spacing:.15em; text-transform:uppercase; color:#8a7320;
+  border-bottom:1px solid #e3d9b4; padding-bottom:2px; margin:0 0 4px}
+
+.reihe{display:flex; gap:6mm; margin:0 0 6px}
+.reihe > div{flex:1; min-width:0}
+
+.kasten{border:1px solid #e0dcd2; border-radius:6px; padding:6px 8px; background:#fafaf7;
+  font-size:11.5px; line-height:1.5}
+.kasten b{color:#333}
+.loesung{font-weight:800; background:#fffbe8; padding:1px 5px; border-radius:4px;
+  border:1px solid #ecdca0; display:inline-block; white-space:nowrap}
+.wort{font-family:Didot,Georgia,serif; font-size:26px; font-weight:900; letter-spacing:.14em;
+  text-align:center; padding:4px; background:#faf8f0; border:2px solid #d4af37;
+  border-radius:7px; line-height:1.1}
+.klein{color:#7a7a7a; font-size:10px; line-height:1.4; display:block; margin-top:2px}
+
+/* Die Stationen in zwei Spalten nebeneinander */
+.spalten{display:flex; gap:5mm}
+.spalten > div{flex:1; min-width:0}
+table{width:100%; border-collapse:collapse; font-size:10.5px}
+td{padding:2.2px 3px; border-bottom:1px solid #eee; vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.nr{width:14px; color:#b0b0b0; font-weight:700; text-align:right}
+td.b{width:15px; text-align:center; font-family:Didot,Georgia,serif; font-size:14px;
+  font-weight:900; color:#8a7320; line-height:1.1}
+td.was{line-height:1.35}
+td.was b{font-size:11px}
+td.was .ort{color:#8a8a8a; font-size:9.5px; display:block}
+td.lsg{text-align:right; white-space:nowrap; font-size:10px}
+td.lsg .loesung{font-size:10px}
+td.lsg .frei{color:#a0a0a0; font-style:italic; font-size:9.5px; white-space:normal}
+
+.fuss{display:flex; gap:6mm; margin-top:6px}
+.fuss > div{flex:1}
+.warnung{background:#fff8e1; border:1px solid #e0c060; border-radius:6px;
+  padding:5px 8px; font-size:10.5px; margin:0 0 6px; line-height:1.45}
+
+.knopfleiste{max-width:190mm; margin:16px auto -6px; padding:0 4px}
+.knopfleiste button{padding:11px 20px; border:0; border-radius:9px; background:#1a1a1a;
+  color:#fff; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit}
+
+@media print{
+  body{background:#fff}
+  .knopfleiste{display:none}
+  .blatt{width:190mm; margin:0 auto; box-shadow:none}
+  .innen{padding:0}
+  @page{size:A4 portrait; margin:10mm}
+}
 </style>
 </head>
 <body>
 <div class="knopfleiste"><button onclick="window.print()">Drucken (⌘ P)</button></div>
-<div class="blatt" id="blatt">Lade …</div>
+<div class="blatt"><div class="innen" id="blatt">Lade …</div></div>
 
 <script src="../_ZUM-HOCHLADEN/js/stationen.js"></script>
 <script>
 (function(){
   var MODUS = (new URLSearchParams(location.search).get('modus')) || SPIEL.modus || 'lang';
   var AKTIV = STATIONEN.filter(function(s){ return !s.modi || s.modi.indexOf(MODUS) > -1; });
-  var buchstabenStationen = AKTIV.filter(function(s){ return s.buchstabe; });
-  var wort = (SPIEL.loesungswort||'').toUpperCase();
-  var stimmt = true;
+  var wort  = (SPIEL.loesungswort||'').toUpperCase();
+  var mitBuchstabe = AKTIV.filter(function(s){ return s.buchstabe; });
 
   /* Buchstaben durcheinander verteilen — genau wie in der App */
   var BUCHSTABEN = (function(){
@@ -67,79 +97,84 @@
     return karte;
   })();
 
-  function loesungVon(s){
-    if(s.typ==='code')     return '<span class="loesung">'+s.antwort+'</span>'
-                                + (s.antwortAuch? ' <span class="ort">auch: '+s.antwortAuch.join(', ')+'</span>':'');
-    if(s.typ==='duell')    return 'Geheimwort <b>eines anderen</b> Teams (siehe Liste unten)';
-    if(s.typ==='quiz')     return s.fragen.map(function(f,i){
-                                  return (i+1)+'. '+f.optionen[f.richtig]; }).join(' · ');
-    if(s.typ==='foto')     return 'mindestens '+(s.mindestens||s.auftraege.length)+' von '
-                                + s.auftraege.length+' abhaken';
-    if(s.typ==='handyaus') return '<b>Fake!</b> Läuft nach '+(s.sekunden||60)
-                                + ' Sekunden von selbst weiter — auch wenn niemand das Handy ausschaltet';
-    if(s.typ==='spiegel')  return '<span class="loesung">'+s.antwort+'</span> <span class="ort">gespiegelt: '+(s.spiegelText||'')+'</span>';
-    if(s.typ==='stoppuhr') return 'Schätzung, keine feste Lösung';
-    if(s.typ==='sprint')   return 'Countdown '+(s.sekunden||180)+' Sekunden';
-    if(s.typ==='kennwort') return '<span class="loesung">'+SPIEL.kennwortTeil1+' + '+SPIEL.kennwortTeil2+'</span>';
-    if(s.typ==='anruf')    return '<b>Am Telefon sagst du:</b> <span class="loesung">'+SPIEL.anrufCode+'</span>';
-    if(s.typ==='finale')   return '<span class="loesung">'+wort+'</span> selbst legen lassen';
-    if(s.typ==='start')    return 'nur bestätigen';
-    return '—';
+  /* Nur die Lösung, kurz. Die Tipps stehen in der App und in Tipps.html —
+     auf einem Ein-Seiten-Zettel wären sie der halbe Platz. */
+  function loesung(s){
+    var g = function(t){ return '<span class="loesung">'+t+'</span>'; };
+    var f = function(t){ return '<span class="frei">'+t+'</span>'; };
+    switch(s.typ){
+      case 'code':     return g(s.antwort);
+      case 'spiegel':  return g(s.antwort);
+      case 'kennwort': return g(SPIEL.kennwortTeil1+' + '+SPIEL.kennwortTeil2);
+      case 'anruf':    return g(SPIEL.anrufCode);
+      case 'finale':   return g(wort);
+      case 'duell':    return f('Wort des anderen');
+      case 'quiz':     return f(s.fragen.map(function(fr,i){
+                              return (i+1)+'. '+fr.optionen[fr.richtig]; }).join(' · '));
+      case 'foto':     return f((s.mindestens||s.auftraege.length)+' von '+s.auftraege.length+' Haken');
+      case 'handyaus': return f('Fake, '+(s.sekunden||60)+' s');
+      case 'stoppuhr': return f('schätzen, '+(s.sekunden||30)+' s');
+      case 'sprint':   return f('Countdown '+(s.sekunden||180)+' s');
+      case 'start':    return f('nur bestätigen');
+      default:         return f('—');
+    }
   }
 
-  var zeilen = AKTIV.map(function(s,i){
+  function zeile(s, i){
     return '<tr>'
       + '<td class="nr">'+i+'</td>'
-      + '<td class="buchst">'+((BUCHSTABEN[i]||[]).join(''))+'</td>'
-      + '<td><b>'+s.titel+'</b><br><span class="typ">'+s.typ+'</span>'
-      + (s.ort? '<br><span class="ort">📍 '+s.ort+'</span>':'') + '</td>'
-      + '<td>'+loesungVon(s) + (s.tipp? '<br><span class="ort">Tipp: '+s.tipp+'</span>':'') + '</td>'
+      + '<td class="b">'+((BUCHSTABEN[i]||[]).join(''))+'</td>'
+      + '<td class="was"><b>'+s.titel+'</b>'
+      + (s.ort ? '<span class="ort">'+s.ort+'</span>' : '') + '</td>'
+      + '<td class="lsg">'+loesung(s)+'</td>'
       + '</tr>';
-  }).join('');
+  }
+
+  var haelfte = Math.ceil(AKTIV.length/2);
+  var links  = AKTIV.map(zeile).slice(0, haelfte).join('');
+  var rechts = AKTIV.map(zeile).slice(haelfte).join('');
 
   var teams = SPIEL.teams.map(function(t){
-    return '<tr><td><b>'+t.name+'</b></td><td><span class="loesung">'+t.geheimwort+'</span></td></tr>';
-  }).join('');
+    return '<b>'+t.name+'</b> → <span class="loesung">'+t.geheimwort+'</span>';
+  }).join('<br>');
 
   document.getElementById('blatt').innerHTML =
-    '<h1>Spielleiter-Zettel</h1>'
-  + '<p class="unterzeile">'+SPIEL.titel+' · '+SPIEL.untertitel+' · '+SPIEL.datum
-  + ' · Fassung <b>'+MODUS.toUpperCase()+'</b></p>'
-  + '<div class="warnung"><b>Nicht herzeigen.</b> Auf diesem Blatt stehen alle Lösungen. '
-  + 'Notfall im Spiel: oben links die <b>Krone 3× antippen</b>, Code <b>'+SPIEL.leiterCode
-  + '</b> eingeben — dann kannst du eine Station überspringen.</div>'
+    '<div class="kopfzeile">'
+  +   '<div><h1>Spielleiter-Zettel</h1>'
+  +   '<p class="unterzeile">'+SPIEL.titel+' · '+SPIEL.datum
+  +   ' · Fassung <b>'+MODUS.toUpperCase()+'</b></p></div>'
+  +   '<div class="notfall"><b>Nicht herzeigen.</b><br>Notfall: Krone oben links '
+  +   '<b>3×</b> antippen, Code <b>'+SPIEL.leiterCode+'</b></div>'
+  + '</div>'
 
-  + '<h2>Am Telefon</h2>'
-  + '<div class="kasten"><b>Kennwort, das sie nennen müssen:</b> <span class="loesung">'
-  + SPIEL.kennwortTeil1+' '+SPIEL.kennwortTeil2+'</span><br>'
-  + '<b>Code, den du herausgibst:</b> <span class="loesung">'+SPIEL.anrufCode+'</span><br>'
-  + '<span class="ort">Team 1 findet „'+SPIEL.kennwortTeil1+'", Team 2 findet „'+SPIEL.kennwortTeil2+'". '
-  + 'Ohne beide Hälften kommt niemand weiter.</span></div>'
-  + '<h2>Das Losungswort am Ende</h2>'
-  + '<div class="wort">'+wort+'</div>'
-  + (stimmt ? '' : '<div class="warnung"><b>Achtung:</b> In stationen.js steht als Kontrolle „'
-      + SPIEL.loesungswortKontrolle + '“, die Buchstaben ergeben aber „'+wort
-      + '“. Das ist kein Fehler im Spiel — die App nimmt immer die Buchstaben. Aber schau nach, ob das so gewollt ist.</div>')
+  + '<div class="reihe">'
+  +   '<div><h2>Am Telefon</h2><div class="kasten">'
+  +     '<b>Sie sagen:</b> <span class="loesung">'+SPIEL.kennwortTeil1+' '+SPIEL.kennwortTeil2+'</span><br>'
+  +     '<b>Du gibst:</b> <span class="loesung">'+SPIEL.anrufCode+'</span>'
+  +     '<span class="klein">Team 1 findet „'+SPIEL.kennwortTeil1+'“, Team 2 „'+SPIEL.kennwortTeil2
+  +     '“. Danach: „Geht dorthin, wo der Osterhase wohnt.“ Auflegen ohne Tschüss.</span>'
+  +   '</div></div>'
+  +   '<div><h2>Losungswort am Tor</h2><div class="wort">'+wort+'</div>'
+  +     '<span class="klein">Dazu muss jedes Handgelenk ein Einlassband tragen.</span></div>'
+  + '</div>'
 
   + '<h2>Alle Stationen und Lösungen</h2>'
-  + '<table><tr><th></th><th>B.</th><th>Station</th><th>Lösung</th></tr>'+zeilen+'</table>'
+  + '<div class="spalten">'
+  +   '<div><table>'+links+'</table></div>'
+  +   '<div><table>'+rechts+'</table></div>'
+  + '</div>'
 
-  + '<h2>Die Geheimwörter der Teams (fürs Emoji-Duell)</h2>'
-  + '<table><tr><th>Team</th><th>Geheimwort</th></tr>'+teams+'</table>'
-  + '<p class="ort">Jedes Team sieht nur sein eigenes Wort auf seinem Handy. '
-  + 'Beim Duell muss ein Team das Wort eines <b>anderen</b> Teams eintragen — das eigene wird nicht akzeptiert.</p>'
-
-  + '<h2>Punkte</h2>'
-  + '<div class="kasten">'+SPIEL.punkteProStation+' Punkte pro Station · '
-  + '−'+SPIEL.abzugTipp+' bei Tipp · −'+SPIEL.abzugFehler+' pro falscher Antwort · '
-  + 'nie weniger als '+Math.round(SPIEL.punkteProStation*0.2)+' · '
-  + 'alle Foto-Aufträge = +25 Bonus<br>'
-  + '<b>Höchstmöglich: '+(buchstabenStationen.length*SPIEL.punkteProStation+25)+' Punkte</b></div>'
-
-  + '<h2>Notizen am Partytag</h2>'
-  + '<div class="zwei">'
-  + SPIEL.teams.map(function(t){
-      return '<div><b>'+t.name+'</b><div class="notiz"></div></div>'; }).join('')
+  + '<div class="fuss">'
+  +   '<div><h2>Geheimwörter fürs Emoji-Duell</h2><div class="kasten">'+teams
+  +     '<span class="klein">Jedes Team muss das Wort des ANDEREN eintippen. '
+  +     'Das eigene wird nicht angenommen.</span></div></div>'
+  +   '<div><h2>Punkte</h2><div class="kasten">'
+  +     SPIEL.punkteProStation+' je Station · −'+SPIEL.abzugTipp+' Tipp · −'
+  +     (SPIEL.abzugTipp2||SPIEL.abzugTipp)+' zweiter Tipp · −'+SPIEL.abzugFehler+' je Fehler<br>'
+  +     'Nie weniger als '+Math.round(SPIEL.punkteProStation*0.2)+' · alle Foto-Aufträge +25'
+  +     '<span class="klein">Höchstens rund '
+  +     (mitBuchstabe.length*SPIEL.punkteProStation+25)+' Punkte.</span>'
+  +   '</div></div>'
   + '</div>';
 })();
 </script>
